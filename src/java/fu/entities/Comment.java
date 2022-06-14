@@ -13,42 +13,42 @@ import java.time.LocalDateTime;
  * @author Admin
  */
 public class Comment implements Serializable{
-    private Article articleID;
-    private Member memberID;
+    private Article article;
+    private Member member;
     private String commentContent;
     private LocalDateTime commentTime;
     private int status;
 
     public Comment() {
-        articleID=null;
-        memberID=null;
+        article=null;
+        member=null;
         commentContent="";
         commentTime=null;
         status=0;
     }
 
-    public Comment(Article articleID, Member memberID, String commentContent, LocalDateTime commentTime, int status) {
-        this.articleID = articleID;
-        this.memberID = memberID;
+    public Comment(Article article, Member member, String commentContent, LocalDateTime commentTime, int status) {
+        this.article = article;
+        this.member = member;
         this.commentContent = commentContent;
         this.commentTime = commentTime;
         this.status = status;
     }
 
-    public Article getArticleID() {
-        return articleID;
+    public Article getArticle() {
+        return article;
     }
 
-    public void setArticleID(Article articleID) {
-        this.articleID = articleID;
+    public void setArticle(Article article) {
+        this.article = article;
     }
 
-    public Member getMemberID() {
-        return memberID;
+    public Member getMember() {
+        return member;
     }
 
-    public void setMemberID(Member memberID) {
-        this.memberID = memberID;
+    public void setMember(Member memberID) {
+        this.member = memberID;
     }
 
     public String getCommentContent() {

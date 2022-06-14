@@ -45,12 +45,19 @@ public class CreateFormServlet extends HttpServlet {
                 List<Item> listI = itDao.getAllItems();
                 request.setAttribute("ListItemType", listI);
                 request.setAttribute("action", "create");
-                request.setAttribute("contentError", request.getAttribute("contentError"));
-                request.setAttribute("errorURL", request.getAttribute("errorURL"));                
+                request.setAttribute("titlePost", request.getAttribute("titlePost"));
+                request.setAttribute("titleError", request.getAttribute("titleError"));
+                
                 request.setAttribute("content", request.getAttribute("content"));
+                request.setAttribute("contentError", request.getAttribute("contentError"));
+                
+                request.setAttribute("errorURL", request.getAttribute("errorURL"));                              
                 request.setAttribute("postURL", request.getAttribute("postURL"));
+                
                 request.setAttribute("itemId", request.getAttribute("itemId"));
+                
                 request.setAttribute("postTypeId", request.getAttribute("postTypeId"));
+                
                 request.getRequestDispatcher("form.jsp").forward(request, response);
 
             } else {

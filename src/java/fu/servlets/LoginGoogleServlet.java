@@ -49,14 +49,8 @@ public class LoginGoogleServlet extends HttpServlet {
             } else {
                 String accessToken = GoogleUtils.getToken(code);               
                 GooglePojo googlePojo = GoogleUtils.getUserInfo(accessToken);
-                CampusDAO cdao = new CampusDAO();
-                Campus cam = new Campus();
-                //Ktra campus
-                if(googlePojo.getFamily_name().matches(".*HCM.*")){
-                   cam = cdao.getCampusByID("1");                  
-                }
-                //Tạo 1 user tạm để lưu các info của google gửi về
-                Member member = new Member(googlePojo.getId(), googlePojo.getName(), "Empty", googlePojo.getEmail(), googlePojo.getPicture(), "Your profile here", 1, 1, cam, 0);
+
+                Member member = new Member(googlePojo.getId(), googlePojo.getName(), googlePojo.getEmail(), googlePojo.getPicture(), "Your profile here", 1, 1, 0);
                 MemberDAO mdao = new MemberDAO();
                 String[] email = member.getMemberEmail().split("@");
                 //check form mail

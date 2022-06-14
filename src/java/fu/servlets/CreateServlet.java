@@ -58,14 +58,21 @@ public class CreateServlet extends HttpServlet {
             if (session.getAttribute("userdata") != null) {
                 Member memberLogin = (Member) session.getAttribute("userdata");
                 boolean valid = true;
+                String titleError = "";
                 String contentError = "";
                 String errorURL = "";
                 String newId;
-                String textURL = request.getParameter("articleURL");
+                String textURL = request.getParameter("articleURL");               
+                // Xử lý title bài viết    
+                String titlePost = request.getParameter("txtTitle");                
+                if (titlePost.trim().isEmpty() || titlePost.trim().length() < 10 || titlePost.trim().length() > 50) {
+                    titleError = "Title must be at least 10 and at most 50 characters!";
+                    valid = false;
+                }
+                // Xử lý nội dung bài viết 
                 String content = request.getParameter("txtContent");
-                // Xử lý nội dung bài viết                    
                 if (content.trim().isEmpty() || content.trim().length() < 20 || content.trim().length() > 4000) {
-                    contentError = "Content of the article must be at least 20 and at most 4000 characters!";
+                    contentError = "Content must be at least 20 and at most 4000 characters!";
                     valid = false;
                 }
                 // Xử lý loại đồ vật của bài viết
@@ -116,7 +123,7 @@ public class CreateServlet extends HttpServlet {
                      articleURl=uploadFile(request);
                     }
                     // uploadFileToBuild(request);
-                    Article a = new Article(newId, content, articleURl, LocalDateTime.now().toString(), 1, i, memberLogin, at);
+                    Article a = new Article(newId, titlePost.trim() ,content.trim(), articleURl, LocalDateTime.now().toString(), 1, i, memberLogin, at);
                     if (aDao.createNewArticle(a)) {
                         url = SUCCESS;
                     } else {
@@ -124,9 +131,11 @@ public class CreateServlet extends HttpServlet {
                     }
                 } else {
                     url = INVALID;
-                    request.setAttribute("contentError", contentError);
-                    request.setAttribute("errorURL", errorURL);                  
+                    request.setAttribute("titlePost", titlePost);
+                    request.setAttribute("titleError", titleError);
                     request.setAttribute("content", content);
+                    request.setAttribute("contentError", contentError);
+                    request.setAttribute("errorURL", errorURL);                                     
                     request.setAttribute("postURL", postURL);
                     request.setAttribute("itemId", Integer.parseInt(itemId));
                     request.setAttribute("postTypeId", Integer.parseInt(postTypeId));

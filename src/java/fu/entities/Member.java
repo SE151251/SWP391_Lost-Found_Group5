@@ -14,36 +14,30 @@ import java.io.Serializable;
 public class Member implements Serializable {
     private String memberID;
     private String memberName;
-    private String memberPhone;
     private String memberEmail;
     private String picture;
     private String memberProfile;
     private int memberRole;
     private int status;
-    private Campus campus;
     private int memberCount;
 
     public Member() {
         memberID="";
         memberName="";
-        memberPhone="";
         memberEmail="";
         picture="";
         memberRole=0;
         status=0;
-        campus=null;
     }
 
-    public Member(String memberID, String memberName, String memberPhone, String memberEmail, String picture ,String memberProfile, int memberRole, int status, Campus campus, int memberCount) {
+    public Member(String memberID, String memberName, String memberEmail, String picture ,String memberProfile, int memberRole, int status, int memberCount) {
         this.memberID = memberID;
         this.memberName = memberName;
-        this.memberPhone = memberPhone;
         this.memberEmail = memberEmail;
         this.picture = picture;
         this.memberProfile = memberProfile;
         this.memberRole = memberRole;
         this.status = status;
-        this.campus = campus;
         this.memberCount = memberCount;
     }
     
@@ -61,14 +55,6 @@ public class Member implements Serializable {
 
     public void setMemberName(String memberName) {
         this.memberName = memberName;
-    }
-
-    public String getMemberPhone() {
-        return memberPhone;
-    }
-
-    public void setMemberPhone(String memberPhone) {
-        this.memberPhone = memberPhone;
     }
 
     public String getMemberEmail() {
@@ -109,14 +95,6 @@ public class Member implements Serializable {
 
     public void setStatus(int status) {
         this.status = status;
-    }
-
-    public Campus getCampus() {
-        return campus;
-    }
-
-    public void setCampus(Campus campus) {
-        this.campus = campus;
     }
 
     public int getMemberCount() {

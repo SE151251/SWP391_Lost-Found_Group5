@@ -171,24 +171,33 @@
                                     <table>
                 <tr>
                     
-                            <td style="font-size: 20px">Nội dung bài viết</td>
-                            <td>: <input style="width: 500px; height: 100px" type="description" name="txtContent" value="${content}"<font color="red">${contentError}</font></td>
+                            <td style="font-size: 20px; padding-bottom: 20px"">Tiêu đề:</td>
+                            <td style="padding-bottom: 20px"><input style="width: 500px; height: 50px;" type="text" name="txtTitle" value="${titlePost}"<font color="red">${titleError}</font></td>
 			</tr>      
+                  <tr>
                     
+                            <td style="font-size: 20px">Nội dung:</td>
+                            <td style=" padding-bottom: 20px">
+                            <%--    <input style="width: 500px; height: 100px" type="text" name="txtContent" value="${content}" --%>
+                                <textarea rows="9" cols="70" name="txtContent"> <c:out value="${content}"/></textarea>
+                                <font color="red"> ${contentError} </font>
+                            </td>
+			</tr>   
                 <tr>
-                <td style="font-size: 20px">Loại bài viết: </td>
-                    <td>:
+                <td style="font-size: 20px; padding-bottom: 20px">Loại bài viết:</td>
+                    <td style=" padding-bottom: 20px">
                          <select style="width: 250px; height: 40px; font-size: 20px; text-align: center" name="txtArticleType" >
                              <c:forEach var="dt" items="${ListArticleType}" >                                  
                                  <option <c:if test="${dt.typeID eq postTypeId}">selected </c:if>
+                                         <c:if test="${userdata.memberRole eq 1 && dt.typeID eq 4}">hidden</c:if>
                                  value="${dt.typeID}"> <c:out value="${dt.typeName}"/> </option>
                              </c:forEach>
                          </select> 
                     </td>            
                 </tr>
                 <tr>
-                <td style="font-size: 20px">Đồ vật loại: </td>
-                    <td>:
+                <td style="font-size: 20px; padding-bottom: 20px">Đồ vật loại:</td>
+                    <td style=" padding-bottom: 20px">
                          <select style="width: 250px; height: 40px; font-size: 20px; text-align: center" name="txtItem" >
                              <c:forEach var="dt" items="${ListItemType}" >                                  
                                 <option <c:if test="${ dt.itemID eq itemId}">selected </c:if>
@@ -199,13 +208,13 @@
                 </tr>
                 <c:if test="${action eq 'create'}">         
                 <tr>
-                    <td style="font-size: 20px">Post image </td>
-                    <td>: <input type="file" name="photo"/><font color="red"> ${errorURL} </font></td>               
+                    <td style="font-size: 20px">Post image:</td>
+                    <td><input type="file" name="photo"/><font color="red"> ${errorURL} </font></td>               
                 </tr>
                 </c:if>
                 <c:if test="${action eq 'update'}">         
                 <tr>
-                    <td style="font-size: 20px">Post image: </td>
+                    <td style="font-size: 20px">Article image: </td>
                     <td>
                         <div style="width: 200px;">
                             <img style="width: 100%; box-sizing: content-box" src="images/${postURL}" />
@@ -217,11 +226,11 @@
                     <td  colspan="2">                   
                     <c:if test="${action eq 'create'}">
                     <input type="hidden" name="articleURL" value="${postURL}">
-                    <button style="margin-left: 163px; margin-top: 20px; width: 130px; font-size: 20px; background-color: orange; font-weight: bold" formaction="CreateServlet" type="submit">Create</button></c:if>
+                    <button style="margin-left: 112px; margin-top: 20px; width: 130px; font-size: 20px; background-color: orange; font-weight: bold" formaction="CreateServlet" type="submit">Create</button></c:if>
                     <c:if test="${action eq 'update'}">
                     <input type="hidden" name="articleURL" value="${postURL}">
                     <input type="hidden" name="idUpdate" value="${idUpdate}">
-                    <button style="margin-left: 163px; margin-top: 20px; width: 130px; font-size: 20px; background-color: orange; font-weight: bold" formaction="UpdateServlet" type="submit">Update</button></c:if>
+                    <button style="margin-left: 112px; margin-top: 20px; width: 130px; font-size: 20px; background-color: orange; font-weight: bold" formaction="UpdateServlet" type="submit">Update</button></c:if>
                     </td>
                 </tr>
             </table>         

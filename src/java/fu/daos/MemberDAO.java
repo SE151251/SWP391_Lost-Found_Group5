@@ -52,18 +52,16 @@ public class MemberDAO {
             con = DBUtils.makeConnection();
             if (con != null) {
                 String sql = "INSERT INTO Member "
-                        + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                        + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
                 stm = con.prepareStatement(sql);
                 stm.setString(1, m.getMemberID());
                 stm.setString(2, m.getMemberName());
                 stm.setString(3, m.getMemberEmail());
                 stm.setString(4, m.getPicture());
-                stm.setString(5, m.getMemberPhone());
-                stm.setString(6, m.getMemberProfile());
-                stm.setInt(7, m.getMemberRole());
-                stm.setInt(8, m.getStatus());
-                stm.setInt(9, m.getMemberCount());
-                stm.setInt(10, m.getCampus().getCampusID());
+                stm.setString(5, m.getMemberProfile());
+                stm.setInt(6, m.getMemberRole());
+                stm.setInt(7, m.getStatus());
+                stm.setInt(8, m.getMemberCount());                
                 int row = stm.executeUpdate();
                 if (row > 0) {
                     return true;
@@ -88,16 +86,12 @@ public class MemberDAO {
                     String memberName = rs.getString("FullName");                    
                     String memberEmail = rs.getString("Email");
                     String memberPicture = rs.getString("Picture");
-                    String memberPhone = rs.getString("Phone");
                     String memberProfile = rs.getString("ProfileInfo");
                     int memberRole = rs.getInt("MemberRole");
                     int memberStatus = rs.getInt("MemberStatus");
                     int memberCount = rs.getInt("CountTime");
-                    String memberCampus = rs.getString("CampusID");
-                    CampusDAO cdao = new CampusDAO();
-                    Campus c = cdao.getCampusByID(memberCampus);
-                    Member m = new Member(memberId, memberName, memberPhone, memberEmail, memberPicture, 
-                            memberProfile, memberRole, memberStatus, c, memberCount);
+                    Member m = new Member(memberId, memberName, memberEmail, memberPicture, 
+                            memberProfile, memberRole, memberStatus, memberCount);
                     if(m!=null){
                         return true;
                     }
@@ -122,16 +116,12 @@ public class MemberDAO {
                     String memberName = rs.getString("FullName");                    
                     String memberEmail = rs.getString("Email");
                     String memberPicture = rs.getString("Picture");
-                    String memberPhone = rs.getString("Phone");
                     String memberProfile = rs.getString("ProfileInfo");
                     int memberRole = rs.getInt("MemberRole");
                     int memberStatus = rs.getInt("MemberStatus");
-                    int memberCount = rs.getInt("CountTime");
-                    String memberCampus = rs.getString("CampusID");
-                    CampusDAO cdao = new CampusDAO();
-                    Campus c = cdao.getCampusByID(memberCampus);
-                    Member m = new Member(memberId, memberName, memberPhone, memberEmail, memberPicture, 
-                            memberProfile, memberRole, memberStatus, c, memberCount);                   
+                    int memberCount = rs.getInt("CountTime");                   
+                    Member m = new Member(memberId, memberName, memberEmail, memberPicture, 
+                            memberProfile, memberRole, memberStatus, memberCount);                   
                     listmem.add(m);
                 }
             }

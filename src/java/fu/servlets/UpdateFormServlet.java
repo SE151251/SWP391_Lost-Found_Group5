@@ -50,7 +50,7 @@ public class UpdateFormServlet extends HttpServlet {
 
                     List<Item> listI = itDao.getAllItems();
                     request.setAttribute("ListItemType", listI);
-
+                    request.setAttribute("titlePost", a.getTitle());
                     request.setAttribute("content", a.getArticleContent());
                     request.setAttribute("postURL", a.getImgUrl());
                     request.setAttribute("itemId", a.getItem().getItemID());
@@ -65,7 +65,9 @@ public class UpdateFormServlet extends HttpServlet {
 
                     List<Item> listI = itDao.getAllItems();
                     request.setAttribute("ListItemType", listI);
-
+                    
+                    request.setAttribute("titlePost", request.getAttribute("titlePost"));
+                    request.setAttribute("titleError", request.getAttribute("titleError"));
                     request.setAttribute("contentError", request.getAttribute("contentError"));
                     request.setAttribute("content", request.getAttribute("content"));
                     request.setAttribute("postURL", request.getAttribute("postURL"));

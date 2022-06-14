@@ -86,7 +86,7 @@
             <div class="user-profile">                
                 <img src="${memberPost.picture}" alt="">
                 <div>
-                    <p><c:out value="${memberPost.memberName}"/></p>
+                    <p><a href="PersonalServlet?uId=${userdata.memberID}">${userdata.memberName}</a></p>
                     <small>${postDetail.postTime}</small>
                 </div>
             </div>
@@ -95,7 +95,7 @@
             </div>
         </div>
         <div class="status-field">
-            <p><c:out value="${postDetail.articleContent}"/></p>
+            <pre><c:out value="${postDetail.articleContent}"/></pre>
             <div style="width: 400px">
             <img style="width: 100%" src="images/${postDetail.imgUrl}" alt="">
             </div>

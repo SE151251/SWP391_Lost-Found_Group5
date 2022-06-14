@@ -46,18 +46,24 @@ public class UpdateServlet extends HttpServlet {
             if (session.getAttribute("userdata") != null) {
                 Member memberLogin = (Member) session.getAttribute("userdata");
                 boolean valid = true;
+                String titleError = "";
                 String contentError = "";
                 String errorURL = "";
                 String newId;
                 String idUpdate = request.getParameter("idUpdate");
-
                 String textURL = request.getParameter("articleURL");
+                
+                // Xử lý title bài viết    
+                String titlePost = request.getParameter("txtTitle");                
+                if (titlePost.trim().isEmpty() || titlePost.trim().length() < 10 || titlePost.trim().length() > 50) {
+                    titleError = "Title must be at least 10 and at most 100 characters!";
+                    valid = false;
+                }
 
+                // Xử lý nội dung bài viết  
                 String content = request.getParameter("txtContent");
-
-                // Xử lý nội dung bài viết                    
                 if (content.isEmpty() || content.trim().length() < 20 || content.trim().length() > 4000) {
-                    contentError = "Content of the article must be at least 20 and at most 4000 characters!";
+                    contentError = "Content must be at least 20 and at most 4000 characters!";
                     valid = false;
                 }
                 // Xử lý loại đồ vật của bài viết
@@ -72,11 +78,13 @@ public class UpdateServlet extends HttpServlet {
 
                 ArticleDAO aDao = new ArticleDAO();
                 if (valid) {
-                    Article a = new Article(idUpdate, content, textURL, LocalDateTime.now().toString(), 1, i, memberLogin, at);
+                    Article a = new Article(idUpdate, titlePost.trim(), content.trim(), textURL, LocalDateTime.now().toString(), 1, i, memberLogin, at);
                     aDao.updateContentArticle(a);
                     url = SUCCESS;
                 } else {
                     url = INVALID;
+                    request.setAttribute("titlePost", titlePost);
+                    request.setAttribute("titleError", titleError);
                     request.setAttribute("contentError", contentError);
                     request.setAttribute("errorURL", errorURL);
                     request.setAttribute("content", content);

@@ -40,9 +40,8 @@
     <!-- Bootstrap CSS -->
     <script src="https://kit.fontawesome.com/f2fda88f12.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css" />
-
     <link rel="stylesheet" href="node_modules/bootstrap-social/bootstrap-social.css" />
-    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/styleHome.css" />
     <!-- Bootstrap -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
   <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.slim.min.js"></script>
@@ -59,16 +58,17 @@
                 </button>
                 <span class="Nav-username" style="width: 300px;"><c:out value="${userdata.memberName}"/></span>
             </div>
-            
-            <div class="search col-md-4">
-               <form> 
+            <form>
+            <div class="search col-md-11">
+               
                 <div class="search-field">
                     <div class="search-icon"></div>
-                    <input type="text" name="keySearch" class="search-input" placeholder="Search">
+                    <input type="text" name="keySearch" class="search-input" placeholder="Từ khóa">
                 </div>
-        <button formaction="SearchServlet" class="search-button">Search</button>
-         </form>
+        <button formaction="SearchServlet" class="search-button">Tìm</button>
+         
             </div>
+            </form>
                 
                 
 
@@ -79,7 +79,7 @@
                     <a class="nav-link" href="ListPostServlet"><i class="fa fa-home fa-lg"></i>Home </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#"><span class="fa-solid fa-user"></span> Personal Page</a>
+                    <a class="nav-link" href="PersonalServlet"><span class="fa-solid fa-user"></span> Personal Page</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="./"><span class="fa-regular fa-thumbs-up"></span>
@@ -100,6 +100,11 @@
                 <span class="dropdown-value filter-btn btn"><i class=" fa-solid fa-filter"></i></span>
             </div>
             <div style=" min-width: 170px; max-width: 200px;" class="dropdown-list filter-list mt-3">
+                    <c:forEach var="dt" items="${ListItemType}" > 
+                <a href="SearchServlet?txtItem=${dt.itemID}" class="dropdown-item filter-item text-white"><c:out value="${dt.itemName}"/></a>
+                </c:forEach>
+            </div>
+       <%--     <div style=" min-width: 170px; max-width: 200px;" class="dropdown-list filter-list mt-3">
                 <form action="SearchServlet">
                 <select name="txtItem" >
                              <c:forEach var="dt" items="${ListItemType}" >                                  
@@ -110,7 +115,7 @@
                     <br/>
                     <input type="submit" value="Search" />
                     </form>
-            </div>
+            </div> --%>
         </div>
         <div class="tab-item active">
             Cần Tìm
@@ -130,11 +135,14 @@
             <c:forEach var="dt" items="${articlesFind}" >
             <div class="pane col-md-2">
                 <div class="pane-img">
-                    <img src="images/${dt.imgUrl}" alt="">
+                    <c:if test="${not empty dt.imgUrl}">
+                        <img src="images/${dt.imgUrl}" alt=""> </c:if>
+                        <c:if test="${empty dt.imgUrl}">
+                        <img src="images/Logo_LostFound.png" alt=""> </c:if>
                 </div>
                 <div class="pane-content">
-                    <p style="font-size: 12px">Thời gian:<c:out value="${dt.postTime}"/></p>                 
-                   
+                    <p style="font-size: 12px">Thời gian: <c:out value="${dt.postTime}"/></p>                 
+                    <p style="font-size: 15px"><c:out value="${dt.title}"/></p>
                     <a href="SearchServlet?txtItem=${dt.item.itemID}">    <p><span style="padding: 5px 10px 5px 10px" class="badge badge-pill badge-primary"><c:out value="${dt.item.itemName}"/></span></p>   </a>                                 
                         <a href="ViewDetailServlet?aId=${dt.articleID}">View more >></a>                   
                     <font-awesome-icon icon="fa-solid fa-phone" />
@@ -147,7 +155,10 @@
             <c:forEach var="dt" items="${articlesReturn}" >
             <div class="pane col-md-2">
                 <div class="pane-img">
-                    <img src="images/${dt.imgUrl}" alt="">
+                    <c:if test="${not empty dt.imgUrl}">
+                        <img src="images/${dt.imgUrl}" alt=""> </c:if>
+                        <c:if test="${empty dt.imgUrl}">
+                        <img src="images/Logo_LostFound.png" alt=""> </c:if>
                 </div>
                 <div class="pane-content">
                     <p style="font-size: 12px">Thời gian: <c:out value="${dt.postTime}"/></p>
@@ -166,11 +177,9 @@
             <div class="pane col-md-2">
                 <div class="pane-img">
                     <c:if test="${not empty dt.imgUrl}">
-                    <img src="images/${dt.imgUrl}" alt="">
-                    </c:if>
-                    <c:if test="${empty dt.imgUrl}">
-                        <p>null picture</p>
-                    </c:if>
+                        <img src="images/${dt.imgUrl}" alt=""> </c:if>
+                        <c:if test="${empty dt.imgUrl}">
+                        <img src="images/Logo_LostFound.png" alt=""> </c:if>
                 </div>
                 <div class="pane-content">
                     <p style="font-size: 12px">Thời gian: <c:out value="${dt.postTime}"/></p>

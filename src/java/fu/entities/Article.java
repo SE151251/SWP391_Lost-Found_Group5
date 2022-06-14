@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 public class Article implements Serializable {
 
     private String articleID;
+    private String title;
     private String articleContent;
     private String imgUrl;
     private String postTime;
@@ -25,6 +26,7 @@ public class Article implements Serializable {
 
     public Article() {
         articleID = "";
+        title="";
         articleContent = "";
         imgUrl = "";
         postTime = null;
@@ -34,8 +36,9 @@ public class Article implements Serializable {
         type = null;
     }
 
-    public Article(String articleID, String articleContent, String imgUrl, String postTime, int ArticleStatus, Item item, Member member, ArticleType type) {
+    public Article(String articleID, String title, String articleContent, String imgUrl, String postTime, int ArticleStatus, Item item, Member member, ArticleType type) {
         this.articleID = articleID;
+        this.title = title;
         this.articleContent = articleContent;
         this.imgUrl = imgUrl;
         this.postTime = postTime;
@@ -109,4 +112,13 @@ public class Article implements Serializable {
         this.type = type;
     }
 
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+    
+    
 }
