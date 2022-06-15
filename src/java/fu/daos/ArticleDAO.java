@@ -648,8 +648,7 @@ public class ArticleDAO {
                     ArticleTypeDAO adao = new ArticleTypeDAO();
                     ArticleType a = adao.getArticleTypeByID(articleTypeId);
                     Article art = new Article(articleId, title, articleContent, articleURL, articleTime, articleStatus, i, m, a);
-                    lb.add(art);
-                    System.out.println(art.getArticleID());
+                    lb.add(art);                    
                 }
             }
         } finally {

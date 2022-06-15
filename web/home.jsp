@@ -79,7 +79,7 @@
                     <a class="nav-link" href="ListPostServlet"><i class="fa fa-home fa-lg"></i>Home </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="PersonalServlet"><span class="fa-solid fa-user"></span> Personal Page</a>
+                    <a class="nav-link" href="PersonalServlet?uId=${userdata.memberID}"><span class="fa-solid fa-user"></span> Personal Page</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="./"><span class="fa-regular fa-thumbs-up"></span>

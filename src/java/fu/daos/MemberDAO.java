@@ -130,4 +130,23 @@ public class MemberDAO {
         }
         return listmem;
     }
+    public boolean updateProfileMember(Member m, String profile) throws SQLException, Exception {
+        try {
+            con = DBUtils.makeConnection();
+            if (con != null) {
+                String sql = "Update Member Set ProfileInfo = ? Where MemberID = ? ";
+                stm = con.prepareStatement(sql);
+                stm.setString(1, profile);
+                stm.setString(2, m.getMemberID());                
+                int row = stm.executeUpdate();
+                if (row > 0) {
+                    return true;
+                }
+            }
+        } finally {
+            closeConnection();
+        }
+        return false;
+    }
+
 }

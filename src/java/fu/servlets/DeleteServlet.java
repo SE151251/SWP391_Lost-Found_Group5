@@ -37,25 +37,26 @@ public class DeleteServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try {
-           HttpSession session = request.getSession(false);
-        if(session==null){
-               request.setAttribute("errormessage", "Please login!");
-               request.getRequestDispatcher("login.jsp").forward(request, response); 
+            HttpSession session = request.getSession(false);
+            if (session == null) {
+                request.setAttribute("errormessage", "Please login!");
+                request.getRequestDispatcher("login.jsp").forward(request, response);
             }
-        if (session.getAttribute("userdata") != null) { // check login
-            Member member= (Member)session.getAttribute("userdata");            
-                 String aId = request.getParameter("aId");
-                  ArticleDAO aDao = new ArticleDAO();
-                  aDao.deleteArticle(aId);
-                  request.getRequestDispatcher("ListPostServlet").forward(request, response);
-        } else {
-            request.setAttribute("errormessage", "Please login!");
-            request.getRequestDispatcher("login.jsp").forward(request, response);
+            if (session.getAttribute("userdata") != null) { // check login
+                Member member = (Member) session.getAttribute("userdata");
+                String aId = request.getParameter("aId");
+                ArticleDAO aDao = new ArticleDAO();
+                aDao.deleteArticle(aId);
+                request.getRequestDispatcher("ListPostServlet").forward(request, response);
+            } else {
+                request.setAttribute("errormessage", "Please login!");
+                request.getRequestDispatcher("login.jsp").forward(request, response);
+            }
+
+        } catch (Exception e) {
+            log("ERROR at DeleteServlet: " + e.getMessage());
         }
-        
-    } catch (Exception e) {
-                log("ERROR at DeleteServlet: " + e.getMessage());
-            }}
+    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**

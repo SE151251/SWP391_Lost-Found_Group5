@@ -119,7 +119,7 @@
                 </div>
             </div>
             <div style="margin-left: 3%;width: 73%;display: inline-block;" class="tab-content">
-                <div class="row tab-post-pane active">
+                <div class=" tab-post-pane active">
                     <c:forEach var="dt" items="${articlesFind}" >
             <div class="pane col-md-2">
                 <div class="pane-img">
@@ -139,7 +139,7 @@
             </div>
             </c:forEach>
                 </div>
-                <div class="row tab-post-pane">
+                <div class=" tab-post-pane">
                     <c:forEach var="dt" items="${articlesReturn}" >
             <div class="pane col-md-2">
                 <div class="pane-img">
@@ -159,7 +159,7 @@
             </div>
             </c:forEach>
                 </div>
-                <div class="row tab-post-pane">
+                <div class=" tab-post-pane">
                     <c:forEach var="dt" items="${articlesShare}" >
             <div class="pane col-md-2">
                 <div class="pane-img">
@@ -195,7 +195,15 @@
                       <tr class="pane-content--info">
                         <td style="text-align: left; padding-right: 50px; padding-top: 30px;">User Profile: </td>
                         <td style="text-align: left; padding-top: 30px;">
-                            <textarea rows="9" cols="70" name="txtContent">${userdata.memberProfile}</textarea>
+                           
+                            <form action="ProfileServlet">               
+                                <textarea rows="9" cols="70" name="txtProfile" minlength="20" maxlength="4000"> ${userdata.memberProfile}</textarea>
+                                <input type="hidden" name="uId" value="${userdata.memberID}"/>
+                                <br/>    
+                            <font color="red"> ${errorProfile} </font>
+                            <br/>
+                            <input type="submit" value="Edit Profile"/>
+                            </form>
                         </td>
                     </tr>
                

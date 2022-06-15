@@ -7,6 +7,7 @@ package fu.servlets;
 
 import fu.daos.ArticleDAO;
 import fu.daos.ItemTypeDAO;
+import fu.daos.MemberDAO;
 import fu.entities.Article;
 import fu.entities.Item;
 import fu.entities.Member;
@@ -33,25 +34,29 @@ public class PersonalServlet extends HttpServlet {
             HttpSession session = request.getSession(false);
             if (session == null) {
                 request.setAttribute("errormessage", "Please login!");
-                request.getRequestDispatcher("/WEB-INF/view/login.jsp").forward(request, response);
+                request.getRequestDispatcher("login.jsp").forward(request, response);
             }
             if (session.getAttribute("userdata") != null) {
                 Member memberLogin = (Member) session.getAttribute("userdata");
+                String uId = request.getParameter("uId");
+                MemberDAO mdao = new MemberDAO();
+                Member memDetail = mdao.find(uId);
+                memberLogin.setMemberProfile(memDetail.getMemberProfile());              
                 ArticleDAO adao = new ArticleDAO();
-                List<Article> listArtsFind = adao.getAllArticlesFindByMemberID(memberLogin);
-                request.setAttribute("articlesFind", listArtsFind); 
-                List<Article> listArtsReturn = adao.getAllArticlesReturnByMemberID(memberLogin);
-                request.setAttribute("articlesReturn", listArtsReturn); 
-                List<Article> listArtsShare = adao.getAllArticlesShareByMemberID(memberLogin);
-                request.setAttribute("articlesShare", listArtsShare);                               
-                } else {
+                List<Article> listArtsFind = adao.getAllArticlesFindByMemberID(memDetail);
+                request.setAttribute("articlesFind", listArtsFind);
+                List<Article> listArtsReturn = adao.getAllArticlesReturnByMemberID(memDetail);
+                request.setAttribute("articlesReturn", listArtsReturn);
+                List<Article> listArtsShare = adao.getAllArticlesShareByMemberID(memDetail);
+                request.setAttribute("articlesShare", listArtsShare);
+                request.getRequestDispatcher("personal.jsp").forward(request, response);
+                return;
+            } else {
                 request.setAttribute("errormessage", "Please login!");
                 request.getRequestDispatcher("login.jsp").forward(request, response);
             }
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
-        } finally {
-            request.getRequestDispatcher("personal.jsp").forward(request, response);
         }
     }
 

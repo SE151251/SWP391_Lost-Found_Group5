@@ -103,7 +103,7 @@ public class CommentDAO {
         return false;
     }
 
-    public boolean deleteArticle(String aId, String mId)
+    public boolean deleteComment(String aId, String mId)
             throws Exception, SQLException {
         Connection con = null;
         PreparedStatement stm = null;

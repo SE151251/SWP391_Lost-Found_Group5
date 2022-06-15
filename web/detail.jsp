@@ -67,7 +67,7 @@
                     <a class="nav-link" href="ListPostServlet"><i class="fa fa-home fa-lg"></i>Home </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#"><span class="fa-solid fa-user"></span> Personal Page</a>
+                    <a class="nav-link" href="PersonalServlet"><span class="fa-solid fa-user"></span> Personal Page</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="./"><span class="fa-regular fa-thumbs-up"></span>
@@ -84,9 +84,9 @@
     <div style="margin-left: 20px" class="status-field-container write-post-container">
         <div class="user-profile-box">
             <div class="user-profile">                
-                <img src="${memberPost.picture}" alt="">
+                <img src="${postDetail.member.picture}" alt="">
                 <div>
-                    <p><a href="PersonalServlet?uId=${userdata.memberID}">${userdata.memberName}</a></p>
+                    <p><a href="PersonalServlet?uId=${postDetail.member.memberID}">${postDetail.member.memberName}</a></p>
                     <small>${postDetail.postTime}</small>
                 </div>
             </div>

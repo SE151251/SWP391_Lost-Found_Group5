@@ -338,13 +338,15 @@ img{
   border: solid 1px orange;
 }
 .tabs-profile--post{
-  transform: translateY(-82.9%);
   min-height: 730px;
   display: inline-flex;
   width: 291px;
   flex-direction: column;
   align-items: flex-start;
+  transform: translateY(-105%);
 }
+
+
 .profile-img{
   display: inline-block;
   border: solid 1px orange;

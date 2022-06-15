@@ -5,12 +5,10 @@
  */
 package fu.servlets;
 
-import fu.daos.ArticleDAO;
-import fu.daos.CommentDAO;
 import fu.daos.MemberDAO;
-import fu.entities.Article;
 import fu.entities.Member;
 import java.io.IOException;
+import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -22,35 +20,47 @@ import javax.servlet.http.HttpSession;
  *
  * @author LENOVO
  */
-@WebServlet(name = "ViewDetailSevlet", urlPatterns = {"/ViewDetailServlet"})
-public class ViewDetailServlet extends HttpServlet {
+@WebServlet(name = "ProfileServlet", urlPatterns = {"/ProfileServlet"})
+public class ProfileServlet extends HttpServlet {
 
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {           
+        try {
             HttpSession session = request.getSession(false);
             if (session == null) {
                 request.setAttribute("errormessage", "Please login!");
                 request.getRequestDispatcher("login.jsp").forward(request, response);
             }
-            if (session.getAttribute("userdata") != null) {
+            if (session.getAttribute("userdata") != null) { // check login
                 Member member = (Member) session.getAttribute("userdata");
-                String aId = request.getParameter("aId");
-                ArticleDAO aDao = new ArticleDAO();
-                Article a = aDao.find(aId);
-                request.setAttribute("postDetail", a);
-                CommentDAO cdao = new CommentDAO();
-                request.setAttribute("listCmt", cdao.getAllCommentsByArticles(a));
+                String mProfile = request.getParameter("txtProfile");               
+                if(mProfile.trim().isEmpty() || mProfile.trim().length()>4000 || mProfile.trim().length()<20){
+                request.setAttribute("errorProfile", "Your profile must be 20 - 4000 characters");
+                request.getRequestDispatcher("PersonalServlet").forward(request, response);  
+                return;
+                }else{
                 MemberDAO mdao = new MemberDAO();
-                request.getRequestDispatcher("detail.jsp").forward(request, response);
-
+                mdao.updateProfileMember(member, mProfile);             
+                    System.out.println(member.getMemberProfile());
+                request.getRequestDispatcher("PersonalServlet?uId=" +member.getMemberID()).forward(request, response);
+                return;
+                }
             } else {
                 request.setAttribute("errormessage", "Please login!");
                 request.getRequestDispatcher("login.jsp").forward(request, response);
             }
+
         } catch (Exception e) {
-            e.printStackTrace();
-            log("ERROR at CreateFormServlet: " + e.getMessage());
+            log("ERROR at ProfileServlet: " + e.getMessage());
         }
     }
 
