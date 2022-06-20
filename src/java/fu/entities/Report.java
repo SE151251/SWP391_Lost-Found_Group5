@@ -12,58 +12,65 @@ import java.time.LocalDateTime;
  *
  * @author Admin
  */
-public class Report implements Serializable{
-    private Article articleID;
-    private Member memberID;
-    private String reportConntet;
-    private LocalDateTime reportTime;
+public class Report implements Serializable {
+
+    private String reportID;
+    private String reportContent;
+    private String reportTime;
+    private String confirmTime;
     private int status;
+    private Article article;
+    private Member member;
 
     public Report() {
-        articleID=null;
-        memberID=null;
-        reportConntet="";
-        reportTime=null;
-        status=0;
+        reportID = "";
+        reportContent = "";
+        reportTime = "";
+        confirmTime = "";
+        status = 1;
+        article = null;
+        member = null;
     }
 
-    public Report(Article articleID, Member memberID, String reportConntet, LocalDateTime reportTime, int status) {
-        this.articleID = articleID;
-        this.memberID = memberID;
-        this.reportConntet = reportConntet;
+    public Report(String reportID, String reportConntet, String reportTime, String confirmTime, int status, Article article, Member member) {
+        this.reportID = reportID;
+        this.reportContent = reportConntet;
         this.reportTime = reportTime;
+        this.confirmTime = confirmTime;
         this.status = status;
+        this.article = article;
+        this.member = member;
     }
 
-    public Article getArticleID() {
-        return articleID;
+    public String getConfirmTime() {
+        return confirmTime;
     }
 
-    public void setArticleID(Article articleID) {
-        this.articleID = articleID;
+    public void setConfirmTime(String confirmTime) {
+        this.confirmTime = confirmTime;
     }
 
-    public Member getMemberID() {
-        return memberID;
+    public String getReportID() {
+        return reportID;
     }
 
-    public void setMemberID(Member memberID) {
-        this.memberID = memberID;
+    public void setReportID(String reportID) {
+        this.reportID = reportID;
     }
 
-    public String getReportConntet() {
-        return reportConntet;
+    public String getReportContent() {
+        return reportContent;
     }
 
-    public void setReportConntet(String reportConntet) {
-        this.reportConntet = reportConntet;
+    public void setReportContent(String reportContent) {
+        this.reportContent = reportContent;
     }
 
-    public LocalDateTime getReportTime() {
+    public String getReportTime() {
         return reportTime;
     }
 
-    public void setReportTime(LocalDateTime reportTime) {
+    public void setReportTime(String reportTime) {
         this.reportTime = reportTime;
     }
 
@@ -74,5 +81,21 @@ public class Report implements Serializable{
     public void setStatus(int status) {
         this.status = status;
     }
-   
+
+    public Article getArticle() {
+        return article;
+    }
+
+    public void setArticle(Article article) {
+        this.article = article;
+    }
+
+    public Member getMember() {
+        return member;
+    }
+
+    public void setMember(Member member) {
+        this.member = member;
+    }
+
 }

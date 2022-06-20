@@ -95,9 +95,6 @@
   word-break: break-word;
 }
 
-.avatar_comment {
-  display: block;
-}
 
 .avatar_comment img {
   height: 48px;
@@ -117,6 +114,7 @@
   font-family: Helvetica, Arial, sans-serif;
   font-size: 16px;
   padding: 0;
+  margin-left: -50px;
 }
 
 .box_comment textarea {
@@ -547,4 +545,34 @@ img{
 }
 #postform{
   min-height: 730px;
+}
+ img{
+    width:5%;
+}
+.user-comment{
+    display: flex;
+    flex-direction:row
+}
+
+
+.title_comment{
+  margin-left: 12px;
+   
+  
+}
+.comment-content{
+    margin-left: 7%;
+}
+.comment-content .content{
+    margin-left: 25px;
+}
+.title_comment p{
+    font-weight: 600;
+  white-space: nowrap;
+  color: #365899;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 14px;
+  line-height: 1.358;
+  margin:0;
 }

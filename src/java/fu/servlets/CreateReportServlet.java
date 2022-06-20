@@ -10,9 +10,12 @@ import fu.daos.CommentDAO;
 import fu.daos.MemberDAO;
 import fu.daos.ReportDAO;
 import fu.entities.Article;
+import fu.entities.Comment;
 import fu.entities.Member;
 import fu.entities.Report;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.util.Random;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -24,44 +27,57 @@ import javax.servlet.http.HttpSession;
  *
  * @author LENOVO
  */
-@WebServlet(name = "ViewDetailSevlet", urlPatterns = {"/ViewDetailServlet"})
-public class ViewDetailServlet extends HttpServlet {
+@WebServlet(name = "CreateReportServlet", urlPatterns = {"/CreateReportServlet"})
+public class CreateReportServlet extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {           
+        try {
             HttpSession session = request.getSession(false);
             if (session == null) {
                 request.setAttribute("errormessage", "Please login!");
                 request.getRequestDispatcher("login.jsp").forward(request, response);
-            }
-            if (session.getAttribute("userdata") != null) {
+            }else
+            if (session.getAttribute("userdata") != null) { // check login
                 Member member = (Member) session.getAttribute("userdata");
-                String aId = request.getParameter("aId");
-                String memRpId = request.getParameter("memReportID");
+                String rContent = request.getParameter("txtReport");
+                String memberReportId = request.getParameter("memberReport");
+                String aId = request.getParameter("aId");                
+                if(rContent.trim().isEmpty() || rContent.trim().length()>200 ){
+                request.setAttribute("errorReport", "Your report must be from 1 to 200 characters");
+                request.getRequestDispatcher("ViewDetailServlet?aId="+aId).forward(request, response);  
+                return;
+                }else{
+                String newId;
                 ArticleDAO aDao = new ArticleDAO();
-                Article a = aDao.find(aId);
-                request.setAttribute("postDetail", a);
-                CommentDAO cdao = new CommentDAO();
-                request.setAttribute("listCmt", cdao.getAllCommentsByArticles(a));
+                Article art = aDao.find(aId);
                 MemberDAO mdao = new MemberDAO();
+                Member memR = mdao.find(memberReportId);
                 ReportDAO rdao = new ReportDAO();
-                Report r = rdao.checkReport(aId, member.getMemberID());
-                if(memRpId != null){
-                Report rView = rdao.checkReport(aId, memRpId);
-                request.setAttribute("viewReport", rView);
+                do {
+                        newId = "";
+                        Random generator = new Random();
+                        for (int x = 0; x < 10; x++) {
+                            int a = generator.nextInt() % 10;
+                            if (a < 0) {
+                                a = -a;
+                            }
+                            newId = newId.concat(Integer.toString(a));
+                        }
+                    } while (rdao.getReportById(newId) != null);
+                Report r = new Report(newId, rContent, LocalDateTime.now().toString(), null, 1, art, member);
+                rdao.addNewReport(r);
+                aDao.closeArticle(aId);
+                request.getRequestDispatcher("ListPostServlet").forward(request, response);
+                return;
                 }
-                request.setAttribute("checkReport", r);
-                
-                request.getRequestDispatcher("detail.jsp").forward(request, response);
-
             } else {
                 request.setAttribute("errormessage", "Please login!");
                 request.getRequestDispatcher("login.jsp").forward(request, response);
             }
+
         } catch (Exception e) {
-            e.printStackTrace();
-            log("ERROR at ViewDetailServlet: " + e.getMessage());
+            log("ERROR at CreateCommentServlet: " + e.getMessage());
         }
     }
 

@@ -6,13 +6,15 @@
 package fu.servlets;
 
 import fu.daos.ArticleDAO;
-import fu.daos.CommentDAO;
-import fu.daos.MemberDAO;
+import fu.daos.ItemTypeDAO;
 import fu.daos.ReportDAO;
 import fu.entities.Article;
+import fu.entities.Item;
 import fu.entities.Member;
 import fu.entities.Report;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -24,44 +26,46 @@ import javax.servlet.http.HttpSession;
  *
  * @author LENOVO
  */
-@WebServlet(name = "ViewDetailSevlet", urlPatterns = {"/ViewDetailServlet"})
-public class ViewDetailServlet extends HttpServlet {
+@WebServlet(name = "AdminListServlet", urlPatterns = {"/AdminListServlet"})
+public class AdminListServlet extends HttpServlet {
 
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {           
+        try {
             HttpSession session = request.getSession(false);
             if (session == null) {
                 request.setAttribute("errormessage", "Please login!");
                 request.getRequestDispatcher("login.jsp").forward(request, response);
-            }
-            if (session.getAttribute("userdata") != null) {
-                Member member = (Member) session.getAttribute("userdata");
-                String aId = request.getParameter("aId");
-                String memRpId = request.getParameter("memReportID");
-                ArticleDAO aDao = new ArticleDAO();
-                Article a = aDao.find(aId);
-                request.setAttribute("postDetail", a);
-                CommentDAO cdao = new CommentDAO();
-                request.setAttribute("listCmt", cdao.getAllCommentsByArticles(a));
-                MemberDAO mdao = new MemberDAO();
+            }else if (session.getAttribute("userdata") != null) {
+                Member memberLogin = (Member) session.getAttribute("userdata");
                 ReportDAO rdao = new ReportDAO();
-                Report r = rdao.checkReport(aId, member.getMemberID());
-                if(memRpId != null){
-                Report rView = rdao.checkReport(aId, memRpId);
-                request.setAttribute("viewReport", rView);
-                }
-                request.setAttribute("checkReport", r);
-                
-                request.getRequestDispatcher("detail.jsp").forward(request, response);
-
+                List<Report> listReportsNotConfirm = rdao.getAllReportsNotComfirm();
+                request.setAttribute("listReportsNotConfirm", listReportsNotConfirm);
+                List<Report> listReportsConfirmed = rdao.getAllReportsComfirmed();
+                request.setAttribute("listReportsConfirmed", listReportsConfirmed);
+                ArticleDAO adao = new ArticleDAO();
+                List<Article> listArtsNotice = adao.getAllArticlesNotice();
+                request.setAttribute("articlesNotice", listArtsNotice);
+                ItemTypeDAO itDao = new ItemTypeDAO();
+                List<Item> listI = itDao.getAllItems();
+                request.setAttribute("ListItemType", listI);
             } else {
                 request.setAttribute("errormessage", "Please login!");
                 request.getRequestDispatcher("login.jsp").forward(request, response);
             }
         } catch (Exception e) {
             e.printStackTrace();
-            log("ERROR at ViewDetailServlet: " + e.getMessage());
+        } finally {
+            request.getRequestDispatcher("admin.jsp").forward(request, response);
         }
     }
 

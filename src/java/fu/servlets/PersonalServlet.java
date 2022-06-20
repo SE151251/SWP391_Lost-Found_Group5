@@ -6,13 +6,10 @@
 package fu.servlets;
 
 import fu.daos.ArticleDAO;
-import fu.daos.ItemTypeDAO;
 import fu.daos.MemberDAO;
 import fu.entities.Article;
-import fu.entities.Item;
 import fu.entities.Member;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -35,13 +32,16 @@ public class PersonalServlet extends HttpServlet {
             if (session == null) {
                 request.setAttribute("errormessage", "Please login!");
                 request.getRequestDispatcher("login.jsp").forward(request, response);
+                return;
             }
             if (session.getAttribute("userdata") != null) {
                 Member memberLogin = (Member) session.getAttribute("userdata");
                 String uId = request.getParameter("uId");
                 MemberDAO mdao = new MemberDAO();
                 Member memDetail = mdao.find(uId);
-                memberLogin.setMemberProfile(memDetail.getMemberProfile());              
+                if(memberLogin.getMemberID().equals(memDetail.getMemberID())){
+                memberLogin.setMemberProfile(memDetail.getMemberProfile());  
+                }
                 ArticleDAO adao = new ArticleDAO();
                 List<Article> listArtsFind = adao.getAllArticlesFindByMemberID(memDetail);
                 request.setAttribute("articlesFind", listArtsFind);
@@ -49,6 +49,7 @@ public class PersonalServlet extends HttpServlet {
                 request.setAttribute("articlesReturn", listArtsReturn);
                 List<Article> listArtsShare = adao.getAllArticlesShareByMemberID(memDetail);
                 request.setAttribute("articlesShare", listArtsShare);
+                request.setAttribute("memberInfo", memDetail);
                 request.getRequestDispatcher("personal.jsp").forward(request, response);
                 return;
             } else {

@@ -6,7 +6,6 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
 <%-- <!DOCTYPE html>
 <html>
     <head>
@@ -85,6 +84,9 @@
                     <a class="nav-link" href="./"><span class="fa-regular fa-thumbs-up"></span>
                         Liked list</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="AdminListServlet"><i class="fa fa-home fa-lg"></i>Admin Page</a>
+                </li>
                 <li class="nav-item active">
                     <a class="nav-link" href="LogoutServlet"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</a>
                 </li>
@@ -142,7 +144,7 @@
                 </div>
                 <div class="pane-content">
                     <p style="font-size: 12px">Thời gian: <c:out value="${dt.postTime}"/></p>                 
-                    <p style="font-size: 15px"><c:out value="${dt.title}"/></p>
+                    <p style="font-size: 15px; font-weight: bold"><c:out value="${dt.title}"/></p>
                     <a href="SearchServlet?txtItem=${dt.item.itemID}">    <p><span style="padding: 5px 10px 5px 10px" class="badge badge-pill badge-primary"><c:out value="${dt.item.itemName}"/></span></p>   </a>                                 
                         <a href="ViewDetailServlet?aId=${dt.articleID}">View more >></a>                   
                     <font-awesome-icon icon="fa-solid fa-phone" />
@@ -162,7 +164,7 @@
                 </div>
                 <div class="pane-content">
                     <p style="font-size: 12px">Thời gian: <c:out value="${dt.postTime}"/></p>
-                    
+                    <p style="font-size: 15px; font-weight: bold"><c:out value="${dt.title}"/></p>
                     <a href="SearchServlet?txtItem=${dt.item.itemID}">    <p><span style="padding: 5px 10px 5px 10px" class="badge badge-pill badge-primary"><c:out value="${dt.item.itemName}"/></span></p>   </a>                                        
                      <a href="ViewDetailServlet?aId=${dt.articleID}">View more >></a> 
                     <font-awesome-icon icon="fa-solid fa-phone" />
@@ -183,7 +185,7 @@
                 </div>
                 <div class="pane-content">
                     <p style="font-size: 12px">Thời gian: <c:out value="${dt.postTime}"/></p>
-                                                                            
+                    <p style="font-size: 15px; font-weight: bold"><c:out value="${dt.title}"/></p>                                                        
                      <a href="ViewDetailServlet?aId=${dt.articleID}">View more >></a> 
                     <font-awesome-icon icon="fa-solid fa-phone" />
 

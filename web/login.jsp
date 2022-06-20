@@ -78,9 +78,12 @@
                     <div class="hero-text">
                       <h3 class="title"> FPT Lost and Found</h3>
                       <a class="btn btn-primary" href="https://accounts.google.com/o/oauth2/auth?scope=email profile&redirect_uri=http://localhost:8080/SWP39_LostAndFound/login-google&response_type=code
-    &client_id=287706363103-nelsjcm2sdr3ruldha94fink89tk87tg.apps.googleusercontent.com&approval_prompt=force"><span> <i class="fa-brands fa-google text-white btn-logo"></i>Login</span></a><br>
-                      <br/><font style="padding: 2px; font-size: 20px; font-weight: bold; background-color: white" color="red" ><c:out value="${errormessage}"/> </font>          
-                    </div>
+    &client_id=287706363103-nelsjcm2sdr3ruldha94fink89tk87tg.apps.googleusercontent.com&approval_prompt=force"><span><i class="fa-brands fa-google text-white btn-logo"></i>Login</span></a><br>
+                      <br/>
+                      <c:if test="${not empty errormessage}">
+                      <font style="padding: 2px; font-size: 20px; font-weight: bold; background-color: white" color="red" ><c:out value="${errormessage}"/> </font>          
+                      </c:if>
+                      </div>
                 
             </div>
             <div class="col-md-4"></div>

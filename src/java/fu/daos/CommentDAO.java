@@ -7,16 +7,13 @@ package fu.daos;
 
 import fu.dbhelper.DBUtils;
 import fu.entities.Article;
-import fu.entities.ArticleType;
 import fu.entities.Comment;
-import fu.entities.Item;
 import fu.entities.Member;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  *
@@ -25,38 +22,30 @@ import java.util.List;
 public class CommentDAO {
 
 
-    public ArrayList<Article> getAllCommentsByArticles(Article a) throws ClassNotFoundException, SQLException, Exception {
+    public ArrayList<Comment> getAllCommentsByArticles(Article a) throws ClassNotFoundException, SQLException, Exception {
         Connection con = null;
         PreparedStatement stm = null;
         ResultSet rs = null;
-        ArrayList<Article> lb = new ArrayList<>();
+        ArrayList<Comment> lb = new ArrayList<>();
         try {
             con = DBUtils.makeConnection();
             if (con != null) {
                 String sql = "Select * From Comment "
-                        + "Where ArticleStatus = 1 and ArticleID Like ? "
-                        + "Order By PostTime DESC";
+                        + "Where ArticleID Like ? and CommentStatus = 1 "
+                        + "Order By CommentTime ASC";
                 stm = con.prepareStatement(sql);
                 stm.setString(1, a.getArticleID());
                 rs = stm.executeQuery();
                 while (rs.next()) {
-                    String articleId = rs.getString("ArticleID");
-                    String title = rs.getString("ArticleTitle");
-                    String articleContent = rs.getString("ArticleContent");
-                    String articleURL = rs.getString("ImgURL");
-                    String articleTime = rs.getString("PostTime");                    
-                    int articleStatus = rs.getInt("ArticleStatus");
-                    String memberId = rs.getString("MemberID");
-                    int articleTypeId = rs.getInt("ArticleTypeID");
-                    int itemId = rs.getInt("ItemID");
+                    String cmtId = rs.getString("CommentID");                    
+                    String memPostCmt = rs.getString("MemberID");
+                    String cmtContent = rs.getString("CommentContent");
+                    String cmtTime = rs.getString("CommentTime");                    
+                    int cmtStatus = rs.getInt("CommentStatus");
                     MemberDAO mdao = new MemberDAO();
-                    Member m = mdao.find(memberId);
-                    ItemTypeDAO idao = new ItemTypeDAO();
-                    Item i = idao.getItemByID(itemId);
-                    ArticleTypeDAO adao = new ArticleTypeDAO();
-                    ArticleType at = adao.getArticleTypeByID(articleTypeId);
-                    Article art = new Article(articleId, title, articleContent, articleURL, articleTime, articleStatus, i, m, at);
-                    lb.add(art);
+                    Member m = mdao.find(memPostCmt);      
+                    Comment c = new Comment(cmtId, a, m, cmtContent, cmtTime, cmtStatus);
+                    lb.add(c);
                 }
             }
         } finally {
@@ -82,11 +71,12 @@ public class CommentDAO {
                 String sql = "INSERT INTO Comment "
                         + "VALUES (?, ?, ?, ?, ?, ?)";
                 stm = con.prepareStatement(sql);
-                stm.setString(1, b.getArticle().getArticleID());
-                stm.setString(2, b.getMember().getMemberID());
-                stm.setString(3, b.getCommentContent());
-                stm.setString(4, b.getCommentTime().toString());
-                stm.setInt(5, 1);               
+                stm.setString(1, b.getCommentId());
+                stm.setString(2, b.getArticle().getArticleID());
+                stm.setString(3, b.getMember().getMemberID());
+                stm.setString(4, b.getCommentContent());
+                stm.setString(5, b.getCommentTime());
+                stm.setInt(6, 1);               
                 int row = stm.executeUpdate();
                 if (row > 0) {
                     return true;
@@ -131,4 +121,44 @@ public class CommentDAO {
         }
         return false;
     }
+    public Comment getCommentsById(String cId) throws ClassNotFoundException, SQLException, Exception {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        Comment c = null;
+        try {
+            con = DBUtils.makeConnection();
+            if (con != null) {
+                String sql = "Select * From Comment "
+                        + "Where CommentID Like ? ";                  
+                stm = con.prepareStatement(sql);
+                stm.setString(1, cId);
+                rs = stm.executeQuery();
+                while (rs.next()) {
+                    String cmtId = rs.getString("CommentID");  
+                    String aId = rs.getString("ArticleID");
+                    String memPostCmt = rs.getString("MemberID");
+                    String cmtContent = rs.getString("CommentContent");
+                    String cmtTime = rs.getString("CommentTime");                    
+                    int cmtStatus = rs.getInt("CommentStatus");
+                    MemberDAO mdao = new MemberDAO();
+                    Member m = mdao.find(memPostCmt);   
+                    ArticleDAO adao = new ArticleDAO();
+                    Article art = adao.find(aId);
+                    c = new Comment(cmtId, art, m, cmtContent, cmtTime, cmtStatus);                   
+                }
+            }
+        } finally {
+            if (rs != null) {
+                rs.close();
+            }
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return c;
+    }    
 }

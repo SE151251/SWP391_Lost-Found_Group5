@@ -19,7 +19,7 @@ public class Article implements Serializable {
     private String articleContent;
     private String imgUrl;
     private String postTime;
-    private int ArticleStatus;
+    private int articleStatus;
     private Item item;
     private Member member;
     private ArticleType type;
@@ -30,19 +30,19 @@ public class Article implements Serializable {
         articleContent = "";
         imgUrl = "";
         postTime = null;
-        ArticleStatus = 1;
+        articleStatus = 1;
         item = null;
         member = null;
         type = null;
     }
 
-    public Article(String articleID, String title, String articleContent, String imgUrl, String postTime, int ArticleStatus, Item item, Member member, ArticleType type) {
+    public Article(String articleID, String title, String articleContent, String imgUrl, String postTime, int articleStatus, Item item, Member member, ArticleType type) {
         this.articleID = articleID;
         this.title = title;
         this.articleContent = articleContent;
         this.imgUrl = imgUrl;
         this.postTime = postTime;
-        this.ArticleStatus = ArticleStatus;
+        this.articleStatus = articleStatus;
         this.item = item;
         this.member = member;
         this.type = type;
@@ -81,11 +81,11 @@ public class Article implements Serializable {
     }
 
     public int getArticleStatus() {
-        return ArticleStatus;
+        return articleStatus;
     }
 
-    public void setArticleStatus(int ArticleStatus) {
-        this.ArticleStatus = ArticleStatus;
+    public void setArticleStatus(int articleStatus) {
+        this.articleStatus = articleStatus;
     }
 
     public Item getItem() {

@@ -179,7 +179,7 @@
                             <td style="font-size: 20px">Nội dung:</td>
                             <td style=" padding-bottom: 20px">
                             <%--    <input style="width: 500px; height: 100px" type="text" name="txtContent" value="${content}" --%>
-                                <textarea rows="9" cols="70" name="txtContent"> <c:out value="${content}"/></textarea>
+                                <textarea rows="9" cols="70" name="txtContent"><c:out value="${content}"/></textarea>
                                 <font color="red"> ${contentError} </font>
                             </td>
 			</tr>   
@@ -212,7 +212,7 @@
                     <td><input type="file" name="photo"/><font color="red"> ${errorURL} </font></td>               
                 </tr>
                 </c:if>
-                <c:if test="${action eq 'update'}">         
+    <%--            <c:if test="${action eq 'update'}">         
                 <tr>
                     <td style="font-size: 20px">Article image: </td>
                     <td>
@@ -220,6 +220,19 @@
                             <img style="width: 100%; box-sizing: content-box" src="images/${postURL}" />
                         </div>
                     </td>               
+                </tr>
+                </c:if> --%>
+                <c:if test="${action eq 'update'}">         
+                <tr>
+                   <td style="font-size: 20px; padding-bottom: 20px">Trạng thái bài viết:</td>
+                    <td style=" padding-bottom: 20px">
+                         <select style="width: 250px; height: 40px; font-size: 20px; text-align: center" name="txtStatus" >                                                             
+                                <option <c:if test="${aStatus eq '0'}"> selected </c:if>
+                                value="0">In Active</option>
+                                <option <c:if test="${aStatus eq '1'}">selected </c:if>
+                                                                             value="1">Active</option>                        
+                         </select> 
+                    </td>              
                 </tr>
                 </c:if>
                  <tr>

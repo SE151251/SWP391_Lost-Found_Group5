@@ -148,5 +148,59 @@ public class MemberDAO {
         }
         return false;
     }
+    
+    public boolean warningMember(Member m) throws SQLException, Exception {
+        try {
+            con = DBUtils.makeConnection();
+            if (con != null) {
+                String sql = "Update Member Set CountTime = ? Where MemberID = ? ";
+                stm = con.prepareStatement(sql);
+                stm.setInt(1, m.getMemberCount());
+                stm.setString(2, m.getMemberID());                
+                int row = stm.executeUpdate();
+                if (row > 0) {
+                    return true;
+                }
+            }
+        } finally {
+            closeConnection();
+        }
+        return false;
+    }
+    
+      public boolean banMember(Member m) throws SQLException, Exception {
+        try {
+            con = DBUtils.makeConnection();
+            if (con != null) {
+                String sql = "Update Member Set MemberStatus = 0 Where MemberID = ? ";
+                stm = con.prepareStatement(sql);
+                stm.setString(1, m.getMemberID());                
+                int row = stm.executeUpdate();
+                if (row > 0) {
+                    return true;
+                }
+            }
+        } finally {
+            closeConnection();
+        }
+        return false;
+    }
+      public boolean unbanMember(Member m) throws SQLException, Exception {
+        try {
+            con = DBUtils.makeConnection();
+            if (con != null) {
+                String sql = "Update Member Set MemberStatus = 1 Where MemberID = ? ";
+                stm = con.prepareStatement(sql);
+                stm.setString(1, m.getMemberID());                
+                int row = stm.executeUpdate();
+                if (row > 0) {
+                    return true;
+                }
+            }
+        } finally {
+            closeConnection();
+        }
+        return false;
+    }
 
 }

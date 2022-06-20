@@ -7,7 +7,6 @@ package fu.servlets;
 
 import java.io.IOException;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -16,9 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import GoogleAPI.GooglePojo;
 import GoogleAPI.GoogleUtils;
-import fu.daos.CampusDAO;
 import fu.daos.MemberDAO;
-import fu.entities.Campus;
 import fu.entities.Member;
 import javax.servlet.http.HttpSession;
 
@@ -63,7 +60,12 @@ public class LoginGoogleServlet extends HttpServlet {
                     //Nếu có rồi thì lấy data của user ra để phục vụ hiển thị trên các view khác
                     } else {
                         member = mdao.find(member.getMemberID());
-                        session.setAttribute("userdata", member);                       
+                        if(member.getStatus()==0){
+                        request.setAttribute("errormessage", "Your account has been banned!"); 
+                        uri=LOGIN_PAGE;
+                        }else{
+                        session.setAttribute("userdata", member);   
+                        }
                     }
                 }else{  // mail ko đúng form
                     uri=LOGIN_PAGE;
@@ -71,9 +73,9 @@ public class LoginGoogleServlet extends HttpServlet {
                 }
             }
         } catch (Exception e) {
-            System.out.println("error at LoginGoogleServlet");
+           System.out.println("error at LoginGoogleServlet");
            uri=LOGIN_PAGE;
-           request.setAttribute("errormessage", "Something error here!");
+           request.setAttribute("errormessage", "Something error here. Please login again!");
         } finally {
             request.getRequestDispatcher(uri).forward(request, response);
         }

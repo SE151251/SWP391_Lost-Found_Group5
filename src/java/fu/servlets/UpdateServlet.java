@@ -66,6 +66,9 @@ public class UpdateServlet extends HttpServlet {
                     contentError = "Content must be at least 20 and at most 4000 characters!";
                     valid = false;
                 }
+                // Xử lý status bài viết:
+                String aStatus = request.getParameter("txtStatus");
+                
                 // Xử lý loại đồ vật của bài viết
                 String itemId = request.getParameter("txtItem");
                 ItemTypeDAO iDao = new ItemTypeDAO();
@@ -78,7 +81,7 @@ public class UpdateServlet extends HttpServlet {
 
                 ArticleDAO aDao = new ArticleDAO();
                 if (valid) {
-                    Article a = new Article(idUpdate, titlePost.trim(), content.trim(), textURL, LocalDateTime.now().toString(), 1, i, memberLogin, at);
+                    Article a = new Article(idUpdate, titlePost.trim(), content.trim(), textURL, LocalDateTime.now().toString(), Integer.parseInt(aStatus), i, memberLogin, at);
                     aDao.updateContentArticle(a);
                     url = SUCCESS;
                 } else {
@@ -88,6 +91,7 @@ public class UpdateServlet extends HttpServlet {
                     request.setAttribute("contentError", contentError);
                     request.setAttribute("errorURL", errorURL);
                     request.setAttribute("content", content);
+                    request.setAttribute("aStatus", aStatus);
                     request.setAttribute("postURL", textURL);
                     request.setAttribute("itemId", Integer.parseInt(itemId));
                     request.setAttribute("postTypeId", Integer.parseInt(postTypeId));

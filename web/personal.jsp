@@ -86,9 +86,9 @@
 
     </header>
     <div class="profile mt-4 ml-4 p-4 ">
-        <div class="profile-img rounded-circle mt-4"><img src="${userdata.picture}" alt=""></div>
+        <div class="profile-img rounded-circle mt-4"><img src="${memberInfo.picture}" alt=""></div>
         <span class="profile-username">
-            ${userdata.memberName}
+            ${memberInfo.memberName}
             <!-- <button style="" class="btn btn-danger">
                 Edit profile
             </button> -->
@@ -186,24 +186,27 @@
                 <table style="margin-left:40px; margin-top:30px; padding: 10px;">
                     <tr class="pane-content--info">
                         <td style="text-align: left; padding-right: 50px ; padding-top: 30px;">User ID:</td>
-                        <td style="text-align: left; padding-top: 30px;">${userdata.memberID} </td>
+                        <td style="text-align: left; padding-top: 30px;">${memberInfo.memberID} </td>
                     </tr>
                      <tr class="pane-content--info">
                         <td style="text-align: left; padding-right: 50px; padding-top: 30px;">User Email: </td>
-                        <td style="text-align: left; padding-top: 30px;">${userdata.memberEmail}</td>
+                        <td style="text-align: left; padding-top: 30px;">${memberInfo.memberEmail}</td>
                     </tr>
                       <tr class="pane-content--info">
                         <td style="text-align: left; padding-right: 50px; padding-top: 30px;">User Profile: </td>
                         <td style="text-align: left; padding-top: 30px;">
-                           
-                            <form action="ProfileServlet">               
-                                <textarea rows="9" cols="70" name="txtProfile" minlength="20" maxlength="4000"> ${userdata.memberProfile}</textarea>
-                                <input type="hidden" name="uId" value="${userdata.memberID}"/>
-                                <br/>    
+                            <c:if test="${userdata.memberID eq memberInfo.memberID}">   
+                            <form action="ProfileServlet">   
+                            </c:if>                               
+                            <textarea rows="9" cols="70" name="txtProfile" minlength="20" maxlength="4000"> ${userdata.memberProfile}</textarea>
+                            <c:if test="${userdata.memberID eq memberInfo.memberID}">
+                            <input type="hidden" name="uId" value="${memberInfo.memberID}"/>
+                            <br/>    
                             <font color="red"> ${errorProfile} </font>
                             <br/>
                             <input type="submit" value="Edit Profile"/>
                             </form>
+                            </c:if>
                         </td>
                     </tr>
                

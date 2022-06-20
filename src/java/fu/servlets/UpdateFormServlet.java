@@ -53,6 +53,7 @@ public class UpdateFormServlet extends HttpServlet {
                     request.setAttribute("titlePost", a.getTitle());
                     request.setAttribute("content", a.getArticleContent());
                     request.setAttribute("postURL", a.getImgUrl());
+                    request.setAttribute("aStatus", a.getArticleStatus());
                     request.setAttribute("itemId", a.getItem().getItemID());
                     request.setAttribute("postTypeId", a.getType().getTypeID());
                     request.setAttribute("action", "update");
@@ -70,6 +71,7 @@ public class UpdateFormServlet extends HttpServlet {
                     request.setAttribute("titleError", request.getAttribute("titleError"));
                     request.setAttribute("contentError", request.getAttribute("contentError"));
                     request.setAttribute("content", request.getAttribute("content"));
+                    request.setAttribute("aStatus", request.getAttribute("aStatus"));
                     request.setAttribute("postURL", request.getAttribute("postURL"));
                     request.setAttribute("itemId", request.getAttribute("itemId"));
                     request.setAttribute("postTypeId", request.getAttribute("postTypeId"));

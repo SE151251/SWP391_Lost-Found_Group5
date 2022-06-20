@@ -13,6 +13,7 @@ import fu.entities.Comment;
 import fu.entities.Member;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.Random;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -40,17 +41,30 @@ public class CreateCommentServlet extends HttpServlet {
                 String cmtContent = request.getParameter("txtCmt");
                 String memberCmtId = request.getParameter("memberCmt");
                 String aId = request.getParameter("aId");
+                System.out.println(aId +" | "+ cmtContent+" | " +memberCmtId);
                 if(cmtContent.trim().isEmpty() || cmtContent.trim().length()>500 ){
                 request.setAttribute("errorCmt", "Your comment must be from 1 to 500 characters");
                 request.getRequestDispatcher("ViewDetailServlet?aId="+aId).forward(request, response);  
                 return;
                 }else{
+                String newId;
                 ArticleDAO aDao = new ArticleDAO();
-                Article a = aDao.find(aId);
+                Article art = aDao.find(aId);
                 MemberDAO mdao = new MemberDAO();
                 Member memCmt = mdao.find(memberCmtId);
-                Comment c = new Comment(a, memCmt, cmtContent, LocalDateTime.now(), 1);
                 CommentDAO cdao = new CommentDAO();
+                do {
+                        newId = "";
+                        Random generator = new Random();
+                        for (int x = 0; x < 10; x++) {
+                            int a = generator.nextInt() % 10;
+                            if (a < 0) {
+                                a = -a;
+                            }
+                            newId = newId.concat(Integer.toString(a));
+                        }
+                    } while (cdao.getCommentsById(newId) != null);
+                Comment c = new Comment(newId, art, memCmt, cmtContent, LocalDateTime.now().toString(), 1);              
                 cdao.addNewComment(c);                  
                 request.getRequestDispatcher("ViewDetailServlet?aId="+aId).forward(request, response);
                 return;

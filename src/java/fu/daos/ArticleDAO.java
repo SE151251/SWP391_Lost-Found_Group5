@@ -55,7 +55,7 @@ public class ArticleDAO {
             con = DBUtils.makeConnection();
             if (con != null) {
                 String sql = "Select * From Article "
-                        + "Where ArticleStatus = 1 "
+                        + "Where ArticleStatus = 1 or ArticleStatus = 0 "
                         + "Order By PostTime DESC";
                 stm = con.prepareStatement(sql);
                 rs = stm.executeQuery();
@@ -98,7 +98,7 @@ public class ArticleDAO {
         PreparedStatement preStm = null;
         ResultSet rs = null;
         boolean check = false;
-        String sql = ("UPDATE Article SET ArticleTitle = ?, ArticleContent = ?, PostTime=?, ArticleTypeID=?, ItemID=? Where ArticleID=?");
+        String sql = ("UPDATE Article SET ArticleTitle = ?, ArticleContent = ?, PostTime=?, ArticleStatus=?, ArticleTypeID=?, ItemID=? Where ArticleID=?");
         try {
             conn = DBUtils.makeConnection();
             if (conn != null) {
@@ -106,9 +106,10 @@ public class ArticleDAO {
                 preStm.setString(1, b.getTitle());
                 preStm.setString(2, b.getArticleContent());
                 preStm.setString(3, b.getPostTime());
-                preStm.setInt(4, b.getType().getTypeID());
-                preStm.setInt(5, b.getItem().getItemID());
-                preStm.setString(6, b.getArticleID());               
+                preStm.setInt(4, b.getArticleStatus());
+                preStm.setInt(5, b.getType().getTypeID());
+                preStm.setInt(6, b.getItem().getItemID());
+                preStm.setString(7, b.getArticleID());               
                 preStm.executeUpdate();
                 check = preStm.executeUpdate() > 0;
             }
@@ -187,6 +188,92 @@ public class ArticleDAO {
         }
         return false;
     }
+    
+    //Hàm này để đóng tất cả các bài viết của account bị ban
+    public boolean updateStatusArticlesOfMemberBanned(Member m) throws Exception {
+        Connection conn = null;
+        PreparedStatement preStm = null;
+        ResultSet rs = null;
+        boolean check = false;
+        String sql = ("UPDATE Article SET ArticleStatus=0 Where MemberID=?");
+        try {
+            conn = DBUtils.makeConnection();
+            if (conn != null) {
+                preStm = conn.prepareStatement(sql);
+                preStm.setString(1, m.getMemberID());                           
+                preStm.executeUpdate();
+                check = preStm.executeUpdate() > 0;
+            }
+        } finally {
+            if (rs != null) {
+                rs.close();
+            }
+            if (preStm != null) {
+                preStm.close();
+            }
+            if (conn != null) {
+                conn.close();
+            }
+        }
+        return check;
+    }
+    //Hàm này để đóng bài viết của account bị cảnh cáo
+    public boolean closeArticle(String aId) throws Exception {
+        Connection conn = null;
+        PreparedStatement preStm = null;
+        ResultSet rs = null;
+        boolean check = false;
+        String sql = ("UPDATE Article SET ArticleStatus=0 Where ArticleID=?");
+        try {
+            conn = DBUtils.makeConnection();
+            if (conn != null) {
+                preStm = conn.prepareStatement(sql);
+                preStm.setString(1, aId);                           
+                preStm.executeUpdate();
+                check = preStm.executeUpdate() > 0;
+            }
+        } finally {
+            if (rs != null) {
+                rs.close();
+            }
+            if (preStm != null) {
+                preStm.close();
+            }
+            if (conn != null) {
+                conn.close();
+            }
+        }
+        return check;
+    }
+    //Hàm này để đóng bài viết của account bị cảnh cáo
+    public boolean openArticle(String aId) throws Exception {
+        Connection conn = null;
+        PreparedStatement preStm = null;
+        ResultSet rs = null;
+        boolean check = false;
+        String sql = ("UPDATE Article SET ArticleStatus=1 Where ArticleID=?");
+        try {
+            conn = DBUtils.makeConnection();
+            if (conn != null) {
+                preStm = conn.prepareStatement(sql);
+                preStm.setString(1, aId);                           
+                preStm.executeUpdate();
+                check = preStm.executeUpdate() > 0;
+            }
+        } finally {
+            if (rs != null) {
+                rs.close();
+            }
+            if (preStm != null) {
+                preStm.close();
+            }
+            if (conn != null) {
+                conn.close();
+            }
+        }
+        return check;
+    }
+    
   // Lấy tất cả các bài loại "Tìm đồ"
     public ArrayList<Article> getAllArticlesFind() throws ClassNotFoundException, SQLException, Exception {
         Connection con = null;
@@ -631,6 +718,51 @@ public class ArticleDAO {
                 String sql = "select A.ArticleID, A.ArticleTitle, A.ArticleContent, A.ImgURL, A.PostTime, A.ArticleStatus, A.ArticleTypeID, A.ItemID \n" +
                             "from Article A inner join Member M on M.MemberID = A.MemberID\n" +
                             "Where A.ArticleTypeID = 1 and A.ArticleStatus = 1 or A.ArticleStatus = 0 and M.MemberID Like ?";
+                stm = con.prepareStatement(sql);
+                stm.setString(1,m.getMemberID());
+                rs = stm.executeQuery();
+                while (rs.next()) {
+                    String articleId = rs.getString("ArticleID");
+                    String title = rs.getString("ArticleTitle");
+                    String articleContent = rs.getString("ArticleContent");
+                    String articleURL = rs.getString("ImgURL");
+                    String articleTime = rs.getString("PostTime");                    
+                    int articleStatus = rs.getInt("ArticleStatus");                    
+                    int articleTypeId = rs.getInt("ArticleTypeID");
+                    int itemId = rs.getInt("ItemID");                    
+                    ItemTypeDAO idao = new ItemTypeDAO();
+                    Item i = idao.getItemByID(itemId);
+                    ArticleTypeDAO adao = new ArticleTypeDAO();
+                    ArticleType a = adao.getArticleTypeByID(articleTypeId);
+                    Article art = new Article(articleId, title, articleContent, articleURL, articleTime, articleStatus, i, m, a);
+                    lb.add(art);                    
+                }
+            }
+        } finally {
+            if (rs != null) {
+                rs.close();
+            }
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return lb;
+    }
+    // Lấy all bài viết mà member đã đăng
+    public ArrayList<Article> getAllArticlesByMemberID(Member m) throws ClassNotFoundException, SQLException, Exception {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        ArrayList<Article> lb = new ArrayList<>();
+        try {
+            con = DBUtils.makeConnection();
+            if (con != null) {
+                String sql = "select A.ArticleID, A.ArticleTitle, A.ArticleContent, A.ImgURL, A.PostTime, A.ArticleStatus, A.ArticleTypeID, A.ItemID \n" +
+                            "from Article A inner join Member M on M.MemberID = A.MemberID\n" +
+                            "Where A.ArticleStatus = 1 or A.ArticleStatus = 0 and M.MemberID Like ?";
                 stm = con.prepareStatement(sql);
                 stm.setString(1,m.getMemberID());
                 rs = stm.executeQuery();

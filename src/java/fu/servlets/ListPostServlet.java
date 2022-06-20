@@ -32,7 +32,7 @@ public class ListPostServlet extends HttpServlet {
             HttpSession session = request.getSession(false);
             if (session == null) {
                 request.setAttribute("errormessage", "Please login!");
-                request.getRequestDispatcher("/WEB-INF/view/login.jsp").forward(request, response);
+                request.getRequestDispatcher("login.jsp").forward(request, response);
             }
             if (session.getAttribute("userdata") != null) {
                 Member memberLogin = (Member) session.getAttribute("userdata");

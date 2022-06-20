@@ -6,20 +6,21 @@
 package fu.entities;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 
 /**
  *
  * @author Admin
  */
 public class Comment implements Serializable{
+    private String commentId;
     private Article article;
     private Member member;
     private String commentContent;
-    private LocalDateTime commentTime;
+    private String commentTime;
     private int status;
 
     public Comment() {
+        commentId="";
         article=null;
         member=null;
         commentContent="";
@@ -27,12 +28,21 @@ public class Comment implements Serializable{
         status=0;
     }
 
-    public Comment(Article article, Member member, String commentContent, LocalDateTime commentTime, int status) {
+    public Comment(String commentId, Article article, Member member, String commentContent, String commentTime, int status) {
+        this.commentId = commentId;
         this.article = article;
         this.member = member;
         this.commentContent = commentContent;
         this.commentTime = commentTime;
         this.status = status;
+    }
+
+    public String getCommentId() {
+        return commentId;
+    }
+
+    public void setCommentId(String commentId) {
+        this.commentId = commentId;
     }
 
     public Article getArticle() {
@@ -59,11 +69,11 @@ public class Comment implements Serializable{
         this.commentContent = commentContent;
     }
 
-    public LocalDateTime getCommentTime() {
+    public String getCommentTime() {
         return commentTime;
     }
 
-    public void setCommentTime(LocalDateTime commentTime) {
+    public void setCommentTime(String commentTime) {
         this.commentTime = commentTime;
     }
 
