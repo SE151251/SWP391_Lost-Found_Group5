@@ -188,24 +188,33 @@
                     <td style=" padding-bottom: 20px">
                          <select style="width: 250px; height: 40px; font-size: 20px; text-align: center" name="txtArticleType" >
                              <c:forEach var="dt" items="${ListArticleType}" >                                  
-                                 <option <c:if test="${dt.typeID eq postTypeId}">selected </c:if>
+                                 <option  <c:if test="${dt.typeID eq postTypeId && action eq 'update'}">selected </c:if>
+                                        <c:if test="${userdata.memberRole eq 0 && action eq 'create' && dt.typeID eq 4}">selected </c:if>                                                                
                                          <c:if test="${userdata.memberRole eq 1 && dt.typeID eq 4}">hidden</c:if>
+                                         <c:if test="${userdata.memberRole eq 0 && dt.typeID ne 4}">hidden</c:if>
                                  value="${dt.typeID}"> <c:out value="${dt.typeName}"/> </option>
                              </c:forEach>
                          </select> 
                     </td>            
                 </tr>
+                <c:if test="${userdata.memberRole eq 1}">
                 <tr>
                 <td style="font-size: 20px; padding-bottom: 20px">Đồ vật loại:</td>
                     <td style=" padding-bottom: 20px">
                          <select style="width: 250px; height: 40px; font-size: 20px; text-align: center" name="txtItem" >
                              <c:forEach var="dt" items="${ListItemType}" >                                  
                                 <option <c:if test="${ dt.itemID eq itemId}">selected </c:if>
+                                        <c:if test="${userdata.memberRole eq 0 && action eq 'create' && dt.itemName eq 'None'}">selected</c:if>                                     
                                 value="${dt.itemID}"><c:out value="${dt.itemName}"/></option>
                              </c:forEach>
                          </select> 
                     </td>            
                 </tr>
+                </c:if>
+            <%--    <tr>                   
+                    <td style="font-size: 20px; padding-bottom: 20px"">Hastag:</td>
+                    <td style="padding-bottom: 20px"><input style="width: 500px; height: 50px;" type="text" name="txtTitle" value="${titlePost}"<font color="red">${titleError}</font></td>
+		</tr> --%>
                 <c:if test="${action eq 'create'}">         
                 <tr>
                     <td style="font-size: 20px">Post image:</td>

@@ -83,10 +83,7 @@
                 <li class="nav-item">
                     <a class="nav-link" href="./"><span class="fa-regular fa-thumbs-up"></span>
                         Liked list</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="AdminListServlet"><i class="fa fa-home fa-lg"></i>Admin Page</a>
-                </li>
+                </li>               
                 <li class="nav-item active">
                     <a class="nav-link" href="LogoutServlet"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</a>
                 </li>

@@ -68,6 +68,7 @@
         </nav>
         <div class="collapse navbar-collapse" id="Navbar">
             <ul class="navbar-nav container ml-5">
+                <c:if test="${userdata.memberRole eq 1 }">
                 <li class="nav-item">
                     <a class="nav-link" href="ListPostServlet"><i class="fa fa-home mr-1"></i> Home </a>
                 </li>
@@ -81,6 +82,15 @@
                 <li class="nav-item active">
                     <a class="nav-link" href="LogoutServlet"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</a>
                 </li>
+                </c:if>
+                <c:if test="${userdata.memberRole eq 0 }">
+                <li class="nav-item">
+                    <a class="nav-link" href="AdminListServlet"><i class="fa fa-home mr-1"></i> Home </a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="LogoutServlet"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</a>
+                </li>
+                </c:if>
             </ul>
         </div>
 
@@ -120,7 +130,7 @@
             </div>
             <div style="margin-left: 3%;width: 73%;display: inline-block;" class="tab-content">
                 <div class=" tab-post-pane active">
-                    <c:forEach var="dt" items="${articlesFind}" >
+                    <c:forEach var="dt" items="${articlesFindPersonal}" >
             <div class="pane col-md-2">
                 <div class="pane-img">
                     <c:if test="${not empty dt.imgUrl}">
@@ -140,7 +150,7 @@
             </c:forEach>
                 </div>
                 <div class=" tab-post-pane">
-                    <c:forEach var="dt" items="${articlesReturn}" >
+                    <c:forEach var="dt" items="${articlesReturnPersonal}" >
             <div class="pane col-md-2">
                 <div class="pane-img">
                     <c:if test="${not empty dt.imgUrl}">
@@ -160,7 +170,7 @@
             </c:forEach>
                 </div>
                 <div class=" tab-post-pane">
-                    <c:forEach var="dt" items="${articlesShare}" >
+                    <c:forEach var="dt" items="${articlesSharePersonal}" >
             <div class="pane col-md-2">
                 <div class="pane-img">
                     <c:if test="${not empty dt.imgUrl}">

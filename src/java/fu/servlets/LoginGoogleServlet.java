@@ -28,6 +28,7 @@ public class LoginGoogleServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
     private static final String INDEX_PAGE = "ListPostServlet";
+    private static final String ADMIN_PAGE = "AdminListServlet";
     private static final String LOGIN_PAGE = "LoginServlet";
 
     public LoginGoogleServlet() {
@@ -63,8 +64,12 @@ public class LoginGoogleServlet extends HttpServlet {
                         if(member.getStatus()==0){
                         request.setAttribute("errormessage", "Your account has been banned!"); 
                         uri=LOGIN_PAGE;
-                        }else{
-                        session.setAttribute("userdata", member);   
+                        }else if(member.getMemberRole()==1){
+                        session.setAttribute("userdata", member);
+                        uri=INDEX_PAGE;
+                        }else if(member.getMemberRole()==0){
+                         session.setAttribute("userdata", member);
+                        uri=ADMIN_PAGE;   
                         }
                     }
                 }else{  // mail ko đúng form

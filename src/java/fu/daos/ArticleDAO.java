@@ -717,7 +717,7 @@ public class ArticleDAO {
             if (con != null) {
                 String sql = "select A.ArticleID, A.ArticleTitle, A.ArticleContent, A.ImgURL, A.PostTime, A.ArticleStatus, A.ArticleTypeID, A.ItemID \n" +
                             "from Article A inner join Member M on M.MemberID = A.MemberID\n" +
-                            "Where A.ArticleTypeID = 1 and A.ArticleStatus = 1 or A.ArticleStatus = 0 and M.MemberID Like ?";
+                            "Where A.ArticleTypeID = 1 and A.ArticleStatus not like -1 and M.MemberID Like ?";
                 stm = con.prepareStatement(sql);
                 stm.setString(1,m.getMemberID());
                 rs = stm.executeQuery();
@@ -762,7 +762,7 @@ public class ArticleDAO {
             if (con != null) {
                 String sql = "select A.ArticleID, A.ArticleTitle, A.ArticleContent, A.ImgURL, A.PostTime, A.ArticleStatus, A.ArticleTypeID, A.ItemID \n" +
                             "from Article A inner join Member M on M.MemberID = A.MemberID\n" +
-                            "Where A.ArticleStatus = 1 or A.ArticleStatus = 0 and M.MemberID Like ?";
+                            "Where A.ArticleStatus not like -1 and M.MemberID Like ?";
                 stm = con.prepareStatement(sql);
                 stm.setString(1,m.getMemberID());
                 rs = stm.executeQuery();
@@ -807,7 +807,7 @@ public class ArticleDAO {
             if (con != null) {
                 String sql = "select A.ArticleID, A.ArticleTitle, A.ArticleContent, A.ImgURL, A.PostTime, A.ArticleStatus, A.ArticleTypeID, A.ItemID \n" +
                             "from Article A inner join Member M on M.MemberID = A.MemberID\n" +
-                            "Where A.ArticleTypeID = 2 and A.ArticleStatus = 1 or A.ArticleStatus = 0 and M.MemberID Like ?";
+                            "Where A.ArticleTypeID = 2 and A.ArticleStatus not like -1 and M.MemberID Like ?";
                 stm = con.prepareStatement(sql);
                 stm.setString(1,m.getMemberID());
                 rs = stm.executeQuery();
@@ -852,7 +852,7 @@ public class ArticleDAO {
             if (con != null) {
                 String sql = "select A.ArticleID, A.ArticleTitle, A.ArticleContent, A.ImgURL, A.PostTime, A.ArticleStatus, A.ArticleTypeID, A.ItemID \n" +
                             "from Article A inner join Member M on M.MemberID = A.MemberID\n" +
-                            "Where A.ArticleTypeID = 3 and A.ArticleStatus = 1 or A.ArticleStatus = 0 and M.MemberID Like ?";
+                            "Where A.ArticleTypeID = 3 and A.ArticleStatus not like -1 and M.MemberID Like ?";
                 stm = con.prepareStatement(sql);
                 stm.setString(1,m.getMemberID());
                 rs = stm.executeQuery();

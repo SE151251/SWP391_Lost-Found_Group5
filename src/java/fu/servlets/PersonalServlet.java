@@ -44,11 +44,11 @@ public class PersonalServlet extends HttpServlet {
                 }
                 ArticleDAO adao = new ArticleDAO();
                 List<Article> listArtsFind = adao.getAllArticlesFindByMemberID(memDetail);
-                request.setAttribute("articlesFind", listArtsFind);
+                request.setAttribute("articlesFindPersonal", listArtsFind);
                 List<Article> listArtsReturn = adao.getAllArticlesReturnByMemberID(memDetail);
-                request.setAttribute("articlesReturn", listArtsReturn);
+                request.setAttribute("articlesReturnPersonal", listArtsReturn);
                 List<Article> listArtsShare = adao.getAllArticlesShareByMemberID(memDetail);
-                request.setAttribute("articlesShare", listArtsShare);
+                request.setAttribute("articlesSharePersonal", listArtsShare);
                 request.setAttribute("memberInfo", memDetail);
                 request.getRequestDispatcher("personal.jsp").forward(request, response);
                 return;

@@ -73,19 +73,29 @@
         </nav>
         <div class="collapse navbar-collapse" id="Navbar">
             <ul class="navbar-nav container ml-5">
+                <c:if test="${userdata.memberRole eq 1 }">
                 <li class="nav-item">
-                    <a class="nav-link" href="ListPostServlet"><i class="fa fa-home fa-lg"></i>Home </a>
+                    <a class="nav-link" href="ListPostServlet"><i class="fa fa-home mr-1"></i> Home </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="PersonalServlet?uId=${userdata.memberID}"><span class="fa-solid fa-user"></span> Personal Page</a>
+                    <a class="nav-link" href="#"><span class="fa-solid fa-user"></span> Personal Page</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="./"><span class="fa-regular fa-thumbs-up"></span>
+                    <a class="nav-link" href="#"><span class="fa-regular fa-thumbs-up"></span>
                         Liked list</a>
                 </li>
                 <li class="nav-item active">
                     <a class="nav-link" href="LogoutServlet"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</a>
                 </li>
+                </c:if>
+                <c:if test="${userdata.memberRole eq 0 }">
+                <li class="nav-item">
+                    <a class="nav-link" href="AdminListServlet"><i class="fa fa-home mr-1"></i> Home </a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="LogoutServlet"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</a>
+                </li>
+                </c:if>
             </ul>
         </div>
 
@@ -138,7 +148,8 @@
                 </div>
             </c:if>
             <c:if test="${checkReport eq null && postDetail.member.memberID ne userdata.memberID}">
-            <div>
+            <%-- Tạo report --%>
+                <div>
                 <form action = "CreateReportServlet">
                     <textarea cols="36" rows="6" name="txtReport" placeholder="Write your reason here..." maxlength="200" minlength="10"></textarea>
                      <font color="red"> ${errorReport} </font><br/>
@@ -148,8 +159,16 @@
                 </form>
             </div>
             </c:if>
+            <%-- Xem report bằng account Admin --%>
             <c:if test="${not empty viewReport}">
                 <div>
+                <div class="user-profile">                
+                <img src="${viewReport.member.picture}" alt="">
+                <div>
+                    <p><a href="PersonalServlet?uId=${viewReport.member.memberID}">${viewReport.member.memberName}</a></p>
+                    <small>${viewReport.reportTime}</small>
+                </div>
+                </div>
                 <pre><c:out value="${viewReport.reportContent}"/></pre>
                 <a href="WarningMemberServlet?adminAction=warn&aId=${postDetail.articleID}">Cảnh cáo lần ${postDetail.member.memberCount + 1}</a>
                 <a href="WarningMemberServlet?adminAction=ban&aId=${postDetail.articleID}">Chặn tài khoản này</a>
