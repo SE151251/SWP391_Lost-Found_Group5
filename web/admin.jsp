@@ -80,7 +80,7 @@
     <script src="https://kit.fontawesome.com/f2fda88f12.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="node_modules/bootstrap-social/bootstrap-social.css" />
-    <link rel="stylesheet" href="css/styleAdmin.css" />
+    <link rel="stylesheet" href="css/style.css" />
     <!-- Bootstrap -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
   <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.slim.min.js"></script>
@@ -89,34 +89,29 @@
 </head>
 
 <body>
-    <header>
-        <nav class="navbar navbar-dark fixed-top">
+         <header>
+        <nav class="navbar navbar-dark navbar-expand-md fixed-top">
             <div class="navbar">
-                <button class="rounded-circle" type="button" data-toggle="collapse" data-target="#Navbar">
-                    <img class="rounded-circle" src="${userdata.picture}" height="30" width="100%">
-                </button>
-                <span class="Nav-username" style="width: 300px;"><c:out value="${userdata.memberName}"/></span>
+
+                <button class="rounded-circle p-0" type="button" data-toggle="collapse" data-target="#Navbar">
+                            <img class="rounded-circle" src="${userdata.picture}" height="30" width="100%">
+                        </button>
+                        <span class="Nav-username">${userdata.memberName}</span>
+
+
             </div>
-            <form>
-            <div class="search col-md-11">
-               
-                <div class="search-field">
-                    <div class="search-icon"></div>
-                    <input type="text" name="keySearch" class="search-input" placeholder="Từ khóa">
-                </div>
-        <button formaction="SearchServlet" class="search-button">Tìm</button>
-         
-            </div>
-            </form>
-                
-                
+            <ul style="width: 13%;" class="navbar-nav container ml-5">
+                <c:if test="${userdata.memberRole eq 0}">
+                <li class="nav-item active">
+                    <a class="nav-link" href="AdminListServlet"><i class="fa fa-home mr-1"></i> Home </a>
+                </li>
+                 </c:if>
+            </ul>
+
 
         </nav>
         <div class="collapse navbar-collapse" id="Navbar">
             <ul class="navbar-nav container ml-5">
-                <li class="nav-item">
-                    <a class="nav-link" href="AdminListServlet"><i class="fa fa-home fa-lg"></i>Home </a>
-                </li>
                 <li class="nav-item active">
                     <a class="nav-link" href="LogoutServlet"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</a>
                 </li>
@@ -127,10 +122,10 @@
 
     <div class="tabs">
         <div class="tab-item active">
-            Report xử lý
+            Report chưa xử lý
         </div>
         <div class="tab-item">
-            Report chưa xử lý
+            Report đã xử lý
         </div>
         <div class="tab-item">
             Thông báo
@@ -192,7 +187,7 @@
             </tbody>
         </table>
             </div>
-         <div class="row tab-pane active">
+         <div class="tab-pane">
             <c:forEach var="dt" items="${articlesNotice}" >
             <div class="pane col-md-2">
                 <div class="pane-img">

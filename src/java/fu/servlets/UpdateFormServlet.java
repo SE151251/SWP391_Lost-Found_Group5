@@ -54,7 +54,8 @@ public class UpdateFormServlet extends HttpServlet {
                     request.setAttribute("content", a.getArticleContent());
                     request.setAttribute("postURL", a.getImgUrl());
                     request.setAttribute("aStatus", a.getArticleStatus());
-                    request.setAttribute("itemId", a.getItem().getItemID());
+                    if(a.getItem() != null){
+                    request.setAttribute("itemId", a.getItem().getItemID());}
                     request.setAttribute("postTypeId", a.getType().getTypeID());
                     request.setAttribute("action", "update");
                     request.setAttribute("idUpdate", aId);

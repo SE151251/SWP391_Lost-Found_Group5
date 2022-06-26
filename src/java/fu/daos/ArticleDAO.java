@@ -97,11 +97,23 @@ public class ArticleDAO {
         Connection conn = null;
         PreparedStatement preStm = null;
         ResultSet rs = null;
-        boolean check = false;
-        String sql = ("UPDATE Article SET ArticleTitle = ?, ArticleContent = ?, PostTime=?, ArticleStatus=?, ArticleTypeID=?, ItemID=? Where ArticleID=?");
+        boolean check = false;        
+        
         try {
             conn = DBUtils.makeConnection();
             if (conn != null) {
+                if(b.getItem()==null){
+                String sql = "UPDATE Article SET ArticleTitle = ?, ArticleContent = ?, PostTime=?, ArticleStatus=?, ArticleTypeID=? Where ArticleID=?";
+                preStm = conn.prepareStatement(sql);
+                preStm.setString(1, b.getTitle());
+                preStm.setString(2, b.getArticleContent());
+                preStm.setString(3, b.getPostTime());
+                preStm.setInt(4, b.getArticleStatus());
+                preStm.setInt(5, b.getType().getTypeID());
+                preStm.setString(6, b.getArticleID()); 
+                }
+                else if(b.getItem()!=null){
+                String sql = "UPDATE Article SET ArticleTitle = ?, ArticleContent = ?, PostTime=?, ArticleStatus=?, ArticleTypeID=?, ItemID=? Where ArticleID=?";
                 preStm = conn.prepareStatement(sql);
                 preStm.setString(1, b.getTitle());
                 preStm.setString(2, b.getArticleContent());
@@ -109,7 +121,9 @@ public class ArticleDAO {
                 preStm.setInt(4, b.getArticleStatus());
                 preStm.setInt(5, b.getType().getTypeID());
                 preStm.setInt(6, b.getItem().getItemID());
-                preStm.setString(7, b.getArticleID());               
+                preStm.setString(7, b.getArticleID()); 
+                }
+                              
                 preStm.executeUpdate();
                 check = preStm.executeUpdate() > 0;
             }
@@ -133,7 +147,46 @@ public class ArticleDAO {
         try {
             con = DBUtils.makeConnection();
             if (con != null) {
-                String sql = "INSERT INTO Article "
+                if(b.getImgUrl()==null && b.getItem()==null){
+                String sql = "INSERT INTO Article (ArticleID, ArticleTitle, ArticleContent, PostTime, ArticleStatus, MemberID, ArticleTypeID) "
+                        + "VALUES (?, ?, ?, ?, ?, ?, ?)";
+                stm = con.prepareStatement(sql);
+                stm.setString(1, b.getArticleID());
+                stm.setString(2, b.getTitle());
+                stm.setString(3, b.getArticleContent());
+                stm.setString(4, b.getPostTime());
+                stm.setInt(5, 1);
+                stm.setString(6, b.getMember().getMemberID());
+                stm.setInt(7, b.getType().getTypeID());
+                }
+                else if(b.getImgUrl()!=null && b.getItem()==null){
+                String sql = "INSERT INTO Article (ArticleID, ArticleTitle, ArticleContent, ImgURL, PostTime, ArticleStatus, MemberID, ArticleTypeID) "
+                        + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+                stm = con.prepareStatement(sql);
+                stm.setString(1, b.getArticleID());
+                stm.setString(2, b.getTitle());
+                stm.setString(3, b.getArticleContent());
+                stm.setString(4, b.getImgUrl());
+                stm.setString(5, b.getPostTime());
+                stm.setInt(6, 1);
+                stm.setString(7, b.getMember().getMemberID());
+                stm.setInt(8, b.getType().getTypeID()); 
+                }
+                else if(b.getImgUrl()==null && b.getItem()!=null){
+                String sql = "INSERT INTO Article (ArticleID, ArticleTitle, ArticleContent, PostTime, ArticleStatus, MemberID, ArticleTypeID, ItemID) "
+                        + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+                stm = con.prepareStatement(sql);
+                stm.setString(1, b.getArticleID());
+                stm.setString(2, b.getTitle());
+                stm.setString(3, b.getArticleContent());
+                stm.setString(4, b.getPostTime());
+                stm.setInt(5, 1);
+                stm.setString(6, b.getMember().getMemberID());
+                stm.setInt(7, b.getType().getTypeID());
+                stm.setInt(8, b.getItem().getItemID()); 
+                }
+                else if(b.getImgUrl()!=null && b.getItem()!=null){
+                String sql = "INSERT INTO Article (ArticleID, ArticleTitle, ArticleContent, ImgURL, PostTime, ArticleStatus, MemberID, ArticleTypeID, ItemID) "
                         + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
                 stm = con.prepareStatement(sql);
                 stm.setString(1, b.getArticleID());
@@ -144,7 +197,20 @@ public class ArticleDAO {
                 stm.setInt(6, 1);
                 stm.setString(7, b.getMember().getMemberID());
                 stm.setInt(8, b.getType().getTypeID());
-                stm.setInt(9, b.getItem().getItemID());
+                stm.setInt(9, b.getItem().getItemID()); 
+                }
+//                String sql = "INSERT INTO Article (ArticleID, ArticleTitle, ArticleContent, ImgURL, PostTime, ArticleStatus, MemberID, ArticleTypeID, ItemID) "
+//                        + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+//                stm = con.prepareStatement(sql);
+//                stm.setString(1, b.getArticleID());
+//                stm.setString(2, b.getTitle());
+//                stm.setString(3, b.getArticleContent());
+//                stm.setString(4, b.getImgUrl());
+//                stm.setString(5, b.getPostTime());
+//                stm.setInt(6, 1);
+//                stm.setString(7, b.getMember().getMemberID());
+//                stm.setInt(8, b.getType().getTypeID());
+//                stm.setInt(9, b.getItem().getItemID());                 
                 int row = stm.executeUpdate();
                 if (row > 0) {
                     return true;

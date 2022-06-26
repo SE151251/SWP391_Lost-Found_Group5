@@ -109,19 +109,24 @@ address {
                         visibility: visible;
                     }
 .search{
-  transform: translateX(40%);
+  transform: translateX(25%);
   display: flex;
-  align-items: center;
+  align-items: flex-start;
+}
+.search-form{
+  margin-top: 40px;
+}
+.search-field{
+  width: 400rem;
 }
 .search-input{
-  border: solid 1px white;
-  border-radius: 8px;
-  width: 100%;
+  border: solid 1px orange;
+  border-radius: 5px;
+  width: 1400px;
 }
-
 #Navbar{
   z-index: 5;
-  margin-top: 20px;
+  margin-top: 12px;
   background: -webkit-linear-gradient(to right, #f5af199d, #f127118e);  /* Chrome 10-25, Safari 5.1-6 */
   background: linear-gradient(to right, #f5af19, #f12711); 
   width: 200px;
@@ -135,10 +140,11 @@ address {
 }
 
 .search-button{
+  width: 100px;
   border: solid 1px white;
-  border-radius: 8px;
+  border-radius: 5px;
   background: -webkit-linear-gradient(to right, #f5af19, #f12711);  /* Chrome 10-25, Safari 5.1-6 */
-background: linear-gradient(to right, #f5af19, #f12711); color:#fff;
+ background: linear-gradient(to right, #f5af19, #f12711); color:#fff;
   text-align: center;
   cursor: pointer;
 }
@@ -251,6 +257,10 @@ display: none;
   opacity: 0.7;
 }
 .pane-img img{  
+  display: inline-block;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
   width: 150px;
   height: 150px;
   object-fit: contain;
@@ -338,20 +348,20 @@ img{
   border: solid 1px orange;
 }
 .tabs-profile--post{
+  transform: translateY(-186px);
   min-height: 730px;
   display: inline-flex;
-  width: 291px;
+  width: 410px;
   flex-direction: column;
   align-items: flex-start;
-  transform: translateY(-105%);
 }
-
-
 .profile-img{
+  
   display: inline-block;
   border: solid 1px orange;
 }
 .profile-img img{
+  
   width: 200px;
   height: 200px;
   border-radius: 100rem;
@@ -367,7 +377,6 @@ img{
   
 }
 .tab-pane--profile{
-  height: 730px;
   float: left;
 }
 .pane-content{
@@ -385,11 +394,34 @@ img{
   border-bottom: solid 1px orange ;
 }
 .btn-tabs-profile--post:hover{
+  font-size:large;
+  font-weight: 600;
   background-color: rgba(255, 166, 0, 0.5);
   color: white;
 }
 .btn:not(:disabled):not(.disabled).active, .btn:not(:disabled):not(.disabled):active {
+  font-size:large;
+  font-weight: 600;
   background-image: none;
   background-color: rgba(255, 166, 0, 0.5);
   color: white;
+}
+
+.header-notification{
+
+}
+.header-notification--icon{
+
+}
+.header-notification--list{
+
+}
+.header-notification--item{
+
+}
+.header-notification--link{
+
+}
+.header-notification--info{
+
 }

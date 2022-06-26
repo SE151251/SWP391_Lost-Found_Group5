@@ -93,7 +93,7 @@ public class CommentDAO {
         return false;
     }
 
-    public boolean deleteComment(String aId, String mId)
+    public boolean deleteComment(String cId)
             throws Exception, SQLException {
         Connection con = null;
         PreparedStatement stm = null;
@@ -102,10 +102,9 @@ public class CommentDAO {
             if (con != null) {
                 String sql = "UPDATE Comment "
                         + "SET CommentStatus = 0 "
-                        + "Where ArticleID = ? and MemberID = ?";
+                        + "Where CommentID = ?";
                 stm = con.prepareStatement(sql);
-                stm.setString(1, aId);
-                stm.setString(2, mId);
+                stm.setString(1, cId);
                 int row = stm.executeUpdate();
                 if (row > 0) {
                     return true;

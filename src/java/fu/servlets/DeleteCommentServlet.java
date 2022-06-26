@@ -47,10 +47,10 @@ public class DeleteCommentServlet extends HttpServlet {
             }
             if (session.getAttribute("userdata") != null) { // check login
                 Member member = (Member) session.getAttribute("userdata");
-                String memberCmtId = request.getParameter("memberCmt");
+                String cmtId = request.getParameter("cmtId");
                 String aId = request.getParameter("aId");
                 CommentDAO cdao = new CommentDAO();
-                cdao.deleteComment(aId, memberCmtId);                  
+                cdao.deleteComment(cmtId);                  
                 request.getRequestDispatcher("ViewDetailServlet?aId="+aId).forward(request, response);
                 return;               
             } else {

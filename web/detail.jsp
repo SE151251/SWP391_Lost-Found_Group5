@@ -220,7 +220,7 @@
         <div class="comment-content">
             <span class=""><c:out value="${dt.commentContent}"/></span>
             <c:if test="${userdata.memberID eq postDetail.member.memberID}">
-            <span><a href="DeleteCommentServlet?aId=${postDetail.articleID}&memberCmt=${userdata.memberID}" onclick="return confirm('Bạn chắc muốn xóa bình luận này?')">Xóa</a></span>
+            <span><a href="DeleteCommentServlet?cmtId=${dt.commentId}&aId=${postDetail.articleID}" onclick="return confirm('Bạn chắc muốn xóa bình luận này?')">Xóa</a></span>
             </c:if>
             </div>
         <br/>

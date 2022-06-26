@@ -31,6 +31,7 @@ public class UpdateServlet extends HttpServlet {
     private static final String SUCCESS = "ListPostServlet";
     private static final String ERROR = "error.jsp";
     private static final String INVALID = "UpdateFormServlet";
+    private static final String ADMIN_PAGE = "AdminListServlet";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -71,8 +72,10 @@ public class UpdateServlet extends HttpServlet {
                 
                 // Xử lý loại đồ vật của bài viết
                 String itemId = request.getParameter("txtItem");
+                Item i = null;
+                if(itemId != null){
                 ItemTypeDAO iDao = new ItemTypeDAO();
-                Item i = iDao.getItemByID(Integer.parseInt(itemId));
+                i = iDao.getItemByID(Integer.parseInt(itemId));}
 
                 // Xử lý loại bài viết
                 String postTypeId = request.getParameter("txtArticleType");
@@ -83,7 +86,11 @@ public class UpdateServlet extends HttpServlet {
                 if (valid) {
                     Article a = new Article(idUpdate, titlePost.trim(), content.trim(), textURL, LocalDateTime.now().toString(), Integer.parseInt(aStatus), i, memberLogin, at);
                     aDao.updateContentArticle(a);
-                    url = SUCCESS;
+                    if(memberLogin.getMemberRole()==1){
+                        url = SUCCESS;}
+                        else if(memberLogin.getMemberRole()==0){
+                          url = ADMIN_PAGE;  
+                        }
                 } else {
                     url = INVALID;
                     request.setAttribute("titlePost", titlePost);
@@ -93,7 +100,9 @@ public class UpdateServlet extends HttpServlet {
                     request.setAttribute("content", content);
                     request.setAttribute("aStatus", aStatus);
                     request.setAttribute("postURL", textURL);
+                    if(itemId != null){
                     request.setAttribute("itemId", Integer.parseInt(itemId));
+                    }
                     request.setAttribute("postTypeId", Integer.parseInt(postTypeId));
                 }
             } else {

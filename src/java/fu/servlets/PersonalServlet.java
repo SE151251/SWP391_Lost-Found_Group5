@@ -39,16 +39,12 @@ public class PersonalServlet extends HttpServlet {
                 String uId = request.getParameter("uId");
                 MemberDAO mdao = new MemberDAO();
                 Member memDetail = mdao.find(uId);
-                if(memberLogin.getMemberID().equals(memDetail.getMemberID())){
-                memberLogin.setMemberProfile(memDetail.getMemberProfile());  
-                }
+//                if(memberLogin.getMemberID().equals(memDetail.getMemberID())){
+//                memberLogin.setMemberProfile(memDetail.getMemberProfile());  
+//                }
                 ArticleDAO adao = new ArticleDAO();
-                List<Article> listArtsFind = adao.getAllArticlesFindByMemberID(memDetail);
-                request.setAttribute("articlesFindPersonal", listArtsFind);
-                List<Article> listArtsReturn = adao.getAllArticlesReturnByMemberID(memDetail);
-                request.setAttribute("articlesReturnPersonal", listArtsReturn);
-                List<Article> listArtsShare = adao.getAllArticlesShareByMemberID(memDetail);
-                request.setAttribute("articlesSharePersonal", listArtsShare);
+                List<Article> listArts = adao.getAllArticlesByMemberID(memDetail);
+                request.setAttribute("articlesPersonal", listArts);              
                 request.setAttribute("memberInfo", memDetail);
                 request.getRequestDispatcher("personal.jsp").forward(request, response);
                 return;

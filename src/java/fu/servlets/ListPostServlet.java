@@ -6,8 +6,12 @@
 package fu.servlets;
 
 import fu.daos.ArticleDAO;
+import fu.daos.ArticleHashtagDAO;
+import fu.daos.HashtagDAO;
 import fu.daos.ItemTypeDAO;
 import fu.entities.Article;
+import fu.entities.ArticleHashTag;
+import fu.entities.Hashtag;
 import fu.entities.Item;
 import fu.entities.Member;
 import java.io.IOException;
@@ -48,6 +52,9 @@ public class ListPostServlet extends HttpServlet {
                 ItemTypeDAO itDao = new ItemTypeDAO();
                 List<Item> listI = itDao.getAllItems();
                 request.setAttribute("ListItemType", listI);
+                ArticleHashtagDAO ahDao = new ArticleHashtagDAO();
+                List<ArticleHashTag> listAH = ahDao.getAllArticleHashtag();
+                request.setAttribute("listAH", listAH);
             } else {
                 request.setAttribute("errormessage", "Please login!");
                 request.getRequestDispatcher("login.jsp").forward(request, response);

@@ -5,10 +5,91 @@
  */
 package fu.daos;
 
+import fu.dbhelper.DBUtils;
+import fu.entities.Article;
+import fu.entities.ArticleHashTag;
+import fu.entities.Hashtag;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  *
  * @author LENOVO
  */
 public class ArticleHashtagDAO {
+    private Connection con;
+    private PreparedStatement preStm;
+    private ResultSet rs;
+
+
+    public ArticleHashtagDAO() {
+        
+    }
     
+    private void closeConnection() throws Exception{
+        if(rs!=null){
+            rs.close();
+        }
+        if(preStm!=null){
+            preStm.close();
+        }
+        if(con!=null){
+            con.close();
+        }
+    }
+    public List<ArticleHashTag> getAllArticleHashtag() throws Exception{
+        List<ArticleHashTag> result = null;
+        try {         
+            con = DBUtils.makeConnection();
+            if(con!=null){
+                String sql = "Select * From ArticleHashtag";          
+            preStm = con.prepareStatement(sql);
+            rs = preStm.executeQuery(); 
+            result = new ArrayList<>();
+            while (rs.next()){
+                String hId = rs.getString("HashtagID");
+                String aId = rs.getString("ArticleID"); 
+                ArticleDAO aDao = new ArticleDAO();
+                HashtagDAO hDao = new HashtagDAO();
+                Article a = aDao.find(aId);
+                Hashtag h = hDao.getHashtagById(hId);
+                ArticleHashTag ah = new ArticleHashTag(a, h);
+                result.add(ah);
+               }
+            }
+        } finally {
+            closeConnection();
+        }
+        return result;
+    }
+    public boolean addNewArticleHashtag(Article a, Hashtag h) throws SQLException {
+        Connection con = null;
+        PreparedStatement stm = null;
+        try {
+            con = DBUtils.makeConnection();
+            if (con != null) {
+                String sql = "INSERT INTO ArticleHashtag "
+                        + "VALUES (?, ?)";
+                stm = con.prepareStatement(sql);
+                stm.setString(1, a.getArticleID());
+                stm.setString(2, h.getHashtagID());                
+                int row = stm.executeUpdate();
+                if (row > 0) {
+                    return true;
+                }
+            }
+        } finally {
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return false;
+    }
 }

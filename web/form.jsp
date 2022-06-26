@@ -101,50 +101,44 @@
 
 <body>
     <header>
-        <nav class="navbar navbar-dark fixed-top">
+        <nav class="navbar navbar-dark navbar-expand-md fixed-top">
             <div class="navbar">
-                <button class="rounded-circle" type="button" data-toggle="collapse" data-target="#Navbar">
-                    <img class="rounded-circle" src="${userdata.picture}" height="30" width="100%">
-                </button>
-               <span class="Nav-username" style="width: 400px;"><c:out value="${userdata.memberName}"/></span>
-            </div>
-            <div class="search col-md-4">
-                <div class="search-field">
-                    <div class="search-icon"></div>
-                    <input type="text" class="search-input" placeholder="Search">
-                </div>
 
-                <div class="dropdown">
-                    <div class="dropdown-select">
-                        <span class="dropdown-value">Search by</span>
-                        <span>
-                            <svg xmlns="http://www.w3.org/2000/svg" style="width: 20px; height: 10px" fill="none"
-                                viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M19 9l-7 7-7-7" />
-                            </svg>
-                        </span>
-                    </div>
-                    <div class="dropdown-list">
-                        <div class="dropdown-item">Name</div>
-                        <div class="dropdown-item">Categories</div>
-                    </div>
-                </div>
-                <button class="search-button">Search</button>
+                <button class="rounded-circle p-0" type="button" data-toggle="collapse" data-target="#Navbar">
+                            <img class="rounded-circle" src="${userdata.picture}" height="30" width="100%">
+                        </button>
+                        <span class="Nav-username">${userdata.memberName}</span>
+
+
             </div>
+            <ul style="width: 13%;" class="navbar-nav container ml-5">
+                <c:if test="${userdata.memberRole eq 1}">
+                <li class="nav-item active">
+                    <a class="nav-link" href="ListPostServlet"><i class="fa fa-home mr-1"></i> Home </a>
+                </li>
+                <li class="nav-item">
+
+                    <a class="nav-link" href="#"><span class="fa-solid fa-bookmark"></span>
+                        Saved list</a>
+                </li>
+                </c:if>
+                <c:if test="${userdata.memberRole eq 0}">
+                <li class="nav-item active">
+                    <a class="nav-link" href="AdminListServlet"><i class="fa fa-home mr-1"></i> Home </a>
+                </li>
+                 </c:if>
+            </ul>
+
+
         </nav>
-        <div class="collapse navbar-collapse" id="Navbar">
+       <div class="collapse navbar-collapse" id="Navbar">
             <ul class="navbar-nav container ml-5">
+                <c:if test="${userdata.memberRole eq 1}">
                 <li class="nav-item">
-                    <a class="nav-link" href="ListPostServlet"><i class="fa fa-home fa-lg"></i>Home </a>
+                    <a class="nav-link" href="#"><span class="fa-solid fa-user"></span> Personal
+                        Page</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#"><span class="fa-solid fa-user"></span> Personal Page</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="./"><span class="fa-regular fa-thumbs-up"></span>
-                        Liked list</a>
-                </li>
+                </c:if>
                 <li class="nav-item active">
                     <a class="nav-link" href="LogoutServlet"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</a>
                 </li>
@@ -201,10 +195,10 @@
                 <tr>
                 <td style="font-size: 20px; padding-bottom: 20px">Đồ vật loại:</td>
                     <td style=" padding-bottom: 20px">
-                         <select style="width: 250px; height: 40px; font-size: 20px; text-align: center" name="txtItem" >
+                         <select style="width: 250px; height: 40px; font-size: 20px; text-align: center" name="txtItem">
                              <c:forEach var="dt" items="${ListItemType}" >                                  
-                                <option <c:if test="${ dt.itemID eq itemId}">selected </c:if>
-                                        <c:if test="${userdata.memberRole eq 0 && action eq 'create' && dt.itemName eq 'None'}">selected</c:if>                                     
+                                <option <c:if test="${dt.itemID eq itemId}">selected</c:if>
+                       <%--         <c:if test="${userdata.memberRole eq 0 && dt.itemID eq 13}">selected </c:if> --%>
                                 value="${dt.itemID}"><c:out value="${dt.itemName}"/></option>
                              </c:forEach>
                          </select> 
@@ -255,59 +249,7 @@
                     <button style="margin-left: 112px; margin-top: 20px; width: 130px; font-size: 20px; background-color: orange; font-weight: bold" formaction="UpdateServlet" type="submit">Update</button></c:if>
                     </td>
                 </tr>
-            </table>         
-                    <%--                 
-                                        <textarea class="pb-100 form-control form-control-lg form-control-plaintext"
-                                            placeholder="What's up ?" name="txtContent" id="" cols="245" value="${content}"
-                                            rows="2"></textarea>
-                                            <font color="red">${contentError}</font>
-                                        <input type="file" name="photo" class="form-control-file border">
-                                       <div class="mt-3 input-group">
-                                            <p>Article Type</p>
-                                            <div class="input-group-append">
-                                                <div class="dropdown">
-                                                    <div class="dropdown-select">
-                                                        <span class="dropdown-value">Search by</span>
-                                                        <span>
-                                                            <svg xmlns="http://www.w3.org/2000/svg"
-                                                                style="width: 20px; height: 10px" fill="none"
-                                                                viewBox="0 0 24 24" stroke="currentColor">
-                                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                                    stroke-width="2" d="M19 9l-7 7-7-7" />
-                                                            </svg>
-                                                        </span>
-                                                    </div>
-                                                    <div class="dropdown-list">
-                                                        <div class="dropdown-item">Name</div>
-                                                        <div class="dropdown-item">Categories</div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="input-group">
-                                            <p>Items Type</p>
-                                            <div class="input-group-append">
-                                                <div class="dropdown">
-                                                    <div class="dropdown-select">
-                                                        <span class="dropdown-value">Search by</span>
-                                                        <span>
-                                                            <svg xmlns="http://www.w3.org/2000/svg"
-                                                                style="width: 20px; height: 10px" fill="none"
-                                                                viewBox="0 0 24 24" stroke="currentColor">
-                                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                                    stroke-width="2" d="M19 9l-7 7-7-7" />
-                                                            </svg>
-                                                        </span>
-                                                    </div>
-                                                    <div class="dropdown-list">
-                                                        <div class="dropdown-item">Name</div>
-                                                        <div class="dropdown-item">Categories</div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>  
-                            
-                                        <button class="search-button btn btn-lg">Post</button> --%>
+            </table>                           
                                     </form>
                                 </dl>
                             </div>
@@ -318,9 +260,125 @@
             </div>
         </div>
     </div>
-    <footer>
-        Footer
-    </footer>
+   <footer class="text-center text-lg-start bg-light text-muted">
+            <!-- Section: Social media -->
+            <section class="text-white d-flex justify-content-center justify-content-lg-between p-4 border-bottom">
+                <!-- Left -->
+                <div class="me-5 d-none d-lg-block">
+                    <span>Get connected with us on social networks:</span>
+                </div>
+                <!-- Left -->
+
+                <!-- Right -->
+                <div>
+                    <a href="" class="me-4 text-reset">
+                        <i class="fab fa-facebook-f text-white"></i>
+                    </a>
+                    <a href="" class="me-4 text-reset">
+                        <i class="fab fa-twitter text-white"></i>
+                    </a>
+                    <a href="" class="me-4 text-reset">
+                        <i class="fab fa-google text-white"></i>
+                    </a>
+                    <a href="" class="me-4 text-reset">
+                        <i class="fab fa-instagram text-white"></i>
+                    </a>
+                    <a href="" class="me-4 text-reset">
+                        <i class="fab fa-github text-white"></i>
+                    </a>
+                </div>
+                <!-- Right -->
+            </section>
+            <!-- Section: Social media -->
+
+            <!-- Section: Links  -->
+            <section class="text-white">
+                <div class="container text-center text-md-start mt-5">
+                    <!-- Grid row -->
+                    <div class="row mt-3">
+                        <!-- Grid column -->
+                        <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
+                            <!-- Content -->
+                            <h6 class="text-uppercase fw-bold mb-4">
+                                <i class="fas fa-gem me-3 mr-1"></i>FPTU Lost&Found
+                            </h6>
+                            <p>
+                                Here you can use rows and columns to organize your footer content. Lorem ipsum
+                                dolor sit amet, consectetur adipisicing elit.
+                            </p>
+                        </div>
+                        <!-- Grid column -->
+
+                        <!-- Grid column -->
+                        <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
+                            <!-- Links -->
+                            <h6 class="text-uppercase fw-bold mb-4">
+                                Products
+                            </h6>
+                            <p>
+                                <a href="#!" class="text-white">Angular</a>
+                            </p>
+                            <p>
+                                <a href="#!" class="text-white">React</a>
+                            </p>
+                            <p>
+                                <a href="#!" class="text-white">Vue</a>
+                            </p>
+                            <p>
+                                <a href="#!" class="text-white">Laravel</a>
+                            </p>
+                        </div>
+                        <!-- Grid column -->
+
+                        <!-- Grid column -->
+                        <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
+                            <!-- Links -->
+                            <h6 class="text-uppercase fw-bold mb-4">
+                                Useful links
+                            </h6>
+                            <p>
+                                <a href="#!" class="text-white">Pricing</a>
+                            </p>
+                            <p>
+                                <a href="#!" class="text-white">Settings</a>
+                            </p>
+                            <p>
+                                <a href="#!" class="text-white">Orders</a>
+                            </p>
+                            <p>
+                                <a href="#!" class="text-white">Help</a>
+                            </p>
+                        </div>
+                        <!-- Grid column -->
+
+                        <!-- Grid column -->
+                        <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
+                            <!-- Links -->
+                            <h6 class="text-uppercase fw-bold mb-4">
+                                Contact
+                            </h6>
+                            <p><i class="fas fa-home me-3"></i> New York, NY 10012, US</p>
+                            <p>
+                                <i class="fas fa-envelope me-3"></i>
+                                info@example.com
+                            </p>
+                            <p><i class="fas fa-phone me-3"></i> + 01 234 567 88</p>
+                            <p><i class="fas fa-print me-3"></i> + 01 234 567 89</p>
+                        </div>
+                        <!-- Grid column -->
+                    </div>
+                    <!-- Grid row -->
+                </div>
+            </section>
+            <!-- Section: Links  -->
+
+            <!-- Copyright -->
+            <div class="text-center text-white p-4">
+                © 2022 Copyright:
+                <a class="text-reset text-white fw-bold" href="https://mdbootstrap.com/">Group 5</a>
+            </div>
+            <!-- Copyright -->
+        </footer>
     <!-- modal -->
 
     <!-- jQuery first, then Popper.js, then Bootstrap JS. -->
