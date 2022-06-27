@@ -66,7 +66,7 @@
             <ul class="navbar-nav container ml-5">
                 <c:if test="${userdata.memberRole eq 1}">
                 <li class="nav-item">
-                    <a class="nav-link" href="#"><span class="fa-solid fa-user"></span> Personal
+                    <a class="nav-link" href="PersonalServlet?uId=${userdata.memberID}"><span class="fa-solid fa-user"></span> Personal
                         Page</a>
                 </li>
                 </c:if>
@@ -88,19 +88,18 @@
 
             </div>
             <div class="tabs tabs--profile">
-                <div class="tab-item active">
-                    Posts
-                </div>
-                <div class="tab-item">
-                    About
-                </div>
-                <div class="line"></div>
-            </div>
-            <!-- tab content -->
-            <div class="tab-content tab-content--profile mt-3">
-                <div style="height: 730px;"s class="tab-pane tab-pane--profile active">
-
-                    <c:forEach var="dt" items="${articlesPersonal}" >
+        <div class="tab-item active">
+            Posts
+        </div>
+        <div class="tab-item">
+            About
+        </div>
+        <div class="line"></div>
+    </div>
+    <!-- tab content -->
+    <div class="tab-content tab-content--profile mt-3">
+        <div class="tab-pane tab-pane--profile active">
+            <c:forEach var="dt" items="${articlesPersonal}" >
                         <div class="pane col-md-2">
                             <div class="pane-img">
                                 <c:if test="${not empty dt.imgUrl}">
@@ -118,9 +117,8 @@
                             </div>
                         </div>
                     </c:forEach>
-                </div>
-           
-            <div class="row tab-pane">
+        </div>
+                    <div class="row tab-pane">
                 <div class="pane-content">
                     <table style="margin-left:40px; margin-top:30px; padding: 10px;">
                         <tr class="pane-content--info">
@@ -155,168 +153,133 @@
 
             </div>
 
+    </div>
+    <!-- Footer -->
+    <footer class="text-center text-lg-start bg-light text-muted">
+        <!-- Section: Social media -->
+        <section class="text-white d-flex justify-content-center justify-content-lg-between p-4 border-bottom">
+            <!-- Left -->
+            <div class="me-5 d-none d-lg-block">
+                <span>Get connected with us on social networks:</span>
+            </div>
+            <!-- Left -->
+
+            <!-- Right -->
+            <div>
+                <a href="" class="me-4 text-reset">
+                    <i class="fab fa-facebook-f text-white"></i>
+                </a>
+                <a href="" class="me-4 text-reset">
+                    <i class="fab fa-twitter text-white"></i>
+                </a>
+                <a href="" class="me-4 text-reset">
+                    <i class="fab fa-google text-white"></i>
+                </a>
+                <a href="" class="me-4 text-reset">
+                    <i class="fab fa-instagram text-white"></i>
+                </a>
+                <a href="" class="me-4 text-reset">
+                    <i class="fab fa-github text-white"></i>
+                </a>
+            </div>
+            <!-- Right -->
+        </section>
+        <!-- Section: Social media -->
+
+        <!-- Section: Links  -->
+        <section class="text-white">
+            <div class="container text-center text-md-start mt-5">
+                <!-- Grid row -->
+                <div class="row mt-3">
+                    <!-- Grid column -->
+                    <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
+                        <!-- Content -->
+                        <h6 class="text-uppercase fw-bold mb-4">
+                            <i class="fas fa-gem me-3 mr-1"></i>FPTU Lost&Found
+                        </h6>
+                        <p>
+                            Here you can use rows and columns to organize your footer content. Lorem ipsum
+                            dolor sit amet, consectetur adipisicing elit.
+                        </p>
+                    </div>
+                    <!-- Grid column -->
+
+                    <!-- Grid column -->
+                    <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
+                        <!-- Links -->
+                        <h6 class="text-uppercase fw-bold mb-4">
+                            Products
+                        </h6>
+                        <p>
+                            <a href="#!" class="text-white">Angular</a>
+                        </p>
+                        <p>
+                            <a href="#!" class="text-white">React</a>
+                        </p>
+                        <p>
+                            <a href="#!" class="text-white">Vue</a>
+                        </p>
+                        <p>
+                            <a href="#!" class="text-white">Laravel</a>
+                        </p>
+                    </div>
+                    <!-- Grid column -->
+
+                    <!-- Grid column -->
+                    <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
+                        <!-- Links -->
+                        <h6 class="text-uppercase fw-bold mb-4">
+                            Useful links
+                        </h6>
+                        <p>
+                            <a href="#!" class="text-white">Pricing</a>
+                        </p>
+                        <p>
+                            <a href="#!" class="text-white">Settings</a>
+                        </p>
+                        <p>
+                            <a href="#!" class="text-white">Orders</a>
+                        </p>
+                        <p>
+                            <a href="#!" class="text-white">Help</a>
+                        </p>
+                    </div>
+                    <!-- Grid column -->
+
+                    <!-- Grid column -->
+                    <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
+                        <!-- Links -->
+                        <h6 class="text-uppercase fw-bold mb-4">
+                            Contact
+                        </h6>
+                        <p><i class="fas fa-home me-3"></i> New York, NY 10012, US</p>
+                        <p>
+                            <i class="fas fa-envelope me-3"></i>
+                            info@example.com
+                        </p>
+                        <p><i class="fas fa-phone me-3"></i> + 01 234 567 88</p>
+                        <p><i class="fas fa-print me-3"></i> + 01 234 567 89</p>
+                    </div>
+                    <!-- Grid column -->
+                </div>
+                <!-- Grid row -->
+            </div>
+        </section>
+        <!-- Section: Links  -->
+
+        <!-- Copyright -->
+        <div class="text-center text-white p-4">
+            © 2022 Copyright:
+            <a class="text-reset text-white fw-bold" href="https://mdbootstrap.com/">Group 5</a>
         </div>
-        <!-- Footer -->
-        <footer class="text-center text-lg-start bg-light text-muted">
-            <!-- Section: Social media -->
-            <section class="text-white d-flex justify-content-center justify-content-lg-between p-4 border-bottom">
-                <!-- Left -->
-                <div class="me-5 d-none d-lg-block">
-                    <span>Get connected with us on social networks:</span>
-                </div>
-                <!-- Left -->
-
-                <!-- Right -->
-                <div>
-                    <a href="" class="me-4 text-reset">
-                        <i class="fab fa-facebook-f text-white"></i>
-                    </a>
-                    <a href="" class="me-4 text-reset">
-                        <i class="fab fa-twitter text-white"></i>
-                    </a>
-                    <a href="" class="me-4 text-reset">
-                        <i class="fab fa-google text-white"></i>
-                    </a>
-                    <a href="" class="me-4 text-reset">
-                        <i class="fab fa-instagram text-white"></i>
-                    </a>
-                    <a href="" class="me-4 text-reset">
-                        <i class="fab fa-github text-white"></i>
-                    </a>
-                </div>
-                <!-- Right -->
-            </section>
-            <!-- Section: Social media -->
-
-            <!-- Section: Links  -->
-            <section class="text-white">
-                <div class="container text-center text-md-start mt-5">
-                    <!-- Grid row -->
-                    <div class="row mt-3">
-                        <!-- Grid column -->
-                        <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
-                            <!-- Content -->
-                            <h6 class="text-uppercase fw-bold mb-4">
-                                <i class="fas fa-gem me-3 mr-1"></i>FPTU Lost&Found
-                            </h6>
-                            <p>
-                                Here you can use rows and columns to organize your footer content. Lorem ipsum
-                                dolor sit amet, consectetur adipisicing elit.
-                            </p>
-                        </div>
-                        <!-- Grid column -->
-
-                        <!-- Grid column -->
-                        <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
-                            <!-- Links -->
-                            <h6 class="text-uppercase fw-bold mb-4">
-                                Products
-                            </h6>
-                            <p>
-                                <a href="#!" class="text-white">Angular</a>
-                            </p>
-                            <p>
-                                <a href="#!" class="text-white">React</a>
-                            </p>
-                            <p>
-                                <a href="#!" class="text-white">Vue</a>
-                            </p>
-                            <p>
-                                <a href="#!" class="text-white">Laravel</a>
-                            </p>
-                        </div>
-                        <!-- Grid column -->
-
-                        <!-- Grid column -->
-                        <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
-                            <!-- Links -->
-                            <h6 class="text-uppercase fw-bold mb-4">
-                                Useful links
-                            </h6>
-                            <p>
-                                <a href="#!" class="text-white">Pricing</a>
-                            </p>
-                            <p>
-                                <a href="#!" class="text-white">Settings</a>
-                            </p>
-                            <p>
-                                <a href="#!" class="text-white">Orders</a>
-                            </p>
-                            <p>
-                                <a href="#!" class="text-white">Help</a>
-                            </p>
-                        </div>
-                        <!-- Grid column -->
-
-                        <!-- Grid column -->
-                        <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
-                            <!-- Links -->
-                            <h6 class="text-uppercase fw-bold mb-4">
-                                Contact
-                            </h6>
-                            <p><i class="fas fa-home me-3"></i> New York, NY 10012, US</p>
-                            <p>
-                                <i class="fas fa-envelope me-3"></i>
-                                info@example.com
-                            </p>
-                            <p><i class="fas fa-phone me-3"></i> + 01 234 567 88</p>
-                            <p><i class="fas fa-print me-3"></i> + 01 234 567 89</p>
-                        </div>
-                        <!-- Grid column -->
-                    </div>
-                    <!-- Grid row -->
-                </div>
-            </section>
-            <!-- Section: Links  -->
-
-            <!-- Copyright -->
-            <div class="text-center text-white p-4">
-                © 2022 Copyright:
-                <a class="text-reset text-white fw-bold" href="https://mdbootstrap.com/">Group 5</a>
-            </div>
-            <!-- Copyright -->
-        </footer>
-        <!-- Footer -->
-        <!-- modal -->
-        <!-- <div id="postModal" class="modal fade" role="dialog">
-            <div class="modal-dialog modal-lg" role="content">
-               
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h3 class="font-strong text-white">Create post</h3>
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    </div>
-                    <div class="modal-body">
-                        <div id="postform" class=" col-sm-6 col-md-12 align-self-center">
-                            <div class="">
-                                <div class="card-body">
-                                    <dl class="">
-                                        <div class="modal-post--user">
-                                            <button class="rounded-circle" type="button" data-toggle="collapse"
-                                                data-target="#Navbar">
-                                                <img class="rounded-circle" src="img/logo.jpg" height="30" width="100%">
-                                            </button>
-                                            <span>User name</span>
-                                        </div>
-                                        <div class="modal-post--input">
-                                            <input type="text" class="form-control form-control-lg form-control-plaintext">
-                                            <input type="file" class="form-control-file border">
-                                        </div>
-                                    </dl>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div> -->
-        <!-- drop down filteer -->
-
-        <!-- jQuery first, then Popper.js, then Bootstrap JS. -->
-        <script src="js/mycode.js"></script>
-        <script src="node_modules/jquery/dist/jquery.slim.min.js"></script>
-        <script src="node_modules/popper.js/dist/umd/popper.min.js"></script>
-        <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
-    </body>
+        <!-- Copyright -->
+    </footer>
+    
+    <!-- jQuery first, then Popper.js, then Bootstrap JS. -->
+    <script src="js/mycode.js"></script>
+    <script src="node_modules/jquery/dist/jquery.slim.min.js"></script>
+    <script src="node_modules/popper.js/dist/umd/popper.min.js"></script>
+    <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+</body>
 
 </html>

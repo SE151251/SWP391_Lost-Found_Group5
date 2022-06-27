@@ -1,7 +1,21 @@
+var comment_hidden = document.getElementById("test-d");
+ var report_hidden = document.getElementById("test-r");
+function comment_dl(){
 
-
-//function display block
-function testds(){
-    document.getElementById('test-d').style.display="block";
-
+    report_hidden.style.display="none";
+    if(    comment_hidden.style.display=="none"){
+        comment_hidden.style.display="block";
+    }
+    else{
+        comment_hidden.style.display="none";
+    }
+}
+function report_dl(){
+    comment_hidden.style.display="none";
+    if(    report_hidden.style.display=="none"){
+        report_hidden.style.display="block";
+    }
+    else{
+        report_hidden.style.display="none";
+    }
 }

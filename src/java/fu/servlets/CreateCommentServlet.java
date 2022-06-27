@@ -67,7 +67,7 @@ public class CreateCommentServlet extends HttpServlet {
                 Comment c = new Comment(newId, art, memCmt, cmtContent, LocalDateTime.now().toString(), 1);              
                 cdao.addNewComment(c);                  
                 request.getRequestDispatcher("ViewDetailServlet?aId="+aId).forward(request, response);
-                return;
+                
                 }
             } else {
                 request.setAttribute("errormessage", "Please login!");

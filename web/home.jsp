@@ -78,7 +78,7 @@
             <ul class="navbar-nav container ml-5">
                 <c:if test="${userdata.memberRole eq 1}">
                 <li class="nav-item">
-                    <a class="nav-link" href="#"><span class="fa-solid fa-user"></span> Personal
+                    <a class="nav-link" href="PersonalServlet?uId=${userdata.memberID}"><span class="fa-solid fa-user"></span> Personal
                         Page</a>
                 </li>
                 </c:if>
@@ -89,13 +89,14 @@
         </div>
 
     </header>
-                        <c:if test="${userdata.memberCount ne 0}">
-                        <p>Tài khoản của bạn bị cảnh cáo lần ${userdata.memberCount}</p>
-                        </c:if>
+                        
                             
     <div class="search-form">
         <form class="search col-md-4">
             <div class="search-field">
+                <c:if test="${userdata.memberCount ne 0}">
+                        <p>Tài khoản của bạn bị cảnh cáo lần ${userdata.memberCount}</p>
+                </c:if>
                 <input type="text" name="keySearch" class="search-input p-1" placeholder="Tìm kiếm ">
             </div>
 
@@ -134,7 +135,7 @@
         </div>  
       
         <div class="tab-item">
-            Chia Sẻ Kinh nghiệm
+            Thông Báo Từ Admin
         </div>
         <div class="line"></div>
     </div>
@@ -159,9 +160,10 @@
                         <c:if test="${dt.articleID eq lah.article.articleID}">
                         <span><a href="#"><c:out value="${lah.hashtag.hashtagName}"/></a></span>
                         </c:if>    
-                    </c:forEach>  
+                    </c:forEach> 
+                        <br/>
                     <a href="ViewDetailServlet?aId=${dt.articleID}">View more >></a>                   
-                    <font-awesome-icon icon="fa-solid fa-phone" />
+                   
                 </div>
             </div>
             </c:forEach>

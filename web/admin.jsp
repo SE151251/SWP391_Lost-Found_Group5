@@ -136,8 +136,8 @@
     <div class="tab-content">
         <a type="button" href="CreateFormServlet" class="center createPost--btn btn rounded-circle">+</a>
         <div class="tab-pane active">
-         <table width="1300" border="2" cellspacing="0" cellpadding="0">
-            <thead>
+            <table class="ad-table mt-5" width="1300" border="2" cellspacing="0" cellpadding="0">
+             <thead class="ad-table--head">
                 <tr>
             <td>Người báo cáo</td>
             <td>ID bài post bị tố cáo</td>
@@ -147,7 +147,7 @@
             <td>Xem chi tiết</td>
             </tr>
             </thead>
-            <tbody>
+            <tbody class="ad-table--body">
                 <c:forEach var="dt" items="${listReportsNotConfirm}" >
                 <tr>
                     <td>${dt.member.memberName}</td>
@@ -162,8 +162,8 @@
         </table>
          </div>
          <div class="tab-pane">
-            <table width="1300" border="2" cellspacing="0" cellpadding="0">
-            <thead>
+             <table class="ad-table mt-5" width="1300" border="2" cellspacing="0" cellpadding="0">
+            <thead class="ad-table--head">
             <td>Người báo cáo</td>
             <td>ID bài post bị tố cáo</td>
             <td>Người bị tố cáo</td>
@@ -172,7 +172,7 @@
             <td>Thời gian xử lý</td>
             <td>Xem chi tiết</td>
             </thead>
-            <tbody>
+            <tbody class="ad-table--body">
                 <c:forEach var="dt" items="${listReportsConfirmed}" >
                 <tr>
                     <td>${dt.member.memberName}</td>

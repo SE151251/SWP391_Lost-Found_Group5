@@ -112,16 +112,16 @@ public class CreateServlet extends HttpServlet {
                     }
                 }
                 // Xử lý hashtag 
-//                String regex = "#\\w*";
-//                Pattern p = Pattern.compile(regex);
-//                Matcher matcher = p.matcher(content);
-//                while (matcher.find()) {
-//                    String hName = matcher.group();
-//                    if (hName.trim().length() > 21) {
-//                        contentError = "Hashtag must be from 1 to 21 characters!";
-//                        valid = false;
-//                    }
-//                }
+                String regex = "#\\w*";
+                Pattern p = Pattern.compile(regex);
+                Matcher matcher = p.matcher(content);
+                while (matcher.find()) {
+                    String hName = matcher.group();
+                    if (hName.trim().length() > 21) {
+                        contentError = "Hashtag must be from 1 to 21 characters!";
+                        valid = false;
+                    }
+                }
 
                 if (valid) {
                     do {
@@ -152,9 +152,9 @@ public class CreateServlet extends HttpServlet {
                     // if (aDao.createNewArticle(a)) {
                     String partern = ".*#.*";
                     //xử lý hashtag
-                            String regex = "#\\w*";
-                            Pattern p = Pattern.compile(regex);
-                            Matcher matcher = p.matcher(content);
+                            //String regex = "#\\w*";
+                            p = Pattern.compile(regex);
+                            matcher = p.matcher(content);
                     HashtagDAO hDao = new HashtagDAO();
                     ArticleHashtagDAO ahDao = new ArticleHashtagDAO();
                     // Tạo 1 mảng lưu các hashtag
@@ -192,7 +192,7 @@ public class CreateServlet extends HttpServlet {
 
                         //System.out.println(matcher.group());                       
                     }
-                    //Tạo bài viết và tạo lk cho hashtag và bài viết
+                    //Tạo bài viết và tạo lien ket cho hashtag và bài viết
                     aDao.createNewArticle(a);
                     for (Hashtag hashtag : lstHashtag) {
                         ahDao.addNewArticleHashtag(a, hashtag);

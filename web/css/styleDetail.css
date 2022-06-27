@@ -1,4 +1,3 @@
-
 * {
   padding: 0px;
   margin: 0px;
@@ -40,7 +39,8 @@
 .activity-icons div {
   display: inline-flex;
   align-items: center;
-  margin-right: 30px;
+  margin-right: 8fpx;
+  box-sizing: border-box;
 }
 
 .activity-icons div img {
@@ -83,18 +83,21 @@
 /*test comment display
 */
 .test-c {
-  display: none;
+  display: none; 
 
+}
+.test-report{
+    display:none;
 }
 
 .body_comment {
-  padding: 0 8px;
-  font-size: 14px;
-  display: block;
-  line-height: 25px;
-  word-break: break-word;
+    font-size: 14px;
+    display: flex;
+    flex-direction: row;
+    line-height: 25px;
+    word-break: break-word;
+    padding: 0px 8px;
 }
-
 
 .avatar_comment img {
   height: 48px;
@@ -102,8 +105,7 @@
 }
 
 .box_comment {
-  display: block;
-  position: relative;
+ 
   line-height: 1.358;
   word-break: break-word;
   border: 1px solid #d3d6db;
@@ -113,8 +115,7 @@
   cursor: text;
   font-family: Helvetica, Arial, sans-serif;
   font-size: 16px;
-  padding: 0;
-  margin-left: -50px;
+  margin-left:5px; 
 }
 
 .box_comment textarea {
@@ -136,7 +137,54 @@
   display: block;
   overflow: hidden;
 }
+.body_report {
+    font-size: 14px;
+    display: flex;
+    flex-direction: row;
+    line-height: 25px;
+    word-break: break-word;
+    padding: 0px 8px;
+    
+}
+.avatar_report img {
+  height: 48px;
+  width: 48px;
+}
 
+.box_report {
+  
+  line-height: 1.358;
+  word-break: break-word;
+  border: 1px solid #d3d6db;
+  word-wrap: break-word;
+  background: #fff;
+  box-sizing: border-box;
+  cursor: text;
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  
+  margin-left: 5px;
+}
+
+.box_report textarea {
+  min-height: 40px;
+  padding: 12px 8px;
+  width: 100%;
+  border: none;
+  resize: none;
+}
+
+.box_report textarea:focus {
+  outline: none !important;
+}
+
+.box_report .box_post {
+  border-top: 1px solid #d3d6db;
+  background: #f5f6f7;
+  padding: 8px;
+  display: block;
+  overflow: hidden;
+}
 .box_comment label {
   display: inline-block;
   vertical-align: middle;
@@ -282,6 +330,11 @@ background: linear-gradient(to right, #f5af19, #f12711); /* W3C, IE 10+/ Edge, F
 	padding: 50px 0px 50px 0px;
 	border-bottom: 1px ridge;
 	min-height: 400px;
+}
+.row{
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
   
 .footer {
@@ -462,17 +515,7 @@ background: linear-gradient(to right, #f5af19, #f12711); color:#fff;
   height: 4px;
   
 } */
-@keyframes gradient {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
-}
+
 footer{
   margin-top: 50px;
   text-align: center;
@@ -546,9 +589,7 @@ img{
 #postform{
   min-height: 730px;
 }
- img{
-    width:5%;
-}
+ 
 .user-comment{
     display: flex;
     flex-direction:row
@@ -561,7 +602,7 @@ img{
   
 }
 .comment-content{
-    margin-left: 7%;
+    margin-left: 9%;
 }
 .comment-content .content{
     margin-left: 25px;
@@ -575,4 +616,57 @@ img{
   font-size: 14px;
   line-height: 1.358;
   margin:0;
+}
+.tab-report {
+    margin-top: -11px;
+    margin-right: 108px;
+    margin-bottom: 8px;
+    margin-left: 59px;
+    padding: 1rem;
+    border-width: 3px;
+    border-style: solid;
+    border-color: rgb(51, 51, 51);
+    border-image: initial;
+    border-radius: 2% 6% 5% 4% / 1% 1% 2% 4%;
+    background: rgb(255, 255, 255);
+}
+.title_report p {
+    font-weight: 600;
+    white-space: nowrap;
+    color: rgb(54, 88, 153);
+    cursor: pointer;
+    font-size: 14px;
+    line-height: 1.358;
+    text-decoration: none;
+    margin: 0px;
+}
+.title_report {
+    margin-left: 12px;
+}
+.avatar_report img {
+    height: 48px;
+    width: 48px;
+}
+img {
+    vertical-align: middle;
+    border-style: none;
+}
+.user-report {
+    display: flex;
+    flex-direction: row;
+}
+.report-content p {
+    margin-left: 100px;
+}
+.tab-commnent{
+    margin-left: 61px;
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 0px 10px;
+    margin-bottom: -15px;
+    box-sizing: inherit;
+    padding: 15px;
+    font-weight: 500;
+    line-height: 1.0em;
+    margin-top: 13px;
+    width: 83%;
+    word-wrap : break-word;
 }
