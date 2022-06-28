@@ -135,7 +135,7 @@
         </div>  
       
         <div class="tab-item">
-            Thông Báo Từ Admin
+            Chia sẻ kinh nghiệm
         </div>
         <div class="line"></div>
     </div>
@@ -158,7 +158,7 @@
                     <a href="SearchServlet?txtItem=${dt.item.itemID}">    <p><span style="padding: 5px 10px 5px 10px" class="badge badge-pill badge-primary"><c:out value="${dt.item.itemName}"/></span></p>   </a>                                 
                     <c:forEach var="lah" items="${listAH}" >
                         <c:if test="${dt.articleID eq lah.article.articleID}">
-                        <span><a href="#"><c:out value="${lah.hashtag.hashtagName}"/></a></span>
+                        <span><a href="SearchServlet?hId=${lah.hashtag.hashtagID}"><c:out value="${lah.hashtag.hashtagName}"/></a></span>
                         </c:if>    
                     </c:forEach> 
                         <br/>
@@ -181,7 +181,13 @@
                     <p style="font-size: 12px">Thời gian: <c:out value="${dt.postTime}"/></p>
                     <p style="font-size: 15px; font-weight: bold"><c:out value="${dt.title}"/></p>
                     <a href="SearchServlet?txtItem=${dt.item.itemID}">    <p><span style="padding: 5px 10px 5px 10px" class="badge badge-pill badge-primary"><c:out value="${dt.item.itemName}"/></span></p>   </a>                                        
-                     <a href="ViewDetailServlet?aId=${dt.articleID}">View more >></a> 
+                    <c:forEach var="lah" items="${listAH}" >
+                        <c:if test="${dt.articleID eq lah.article.articleID}">
+                        <span><a href="SearchServlet?hId=${lah.hashtag.hashtagID}"><c:out value="${lah.hashtag.hashtagName}"/></a></span>
+                        </c:if>    
+                    </c:forEach>  
+                        <br/>
+                    <a href="ViewDetailServlet?aId=${dt.articleID}">View more >></a> 
 
                 </div>
             </div>
@@ -200,7 +206,14 @@
                 <div class="pane-content">
                     <p style="font-size: 12px">Thời gian: <c:out value="${dt.postTime}"/></p>
                     <p style="font-size: 15px; font-weight: bold"><c:out value="${dt.title}"/></p>                                                        
-                     <a href="ViewDetailServlet?aId=${dt.articleID}">View more >></a>                    
+                     <c:forEach var="lah" items="${listAH}" >
+                        <c:if test="${dt.articleID eq lah.article.articleID}">
+                            
+                        <span><a href="SearchServlet?hId=${lah.hashtag.hashtagID}"><c:out value="${lah.hashtag.hashtagName}"/></a></span>
+                        </c:if>    
+                    </c:forEach>  
+                        <br/>
+                    <a href="ViewDetailServlet?aId=${dt.articleID}">View more >></a>                    
                 </div>
             </div>
             </c:forEach>

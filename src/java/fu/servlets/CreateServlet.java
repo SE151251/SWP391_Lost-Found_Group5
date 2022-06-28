@@ -118,7 +118,7 @@ public class CreateServlet extends HttpServlet {
                 while (matcher.find()) {
                     String hName = matcher.group();
                     if (hName.trim().length() > 21) {
-                        contentError = "Hashtag must be from 1 to 21 characters!";
+                        contentError = "Hashtag name cannot exceed 20 characters!";
                         valid = false;
                     }
                 }

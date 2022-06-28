@@ -772,6 +772,156 @@ public class ArticleDAO {
         }
         return lb;
     }
+    // Search all post find voi hashtag
+    public ArrayList<Article> searchAllArticlesFindByHashtag(String hId) throws ClassNotFoundException, SQLException, Exception {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        ArrayList<Article> lb = new ArrayList<>();
+        try {
+            con = DBUtils.makeConnection();
+            if (con != null) {
+                String sql = "select A.ArticleID,A.ArticleTitle, A.ArticleContent, A.ImgURL, A.PostTime, A.ArticleStatus, A.MemberID, A.ArticleTypeID, A.ItemID\n" +
+                            "from Article A inner join ArticleHashtag AH on A.ArticleID = AH.ArticleID\n" +
+                            "				inner join Hashtag H on AH.HashtagID = H.HashtagID\n" +
+                            "where H.HashtagID = ? and A.ArticleTypeID = 1\n" +
+                            "Order By PostTime DESC";
+                stm = con.prepareStatement(sql);
+                stm.setString(1, hId);
+                rs = stm.executeQuery();
+                while (rs.next()) {
+                    String articleId = rs.getString("ArticleID");
+                    String title = rs.getString("ArticleTitle");
+                    String articleContent = rs.getString("ArticleContent");
+                    String articleURL = rs.getString("ImgURL");
+                    String articleTime = rs.getString("PostTime");                    
+                    int articleStatus = rs.getInt("ArticleStatus");
+                    String memberId = rs.getString("MemberID");
+                    int articleTypeId = rs.getInt("ArticleTypeID");
+                    int itemId = rs.getInt("ItemID");
+                    MemberDAO mdao = new MemberDAO();
+                    Member m = mdao.find(memberId);
+                    ItemTypeDAO idao = new ItemTypeDAO();
+                    Item i = idao.getItemByID(itemId);
+                    ArticleTypeDAO adao = new ArticleTypeDAO();
+                    ArticleType a = adao.getArticleTypeByID(articleTypeId);
+                    Article art = new Article(articleId, title, articleContent, articleURL, articleTime, articleStatus, i, m, a);
+                    lb.add(art);
+                }
+            }
+        } finally {
+            if (rs != null) {
+                rs.close();
+            }
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return lb;
+    }
+    // Search all post find voi hashtag
+    public ArrayList<Article> searchAllArticlesReturnByHashtag(String hId) throws ClassNotFoundException, SQLException, Exception {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        ArrayList<Article> lb = new ArrayList<>();
+        try {
+            con = DBUtils.makeConnection();
+            if (con != null) {
+                String sql = "select A.ArticleID,A.ArticleTitle, A.ArticleContent, A.ImgURL, A.PostTime, A.ArticleStatus, A.MemberID, A.ArticleTypeID, A.ItemID\n" +
+                            "from Article A inner join ArticleHashtag AH on A.ArticleID = AH.ArticleID\n" +
+                            "				inner join Hashtag H on AH.HashtagID = H.HashtagID\n" +
+                            "where H.HashtagID = ? and A.ArticleTypeID = 2\n" +
+                            "Order By PostTime DESC";
+                stm = con.prepareStatement(sql);
+                stm.setString(1, hId);
+                rs = stm.executeQuery();
+                while (rs.next()) {
+                    String articleId = rs.getString("ArticleID");
+                    String title = rs.getString("ArticleTitle");
+                    String articleContent = rs.getString("ArticleContent");
+                    String articleURL = rs.getString("ImgURL");
+                    String articleTime = rs.getString("PostTime");                    
+                    int articleStatus = rs.getInt("ArticleStatus");
+                    String memberId = rs.getString("MemberID");
+                    int articleTypeId = rs.getInt("ArticleTypeID");
+                    int itemId = rs.getInt("ItemID");
+                    MemberDAO mdao = new MemberDAO();
+                    Member m = mdao.find(memberId);
+                    ItemTypeDAO idao = new ItemTypeDAO();
+                    Item i = idao.getItemByID(itemId);
+                    ArticleTypeDAO adao = new ArticleTypeDAO();
+                    ArticleType a = adao.getArticleTypeByID(articleTypeId);
+                    Article art = new Article(articleId, title, articleContent, articleURL, articleTime, articleStatus, i, m, a);
+                    lb.add(art);
+                }
+            }
+        } finally {
+            if (rs != null) {
+                rs.close();
+            }
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return lb;
+    }
+    // Search all post find voi hashtag
+    public ArrayList<Article> searchAllArticlesShareByHashtag(String hId) throws ClassNotFoundException, SQLException, Exception {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        ArrayList<Article> lb = new ArrayList<>();
+        try {
+            con = DBUtils.makeConnection();
+            if (con != null) {
+                String sql = "select A.ArticleID, A.ArticleTitle, A.ArticleContent, A.ImgURL, A.PostTime, A.ArticleStatus, A.MemberID, A.ArticleTypeID, A.ItemID\n" +
+                            "from Article A inner join ArticleHashtag AH on A.ArticleID = AH.ArticleID\n" +
+                            "				inner join Hashtag H on AH.HashtagID = H.HashtagID\n" +
+                            "where H.HashtagID = ? and A.ArticleTypeID = 3\n" +
+                            "Order By PostTime DESC";
+                stm = con.prepareStatement(sql);
+                stm.setString(1, hId);
+                rs = stm.executeQuery();
+                while (rs.next()) {
+                    String articleId = rs.getString("ArticleID");
+                    String title = rs.getString("ArticleTitle");
+                    String articleContent = rs.getString("ArticleContent");
+                    String articleURL = rs.getString("ImgURL");
+                    String articleTime = rs.getString("PostTime");                    
+                    int articleStatus = rs.getInt("ArticleStatus");
+                    String memberId = rs.getString("MemberID");
+                    int articleTypeId = rs.getInt("ArticleTypeID");
+                    int itemId = rs.getInt("ItemID");
+                    MemberDAO mdao = new MemberDAO();
+                    Member m = mdao.find(memberId);
+                    ItemTypeDAO idao = new ItemTypeDAO();
+                    Item i = idao.getItemByID(itemId);
+                    ArticleTypeDAO adao = new ArticleTypeDAO();
+                    ArticleType a = adao.getArticleTypeByID(articleTypeId);
+                    Article art = new Article(articleId, title, articleContent, articleURL, articleTime, articleStatus, i, m, a);
+                    lb.add(art);
+                }
+            }
+        } finally {
+            if (rs != null) {
+                rs.close();
+            }
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return lb;
+    }
     // Lấy all bài viết tìm đồ mà member đã đăng
     public ArrayList<Article> getAllArticlesFindByMemberID(Member m) throws ClassNotFoundException, SQLException, Exception {
         Connection con = null;

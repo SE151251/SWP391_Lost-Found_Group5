@@ -103,6 +103,31 @@ public class HashtagDAO {
         }
         return result;
     }
+    public List<Hashtag> getAllHashtagByArticleID(String aId) throws Exception{
+        List<Hashtag> result = null;
+        try {         
+            con = DBUtils.makeConnection();
+            if(con!=null){
+                String sql = "select H.HashtagID, H.HashtagName \n" +
+                            "from Article A inner join ArticleHashtag AH on A.ArticleID = AH.ArticleID\n" +
+                            "inner join Hashtag H on AH.HashtagID = H.HashtagID\n" +
+                            "where A.ArticleID = ?";          
+            preStm = con.prepareStatement(sql);
+            preStm.setString(1, aId);
+            rs = preStm.executeQuery(); 
+            result = new ArrayList<>();
+            while (rs.next()){
+                String hId = rs.getString("HashtagID");
+                String hName = rs.getString("HashtagName");    
+                Hashtag h = new Hashtag(hId, hName);
+                result.add(h);
+               }
+            }
+        } finally {
+            closeConnection();
+        }
+        return result;
+    }
     public boolean addNewHashtag(Hashtag h) throws SQLException {
         Connection con = null;
         PreparedStatement stm = null;

@@ -7,12 +7,15 @@ package fu.servlets;
 
 import fu.daos.ArticleDAO;
 import fu.daos.CommentDAO;
+import fu.daos.HashtagDAO;
 import fu.daos.MemberDAO;
 import fu.daos.ReportDAO;
 import fu.entities.Article;
+import fu.entities.Hashtag;
 import fu.entities.Member;
 import fu.entities.Report;
 import java.io.IOException;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -44,6 +47,9 @@ public class ViewDetailServlet extends HttpServlet {
                 request.setAttribute("postDetail", a);
                 CommentDAO cdao = new CommentDAO();
                 request.setAttribute("listCmt", cdao.getAllCommentsByArticles(a));
+                HashtagDAO hDao = new HashtagDAO();
+                List<Hashtag> listAH = hDao.getAllHashtagByArticleID(aId);
+                request.setAttribute("listAH", listAH);
                 MemberDAO mdao = new MemberDAO();
                 ReportDAO rdao = new ReportDAO();
                 Report r = rdao.checkReport(aId, member.getMemberID());

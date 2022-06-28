@@ -6,8 +6,10 @@
 package fu.servlets;
 
 import fu.daos.ArticleDAO;
+import fu.daos.ArticleHashtagDAO;
 import fu.daos.ItemTypeDAO;
 import fu.entities.Article;
+import fu.entities.ArticleHashTag;
 import fu.entities.Item;
 import fu.entities.Member;
 import java.io.IOException;
@@ -39,6 +41,7 @@ public class SearchServlet extends HttpServlet {
                 // Xử lý loại đồ cần filter
                 String itemId = request.getParameter("txtItem");
                 String key = request.getParameter("keySearch");
+                String hId = request.getParameter("hId");
                 ArticleDAO adao = new ArticleDAO();
                 if(itemId != null){
                 ItemTypeDAO iDao = new ItemTypeDAO();
@@ -52,6 +55,9 @@ public class SearchServlet extends HttpServlet {
                 ItemTypeDAO itDao = new ItemTypeDAO();
                 List<Item> listI = itDao.getAllItems();
                 request.setAttribute("ListItemType", listI);
+                ArticleHashtagDAO ahDao = new ArticleHashtagDAO();
+                List<ArticleHashTag> listAH = ahDao.getAllArticleHashtag();
+                request.setAttribute("listAH", listAH);
                 }
                 else if(key !=null){
                 List<Article> listArtsFind = adao.searchAllArticlesFindByName(key);
@@ -62,7 +68,23 @@ public class SearchServlet extends HttpServlet {
                 request.setAttribute("articlesShare", listArtsShare); 
                 ItemTypeDAO itDao = new ItemTypeDAO();
                 List<Item> listI = itDao.getAllItems();
+                request.setAttribute("ListItemType", listI);
+                ArticleHashtagDAO ahDao = new ArticleHashtagDAO();
+                List<ArticleHashTag> listAH = ahDao.getAllArticleHashtag();
+                request.setAttribute("listAH", listAH);
+                } else if(hId!=null){
+                List<Article> listArtsFind = adao.searchAllArticlesFindByHashtag(hId);
+                request.setAttribute("articlesFind", listArtsFind); 
+                List<Article> listArtsReturn = adao.searchAllArticlesReturnByHashtag(hId);
+                request.setAttribute("articlesReturn", listArtsReturn); 
+                List<Article> listArtsShare = adao.searchAllArticlesShareByHashtag(hId);
+                request.setAttribute("articlesShare", listArtsShare); 
+                ItemTypeDAO itDao = new ItemTypeDAO();
+                List<Item> listI = itDao.getAllItems();
                 request.setAttribute("ListItemType", listI);  
+                ArticleHashtagDAO ahDao = new ArticleHashtagDAO();
+                List<ArticleHashTag> listAH = ahDao.getAllArticleHashtag();
+                request.setAttribute("listAH", listAH);
                 }
                 
             } else {

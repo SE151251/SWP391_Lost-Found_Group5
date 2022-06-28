@@ -79,7 +79,7 @@
             <div class="user-profile">                
                 <img src="${postDetail.member.picture}" alt="">
                 <div>
-                    <p><a href="PersonalServlet?uId=${postDetail.member.memberID}">${userdata.memberName}</a></p>
+                    <p><a href="PersonalServlet?uId=${postDetail.member.memberID}">${postDetail.member.memberName}</a></p>
                     <small>${postDetail.postTime}</small>
                 </div>
             </div>
@@ -88,18 +88,25 @@
         <div class="status-field">
             <pre style="font-size: 20px; margin-top: 15px;">${postDetail.articleContent}</pre>
             <div style="width: 400px">
-            <img style="width: 174%" src="images/${postDetail.imgUrl}" alt="">
-            <span>Status: 
-            <c:if test="${postDetail.articleStatus eq 1}">Active</c:if>
-            <c:if test="${postDetail.articleStatus eq 0}">Closed</c:if>
+            
+            <c:forEach var="lah" items="${listAH}" >
+            <span><a href="SearchServlet?hId=${lah.hashtagID}"><c:out value="${lah.hashtagName}"/></a></span>                          
+            </c:forEach> 
+            <br/>
+            <span>Trạng thái bài viết: 
+            <c:if test="${postDetail.articleStatus eq 1}">Đang hoạt động</c:if>
+            <c:if test="${postDetail.articleStatus eq 0}">Đã đóng</c:if>
             </span>
+            <img style="width: 174%" src="images/${postDetail.imgUrl}" alt="">
             </div>
         </div>
         <div class="post-reaction">
             <div class="activity-icons">
+                <c:if test="${postDetail.articleStatus eq 1}">
                 <div onclick="comment_dl()">
                     <img src="images/comments.png" alt="">Comment
                 </div>
+                </c:if>
             <c:if test="${userdata.memberRole eq 1 && userdata.memberID ne postDetail.member.memberID}">
                 <div onclick="report_dl()">
                 <div><img src="images/report.png" alt="">Report</div>
@@ -213,7 +220,7 @@
                 <div class="box_report ">
                     <form action="CreateReportServlet">
                     <textarea class="reportar" name="txtReport" rows="4" cols="100" placeholder="Add a report..."></textarea>
-                    
+                    <font color="red"> ${errorReport} </font><br/>
                     <div class="box_post">
                         <div class="pull-left">
                         </div>
@@ -221,7 +228,7 @@
                             <span>
                             </span>
                             <input type="hidden" name="memberReport" value="${userdata.memberID}"/>
-                             <input type="hidden" name="aId" value="${postDetail.articleID}"/>
+                    <input type="hidden" name="aId" value="${postDetail.articleID}"/>
                              <input type="submit" value="Post"/>
                            
                         </div>
@@ -289,126 +296,7 @@
         
     </div>
         
-       <!-- Footer -->
-    <footer class="text-center text-lg-start bg-light text-muted">
-        <!-- Section: Social media -->
-        <section class="text-white d-flex justify-content-center justify-content-lg-between p-4 border-bottom">
-            <!-- Left -->
-            <div class="me-5 d-none d-lg-block">
-                <span>Get connected with us on social networks:</span>
-            </div>
-            <!-- Left -->
-
-            <!-- Right -->
-            <div>
-                <a href="" class="me-4 text-reset">
-                    <i class="fab fa-facebook-f text-white"></i>
-                </a>
-                <a href="" class="me-4 text-reset">
-                    <i class="fab fa-twitter text-white"></i>
-                </a>
-                <a href="" class="me-4 text-reset">
-                    <i class="fab fa-google text-white"></i>
-                </a>
-                <a href="" class="me-4 text-reset">
-                    <i class="fab fa-instagram text-white"></i>
-                </a>
-                <a href="" class="me-4 text-reset">
-                    <i class="fab fa-github text-white"></i>
-                </a>
-            </div>
-            <!-- Right -->
-        </section>
-        <!-- Section: Social media -->
-
-        <!-- Section: Links  -->
-        <section class="text-white">
-            <div class="container text-center text-md-start mt-5">
-                <!-- Grid row -->
-                <div class="row mt-3">
-                    <!-- Grid column -->
-                    <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
-                        <!-- Content -->
-                        <h6 class="text-uppercase fw-bold mb-4">
-                            <i class="fas fa-gem me-3 mr-1"></i>FPTU Lost&Found
-                        </h6>
-                        <p>
-                            Here you can use rows and columns to organize your footer content. Lorem ipsum
-                            dolor sit amet, consectetur adipisicing elit.
-                        </p>
-                    </div>
-                    <!-- Grid column -->
-
-                    <!-- Grid column -->
-                    <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
-                        <!-- Links -->
-                        <h6 class="text-uppercase fw-bold mb-4">
-                            Products
-                        </h6>
-                        <p>
-                            <a href="#!" class="text-white">Angular</a>
-                        </p>
-                        <p>
-                            <a href="#!" class="text-white">React</a>
-                        </p>
-                        <p>
-                            <a href="#!" class="text-white">Vue</a>
-                        </p>
-                        <p>
-                            <a href="#!" class="text-white">Laravel</a>
-                        </p>
-                    </div>
-                    <!-- Grid column -->
-
-                    <!-- Grid column -->
-                    <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
-                        <!-- Links -->
-                        <h6 class="text-uppercase fw-bold mb-4">
-                            Useful links
-                        </h6>
-                        <p>
-                            <a href="#!" class="text-white">Pricing</a>
-                        </p>
-                        <p>
-                            <a href="#!" class="text-white">Settings</a>
-                        </p>
-                        <p>
-                            <a href="#!" class="text-white">Orders</a>
-                        </p>
-                        <p>
-                            <a href="#!" class="text-white">Help</a>
-                        </p>
-                    </div>
-                    <!-- Grid column -->
-
-                    <!-- Grid column -->
-                    <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
-                        <!-- Links -->
-                        <h6 class="text-uppercase fw-bold mb-4">
-                            Contact
-                        </h6>
-                        <p><i class="fas fa-home me-3"></i> New York, NY 10012, US</p>
-                        <p>
-                            <i class="fas fa-envelope me-3"></i>
-                            info@example.com
-                        </p>
-                        <p><i class="fas fa-phone me-3"></i> + 01 234 567 88</p>
-                        <p><i class="fas fa-print me-3"></i> + 01 234 567 89</p>
-                    </div>
-                    <!-- Grid column -->
-                </div>
-                <!-- Grid row -->
-            </div>
-        </section>
-        <!-- Section: Links  -->
-
-        <!-- Copyright -->
-        <div class="text-center text-white p-4">
-            © 2022 Copyright:
-            <a class="text-reset text-white fw-bold" href="https://mdbootstrap.com/">Group 5</a>
-        </div>
-        <!-- Copyright -->
-    </footer>
+       
                       
         <script src="js/function.js"></script>
 
