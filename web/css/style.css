@@ -108,7 +108,7 @@ address {
                         visibility: visible;
                     }
 .search{
-  transform: translateX(30%);
+  transform: translateX(95%);
   display: flex;
   align-items: flex-start;
 }
@@ -121,7 +121,7 @@ address {
 .search-input{
   border: solid 1px orange;
   border-radius: 5px;
-  width: 1400px;
+  width: 700px;
 }
 #Navbar{
   z-index: 5;
@@ -278,16 +278,23 @@ display: none;
 img{
   
 }
-.pane-content p{
-  height: 25px;
+.pane-content p, .hashtag-viewmore{
+  line-height: 1.2;
+  height: 22px;
   word-break: break-all;
   word-wrap: normal;
   overflow: hidden;
   text-overflow: ellipsis;
   text-align: left;
 }
-.pane-content p{
-  
+.hashtag-viewmore{
+    display: block;
+    text-align: left;
+    transform: translateY(-12px);
+}
+
+.pane-content p:hover, .hashtag-viewmore:hover{
+  overflow: visible;
 }
 /* modal */
 .form-control{
@@ -453,5 +460,11 @@ img{
 .ad-table--body{
     background: white;
     color: orange;
+}
+.acc-warning{
+    text-align: center;
+    color: red;
+    font-weight: 600;
+    font-size: 24px;
 }
 

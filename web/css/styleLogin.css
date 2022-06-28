@@ -7,12 +7,12 @@ body {
   .hero-image {
     background-image: url("../images/fptHcm.png");
     background-color: #cccccc;
-    height: 835px;
+    height: 952px;
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
     position: relative;
-    width: 99%;
+    width: 100%;
     padding: 0;
     margin: 0;
   }

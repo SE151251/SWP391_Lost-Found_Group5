@@ -1,3 +1,4 @@
+<%@taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%-- <!DOCTYPE html>
@@ -92,11 +93,11 @@
                         
                             
     <div class="search-form">
-        <form class="search col-md-4">
-            <div class="search-field">
-                <c:if test="${userdata.memberCount ne 0}">
-                        <p>Tài khoản của bạn bị cảnh cáo lần ${userdata.memberCount}</p>
+        <c:if test="${userdata.memberCount ne 0}">
+            <p class="acc-warning">Tài khoản của bạn bị cảnh cáo lần ${userdata.memberCount}</p>
                 </c:if>
+        <form class="search col-md-4">
+            <div class="search-field">   
                 <input type="text" name="keySearch" class="search-input p-1" placeholder="Tìm kiếm ">
             </div>
 
@@ -156,14 +157,16 @@
                     <p style="font-size: 12px">Thời gian: <c:out value="${dt.postTime}"/></p>                 
                     <p style="font-size: 15px; font-weight: bold"><c:out value="${dt.title}"/></p>
                     <a href="SearchServlet?txtItem=${dt.item.itemID}">    <p><span style="padding: 5px 10px 5px 10px" class="badge badge-pill badge-primary"><c:out value="${dt.item.itemName}"/></span></p>   </a>                                 
+                   <div class="hashtag-viewmore">
                     <c:forEach var="lah" items="${listAH}" >
                         <c:if test="${dt.articleID eq lah.article.articleID}">
                         <span><a href="SearchServlet?hId=${lah.hashtag.hashtagID}"><c:out value="${lah.hashtag.hashtagName}"/></a></span>
                         </c:if>    
                     </c:forEach> 
-                        <br/>
+                   </div>
+                       
                     <a href="ViewDetailServlet?aId=${dt.articleID}">View more >></a>                   
-                   
+                  
                 </div>
             </div>
             </c:forEach>
