@@ -181,7 +181,7 @@
                     <td>${dt.reportContent}</td>
                     <td>${dt.reportTime}</td>
                     <td>${dt.confirmTime}</td>
-                    <td><a href="ViewDetailServlet?aId=${dt.article.articleID}">View more >></a></td>
+                    <td><a href="ViewDetailServlet?aId=${dt.article.articleID}&memReportID=${dt.member.memberID}">View more >></a></td>
                 </tr>
                 </c:forEach>
             </tbody>

@@ -1,8 +1,5 @@
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -50,7 +47,7 @@
                 <li class="nav-item active">
                     <a class="nav-link" href="AdminListServlet"><i class="fa fa-home mr-1"></i> Home </a>
                 </li>
-                 </c:if>
+                </c:if>
             </ul>
 
 
@@ -102,17 +99,17 @@
         </div>
         <div class="post-reaction">
             <div class="activity-icons">
-                <c:if test="${postDetail.articleStatus eq 1}">
+             <c:if test="${postDetail.articleStatus eq 1}">
                 <div onclick="comment_dl()">
                     <img src="images/comments.png" alt="">Comment
-                </div>
-                </c:if>
-            <c:if test="${userdata.memberRole eq 1 && userdata.memberID ne postDetail.member.memberID}">
+                </div> 
+              </c:if>
+            <c:if test="${userdata.memberRole eq 1 && userdata.memberID ne postDetail.member.memberID}"> 
                 <div onclick="report_dl()">
                 <div><img src="images/report.png" alt="">Report</div>
                 </div>
-                </c:if>
-            <c:if test="${userdata.memberRole eq 0}">
+            </c:if> 
+            <c:if test="${userdata.memberRole eq 0 && viewReport.status eq 1}">
                             <div>
                                 <a href="WarningMemberServlet?adminAction=ban&aId=${postDetail.articleID}">
                                 <img src="images/banned.png" alt="">Banned</a>
@@ -145,48 +142,14 @@
                 <div>
                     <p>Bạn đã report bài viết này rồi</p>
                 </div>
-            </c:if>
-        <%--    <c:if test="${checkReport eq null && postDetail.member.memberID ne userdata.memberID && userdata.memberID eq 1}">
-            <%-- Tạo report --%>
-         <%--       <div>
-                <form action = "CreateReportServlet">
-                    <textarea cols="36" rows="6" name="txtReport" placeholder="Write your reason here..." maxlength="200" minlength="10"></textarea>
-                     <font color="red"> ${errorReport} </font><br/>
-                    <input type="hidden" name="memberReport" value="${userdata.memberID}"/>
-                    <input type="hidden" name="aId" value="${postDetail.articleID}"/>
-                    <input type="submit" value="Submit"/>
-                </form>
-            </div>
-            </c:if> --%>
-            <%-- Xem report bằng account Admin 
-            <c:if test="${not empty viewReport && userdata.memberID eq 0}">
-                <div>
-                <div class="user-profile">                
-                <img src="${viewReport.member.picture}" alt="">
-                <div>
-                    <p><a href="PersonalServlet?uId=${viewReport.member.memberID}">${viewReport.member.memberName}</a></p>
-                    <small>${viewReport.reportTime}</small>
-                </div>
-                </div>
-                <pre><c:out value="${viewReport.reportContent}"/></pre>
-                <a href="WarningMemberServlet?adminAction=warn&aId=${postDetail.articleID}">Cảnh cáo lần ${postDetail.member.memberCount + 1}</a>
-                <a href="WarningMemberServlet?adminAction=ban&aId=${postDetail.articleID}">Chặn tài khoản này</a>
-                <a href="WarningMemberServlet?adminAction=none&aId=${postDetail.articleID}">Không có vấn đề</a>
-                </div>
-            </c:if>
-            --%>
-            
-            
-
+            </c:if>                      
     <div class="test-c " id="test-d">
-        <div class="body_comment ">
-            
+        <div class="body_comment ">       
                 <div class="avatar_comment  ">
                     <img src="${userdata.picture}" alt="avatar" />
                
-                </div>
-             
-                <div class="box_comment  ">
+                </div>            
+                <div class="box_comment">
                     <form action="CreateCommentServlet">
                         <textarea class="commentar" name="txtCmt" rows="4" cols="100" placeholder="Add a comment..."></textarea>
                         <font color="red"> ${errorCmt} </font>
@@ -203,14 +166,12 @@
                             </div>
                         </div>
                     </form>
-                </div>
-                    
-                    
-           
+                </div>     
         </div>
     </div>
-        <c:if test="${checkReport eq null && postDetail.member.memberID ne userdata.memberID && userdata.memberRole eq 1}">                            
+                            
     <div class="test-report " id="test-r">
+        <c:if test="${checkReport eq null && postDetail.member.memberID ne userdata.memberID && userdata.memberRole eq 1}">        
         <div class="body_report ">
             
                 <div class="avatar_report ">
@@ -234,14 +195,11 @@
                         </div>
                     </div>
                     </form>
-                </div>
-            
-                    
-                    
-            
+                </div>       
         </div>
+                             </c:if>
     </div>
-        </c:if>
+        
                                  
         <c:forEach var="dt" items="${listCmt}" > 
             <div class="tab-commnent">
@@ -256,7 +214,7 @@
         </div>    
         <div class="comment-content">
             <span class=""><c:out value="${dt.commentContent}"/></span>
-            <c:if test="${userdata.memberID eq postDetail.member.memberID}">
+            <c:if test="${userdata.memberID eq dt.member.memberID}">
                 <br/><span><a href="DeleteCommentServlet?cmtId=${dt.commentId}&aId=${postDetail.articleID}" onclick="return confirm('Bạn chắc muốn xóa bình luận này?')">Xóa</a></span>
             </c:if>
             </div>
@@ -267,7 +225,7 @@
         
         <%-- Xem report bằng account Admin --%>
         <c:if test="${not empty viewReport}">
-                       <div>
+                 <div>
                       <div class="tab-report">
                                <div  class="user-report" >
                         <div class="avatar_report">                
@@ -283,23 +241,14 @@
                             <div class="report-content">
                                 <pre><c:out value="${viewReport.reportContent}"/></pre>
                             </div>    
-                           
-
-                                        </div>
-                            
-                        </div>     
+                           </div>  
+                </div>     
                             </c:if>
             </div>
                         
                         
-        </div>
-        
+        </div>       
     </div>
-        
-       
-                      
-        <script src="js/function.js"></script>
-
 </body>
- 
+ <script src="js/function.js"></script>
 </html>
