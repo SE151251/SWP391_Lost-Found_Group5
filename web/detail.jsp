@@ -99,12 +99,12 @@
         </div>
         <div class="post-reaction">
             <div class="activity-icons">
-             <c:if test="${postDetail.articleStatus eq 1}">
+             <c:if test="${postDetail.articleStatus eq 1 && userdata.memberRole eq 1}">
                 <div onclick="comment_dl()">
                     <img src="images/comments.png" alt="">Comment
                 </div> 
               </c:if>
-            <c:if test="${userdata.memberRole eq 1 && userdata.memberID ne postDetail.member.memberID}"> 
+            <c:if test="${userdata.memberRole eq 1 && userdata.memberID ne postDetail.member.memberID && checkReport eq null}"> 
                 <div onclick="report_dl()">
                 <div><img src="images/report.png" alt="">Report</div>
                 </div>
@@ -151,7 +151,7 @@
                 </div>            
                 <div class="box_comment">
                     <form action="CreateCommentServlet">
-                        <textarea class="commentar" name="txtCmt" rows="4" cols="100" placeholder="Add a comment..."></textarea>
+                        <textarea class="commentar" name="txtCmt" rows="4" cols="100" minlength="1" maxlength="500" placeholder="Add a comment..."></textarea>
                         <font color="red"> ${errorCmt} </font>
                         <div class="box_post">
                             <div class="pull-left">
@@ -180,7 +180,7 @@
                 
                 <div class="box_report ">
                     <form action="CreateReportServlet">
-                    <textarea class="reportar" name="txtReport" rows="4" cols="100" placeholder="Add a report..."></textarea>
+                    <textarea minlength="1" maxlength="200" class="reportar" name="txtReport" rows="4" cols="100" placeholder="Add a report..."></textarea>
                     <font color="red"> ${errorReport} </font><br/>
                     <div class="box_post">
                         <div class="pull-left">

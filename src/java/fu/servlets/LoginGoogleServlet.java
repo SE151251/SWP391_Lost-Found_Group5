@@ -27,7 +27,7 @@ import javax.servlet.http.HttpSession;
 public class LoginGoogleServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
-    private static final String INDEX_PAGE = "ListPostServlet";
+    private static final String INDEX_PAGE = "paging";
     private static final String ADMIN_PAGE = "AdminListServlet";
     private static final String LOGIN_PAGE = "LoginServlet";
 

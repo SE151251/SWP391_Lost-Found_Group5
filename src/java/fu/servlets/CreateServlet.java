@@ -46,7 +46,8 @@ import javax.servlet.http.Part;
 )
 public class CreateServlet extends HttpServlet {
 
-    private static final String SUCCESS = "ListPostServlet";
+    private static final String SUCCESS_FIND = "paging";
+    private static final String SUCCESS_RETURN = "paging1";
     private static final String ADMIN_PAGE = "AdminListServlet";
     private static final String ERROR = "error.jsp";
     private static final String INVALID = "CreateFormServlet";
@@ -61,7 +62,7 @@ public class CreateServlet extends HttpServlet {
             HttpSession session = request.getSession(false);
             if (session == null) {
                 request.setAttribute("errormessage", "Please login!");
-                request.getRequestDispatcher("/WEB-INF/view/login.jsp").forward(request, response);
+                request.getRequestDispatcher("login.jsp").forward(request, response);
             }
             if (session.getAttribute("userdata") != null) {
                 Member memberLogin = (Member) session.getAttribute("userdata");
@@ -153,8 +154,8 @@ public class CreateServlet extends HttpServlet {
                     String partern = ".*#.*";
                     //xử lý hashtag
                             //String regex = "#\\w*";
-                            p = Pattern.compile(regex);
-                            matcher = p.matcher(content);
+                    p = Pattern.compile(regex);
+                    matcher = p.matcher(content);
                     HashtagDAO hDao = new HashtagDAO();
                     ArticleHashtagDAO ahDao = new ArticleHashtagDAO();
                     // Tạo 1 mảng lưu các hashtag
@@ -199,7 +200,12 @@ public class CreateServlet extends HttpServlet {
                     }
                     // }
                     if (memberLogin.getMemberRole() == 1) {
-                        url = SUCCESS;
+                        if(a.getType().getTypeID()==1){
+                            url=SUCCESS_FIND;
+                        }
+                        if(a.getType().getTypeID()==2){
+                            url=SUCCESS_RETURN;
+                        }
                     } else if (memberLogin.getMemberRole() == 0) {
                         url = ADMIN_PAGE;
                     }

@@ -24,6 +24,9 @@ import java.util.List;
 public class ArticleDAO {
 
     private List<Article> articles;
+    private Connection con;
+    private PreparedStatement stm;
+    private ResultSet rs;
 
     public ArticleDAO() {
         try {
@@ -625,6 +628,53 @@ public class ArticleDAO {
         }
         return lb;
     }
+    // Lấy tất cả các bài loại "Thông báo" và loại đồ vật theo yêu cầu
+    public ArrayList<Article> getAllArticlesNoticeByItemType(Item i) throws ClassNotFoundException, SQLException, Exception {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        ArrayList<Article> lb = new ArrayList<>();
+        try {
+            con = DBUtils.makeConnection();
+            if (con != null) {
+                String sql = "select A.ArticleID, A.ArticleTitle, A.ArticleContent, A.ImgURL, A.PostTime, A.ArticleStatus, A.MemberID, A.ArticleTypeID, A.ItemID \n" +
+                            "from Article A inner join ArticleType AType on A.ArticleTypeID = AType.ArticleTypeID\n" +
+                            "				inner join ItemType I on I.ItemID = A.ItemID\n" +
+                            "Where A.ArticleTypeID = 4 and A.ArticleStatus = 1 and A.ItemID = ?\n" +
+                            "Order By PostTime DESC";
+                stm = con.prepareStatement(sql);
+                stm.setInt(1, i.getItemID());
+                rs = stm.executeQuery();
+                while (rs.next()) {
+                    String articleId = rs.getString("ArticleID");
+                    String title = rs.getString("ArticleTitle");
+                    String articleContent = rs.getString("ArticleContent");
+                    String articleURL = rs.getString("ImgURL");
+                    String articleTime = rs.getString("PostTime");                    
+                    int articleStatus = rs.getInt("ArticleStatus");
+                    String memberId = rs.getString("MemberID");
+                    int articleTypeId = rs.getInt("ArticleTypeID");
+                    MemberDAO mdao = new MemberDAO();
+                    Member m = mdao.find(memberId);
+                    ArticleTypeDAO adao = new ArticleTypeDAO();
+                    ArticleType a = adao.getArticleTypeByID(articleTypeId);
+                    Article art = new Article(articleId, title, articleContent, articleURL, articleTime, articleStatus, i, m, a);
+                    lb.add(art);
+                }
+            }
+        } finally {
+            if (rs != null) {
+                rs.close();
+            }
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return lb;
+    }
     // Search tất cả các bài loại "Tìm đồ" theo từ khóa
     public ArrayList<Article> searchAllArticlesFindByName(String key) throws ClassNotFoundException, SQLException, Exception {
         Connection con = null;
@@ -723,8 +773,8 @@ public class ArticleDAO {
         }
         return lb;
     }
-    // Search tất cả các bài loại "Chia sẻ" theo từ khóa
-    public ArrayList<Article> searchAllArticlesShareByName(String key) throws ClassNotFoundException, SQLException, Exception {
+    // Search tất cả các bài loại "Notice" theo từ khóa
+    public ArrayList<Article> searchAllArticlesNoticeByName(String key) throws ClassNotFoundException, SQLException, Exception {
         Connection con = null;
         PreparedStatement stm = null;
         ResultSet rs = null;
@@ -734,7 +784,7 @@ public class ArticleDAO {
             if (con != null) {
                 String sql = "select A.ArticleID, A.ArticleTitle, A.ArticleContent, A.ImgURL, A.PostTime, A.ArticleStatus, A.MemberID, A.ArticleTypeID, A.ItemID \n" +
                             "from Article A inner join ArticleType AType on A.ArticleTypeID = AType.ArticleTypeID\n" +                          
-                            "Where A.ArticleTypeID = 3 and A.ArticleStatus = 1 and A.ArticleContent Like ?\n" +
+                            "Where A.ArticleTypeID = 4 and A.ArticleStatus = 1 and A.ArticleContent Like ?\n" +
                             "Order By PostTime DESC";
                 stm = con.prepareStatement(sql);
                 stm.setString(1, "%"+key+"%");
@@ -873,7 +923,7 @@ public class ArticleDAO {
         return lb;
     }
     // Search all post find voi hashtag
-    public ArrayList<Article> searchAllArticlesShareByHashtag(String hId) throws ClassNotFoundException, SQLException, Exception {
+    public ArrayList<Article> searchAllArticlesNoticeByHashtag(String hId) throws ClassNotFoundException, SQLException, Exception {
         Connection con = null;
         PreparedStatement stm = null;
         ResultSet rs = null;
@@ -884,7 +934,7 @@ public class ArticleDAO {
                 String sql = "select A.ArticleID, A.ArticleTitle, A.ArticleContent, A.ImgURL, A.PostTime, A.ArticleStatus, A.MemberID, A.ArticleTypeID, A.ItemID\n" +
                             "from Article A inner join ArticleHashtag AH on A.ArticleID = AH.ArticleID\n" +
                             "				inner join Hashtag H on AH.HashtagID = H.HashtagID\n" +
-                            "where H.HashtagID = ? and A.ArticleTypeID = 3\n" +
+                            "where H.HashtagID = ? and A.ArticleTypeID = 4\n" +
                             "Order By PostTime DESC";
                 stm = con.prepareStatement(sql);
                 stm.setString(1, hId);
@@ -1099,6 +1149,190 @@ public class ArticleDAO {
             if (con != null) {
                 con.close();
             }
+        }
+        return lb;
+    }
+    public int getNumberPage() {
+        try {
+            con = DBUtils.makeConnection();
+            if (con != null) {
+                String query = "Select count(*) from Article where ArticleTypeID = 1";
+                stm = con.prepareStatement(query);
+                rs = stm.executeQuery();
+                while (rs.next()) {
+                    int total = rs.getInt(1);
+                    int coutPage = 0;
+                    coutPage = total / 3;
+                    if (total % 3 != 0) {
+                        coutPage++;
+                    }
+                    return coutPage;
+                }
+            }
+        } catch (Exception e) {
+
+        }
+        return 0;
+    }
+
+    public ArrayList<Article> getPaging(int index) {
+        ArrayList<Article> lb = new ArrayList<>();
+        try {
+            con = DBUtils.makeConnection();
+            if (con != null) {
+                String sql = "Select * from Article\n"
+                        + "Where ArticleTypeID = 1\n"
+                        + "order by PostTime DESC \n"
+                        + "OFFSET ? ROWS\n"
+                        + "FETCH FIRST 10 ROWS ONLY;";
+                stm = con.prepareStatement(sql);
+                stm.setInt(1, (index - 1) * 3);
+                rs = stm.executeQuery();
+                while (rs.next()) {
+                    String articleId = rs.getString("ArticleID");
+                    String articleTitle = rs.getString("ArticleTitle");
+                    String articleContent = rs.getString("ArticleContent");
+                    String articleURL = rs.getString("ImgURL");
+                    String articleTime = rs.getString("PostTime");
+                    int articleStatus = rs.getInt("ArticleStatus");
+                    int articleTypeId = rs.getInt("ArticleTypeID");
+                    String memberId = rs.getString("MemberID");
+                    int itemId = rs.getInt("ItemID");
+                    MemberDAO mdao = new MemberDAO();
+                    Member m = mdao.find(memberId);
+                    ItemTypeDAO idao = new ItemTypeDAO();
+                    Item i = idao.getItemByID(itemId);
+                    ArticleTypeDAO adao = new ArticleTypeDAO();
+                    ArticleType a = adao.getArticleTypeByID(articleTypeId);
+                    Article art = new Article(articleId,articleTitle, articleContent, articleURL, articleTime, articleStatus, i, m, a);
+                    lb.add(art);
+                }
+            }
+        } catch (Exception e) {
+
+        }
+        return lb;
+    }
+    public int getNumberPageReturn() {
+        try {
+            con = DBUtils.makeConnection();
+            if (con != null) {
+                String query = "Select count(*) from Article where ArticleTypeID = 2";
+                stm = con.prepareStatement(query);
+                rs = stm.executeQuery();
+                while (rs.next()) {
+                    int total = rs.getInt(1);
+                    int coutPage = 0;
+                    coutPage = total / 3;
+                    if (total % 3 != 0) {
+                        coutPage++;
+                    }
+                    return coutPage;
+                }
+            }
+        } catch (Exception e) {
+
+        }
+        return 0;
+    }
+
+    public ArrayList<Article> getPagingReturn(int index) {
+        ArrayList<Article> lb = new ArrayList<>();
+        try {
+            con = DBUtils.makeConnection();
+            if (con != null) {
+                String sql = "Select * from Article\n"
+                        + "Where ArticleTypeID = 2\n"
+                        + "order by PostTime DESC \n"
+                        + "OFFSET ? ROWS\n"
+                        + "FETCH FIRST 10 ROWS ONLY;";
+                stm = con.prepareStatement(sql);
+                stm.setInt(1, (index - 1) * 3);
+                rs = stm.executeQuery();
+                while (rs.next()) {
+                    String articleId = rs.getString("ArticleID");
+                    String articleTitle = rs.getString("ArticleTitle");
+                    String articleContent = rs.getString("ArticleContent");
+                    String articleURL = rs.getString("ImgURL");
+                    String articleTime = rs.getString("PostTime");
+                    int articleStatus = rs.getInt("ArticleStatus");
+                    int articleTypeId = rs.getInt("ArticleTypeID");
+                    String memberId = rs.getString("MemberID");
+                    int itemId = rs.getInt("ItemID");
+                    MemberDAO mdao = new MemberDAO();
+                    Member m = mdao.find(memberId);
+                    ItemTypeDAO idao = new ItemTypeDAO();
+                    Item i = idao.getItemByID(itemId);
+                    ArticleTypeDAO adao = new ArticleTypeDAO();
+                    ArticleType a = adao.getArticleTypeByID(articleTypeId);
+                    Article art = new Article(articleId,articleTitle, articleContent, articleURL, articleTime, articleStatus, i, m, a);
+                    lb.add(art);
+                    System.out.println(art.getType().getTypeID());
+                }
+            }
+        } catch (Exception e) {
+
+        }
+        return lb;
+    }
+    public int getNumberPageExperience() {
+        try {
+            con = DBUtils.makeConnection();
+            if (con != null) {
+                String query = "Select count(*) from Article where ArticleTypeID = 4";
+                stm = con.prepareStatement(query);
+                rs = stm.executeQuery();
+                while (rs.next()) {
+                    int total = rs.getInt(1);
+                    int coutPage = 0;
+                    coutPage = total / 3;
+                    if (total % 3 != 0) {
+                        coutPage++;
+                    }
+                    return coutPage;
+                }
+            }
+        } catch (Exception e) {
+
+        }
+        return 0;
+    }
+
+    public ArrayList<Article> getPagingExperience(int index) {
+        ArrayList<Article> lb = new ArrayList<>();
+        try {
+            con = DBUtils.makeConnection();
+            if (con != null) {
+                String sql = "Select * from Article\n"
+                        + "Where ArticleTypeID = 4\n"
+                        + "order by PostTime DESC \n"
+                        + "OFFSET ? ROWS\n"
+                        + "FETCH FIRST 10 ROWS ONLY;";
+                stm = con.prepareStatement(sql);
+                stm.setInt(1, (index - 1) * 3);
+                rs = stm.executeQuery();
+                while (rs.next()) {
+                    String articleId = rs.getString("ArticleID");
+                    String articleTitle = rs.getString("ArticleTitle");
+                    String articleContent = rs.getString("ArticleContent");
+                    String articleURL = rs.getString("ImgURL");
+                    String articleTime = rs.getString("PostTime");
+                    int articleStatus = rs.getInt("ArticleStatus");
+                    int articleTypeId = rs.getInt("ArticleTypeID");
+                    String memberId = rs.getString("MemberID");
+                    int itemId = rs.getInt("ItemID");
+                    MemberDAO mdao = new MemberDAO();
+                    Member m = mdao.find(memberId);
+                    ItemTypeDAO idao = new ItemTypeDAO();
+                    Item i = idao.getItemByID(itemId);
+                    ArticleTypeDAO adao = new ArticleTypeDAO();
+                    ArticleType a = adao.getArticleTypeByID(articleTypeId);
+                    Article art = new Article(articleId,articleTitle, articleContent, articleURL, articleTime, articleStatus, i, m, a);
+                    lb.add(art);
+                }
+            }
+        } catch (Exception e) {
+
         }
         return lb;
     }

@@ -6,16 +6,12 @@
 package fu.servlets;
 
 import fu.daos.ArticleDAO;
-import fu.daos.CommentDAO;
 import fu.daos.MemberDAO;
 import fu.daos.ReportDAO;
 import fu.entities.Article;
 import fu.entities.Member;
-import fu.entities.Report;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;

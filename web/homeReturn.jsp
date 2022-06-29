@@ -32,7 +32,10 @@
     <title>Document</title>
     <!-- Bootstrap CSS -->
     <script src="https://kit.fontawesome.com/f2fda88f12.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="node_modules/bootstrap-social/bootstrap-social.css" />
     <link rel="stylesheet" href="css/style.css" />
+    <!-- Bootstrap -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
   <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.slim.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
@@ -55,7 +58,7 @@
             <ul style="width: 13%;" class="navbar-nav container ml-5">
                 <c:if test="${userdata.memberRole eq 1}">
                 <li class="nav-item active">
-                    <a class="nav-link" href="paging"><i class="fa fa-home mr-1"></i> Home </a>
+                    <a class="nav-link" href="paging1"><i class="fa fa-home mr-1"></i> Home </a>
                 </li>
                 <li class="nav-item">
 
@@ -96,9 +99,8 @@
         <form class="search col-md-4">
             <div class="search-field">   
                 <input type="text" name="keySearch" class="search-input p-1" placeholder="Nhập nội dung muốn tìm ở đây">
-            <input type="hidden" name="searchAction" value="Find"/>
+            <input type="hidden" name="searchAction" value="Return"/>
             </div>
-
             <button formaction="SearchServlet" class="search-button p-1 pl-3 pr-3 ml-2">Tìm</button>
         </form>
     </div>
@@ -110,15 +112,15 @@
             </div>
             <div style=" min-width: 170px; max-width: 200px;" class="dropdown-list filter-list mt-3">
                     <c:forEach var="dt" items="${ListItemType}" > 
-                <a href="SearchServlet?txtItem=${dt.itemID}&searchAction=Find" class="dropdown-item filter-item text-white"><c:out value="${dt.itemName}"/></a>
+                <a href="SearchServlet?txtItem=${dt.itemID}&searchAction=Return" class="dropdown-item filter-item text-white"><c:out value="${dt.itemName}"/></a>
                 </c:forEach>
             </div>
         </div>
-        <div class="tab-item active">
-            Find
-        </div>
         <div class="tab-item">
-            <a href="paging1">Return</a> 
+            <a href="paging">Find</a>
+        </div>
+        <div class="tab-item active">
+            Return 
         </div>  
       
         <div class="tab-item">
@@ -131,14 +133,14 @@
         <a type="button" href="CreateFormServlet" class="center createPost--btn btn rounded-circle"><i
                 class="fa-solid fa-arrow-up-right-from-square"></i></a>
         <div class="row tab-pane active">
-            <c:forEach var="dt" items="${articlesFind}" >
+            <c:forEach var="dt" items="${articlesReturn}" >
             <div class="pane col-md-2">
                 <div class="pane-img">
                     <c:if test="${not empty dt.imgUrl}">
                         <img src="images/${dt.imgUrl}" alt=""> </c:if>
                         <c:if test="${empty dt.imgUrl}">
                         <img src="images/Logo_LostFound.png" alt=""> </c:if>
-                </div>               
+                </div>
                 <div class="pane-content">
                     <p style="font-size: 12px">Thời gian: <c:out value="${dt.postTime}"/></p>                 
                     <p style="font-size: 15px; font-weight: bold"><c:out value="${dt.title}"/></p>
@@ -146,7 +148,7 @@
                    <div class="hashtag-viewmore">
                     <c:forEach var="lah" items="${listAH}" >
                         <c:if test="${dt.articleID eq lah.article.articleID}">
-                        <span><a href="SearchServlet?hId=${lah.hashtag.hashtagID}&searchAction=Find"><c:out value="${lah.hashtag.hashtagName}"/></a></span>
+                        <span><a href="SearchServlet?hId=${lah.hashtag.hashtagID}&searchAction=Return"><c:out value="${lah.hashtag.hashtagName}"/></a></span>
                         </c:if>    
                     </c:forEach> 
                    </div>
@@ -158,11 +160,11 @@
             </c:forEach>
             <nav aria-label="...">
             <ul class ="pagination pagination-lg">
-                <c:forEach begin="1" end="${a.numberPage}" var="i">
-                    <li class="page-item ${indexPage==i?"active":""}"><a class="page-link" href="paging?index=${i}">${i}</a></li>
+                <c:forEach begin="1" end="${a.numberPageReturn}" var="i">
+                    <li class="page-item ${indexPage1==i?"active":""}"><a class="page-link" href="paging1?index1=${i}">${i}</a></li>
                 </c:forEach>
             </ul>
-        </nav>
+            </nav> 
         </div>
     </div>
             <!-- Footer -->
@@ -321,6 +323,9 @@
     </div> -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS. -->
     <script src="js/mycode.js"></script>
+    <script src="node_modules/jquery/dist/jquery.slim.min.js"></script>
+    <script src="node_modules/popper.js/dist/umd/popper.min.js"></script>
+    <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
 </body>
 
 </html>

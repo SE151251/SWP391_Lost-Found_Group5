@@ -28,73 +28,148 @@ import javax.servlet.http.HttpSession;
 @WebServlet(name = "SearchServlet", urlPatterns = {"/SearchServlet"})
 public class SearchServlet extends HttpServlet {
 
+    private static final String HOME_FIND = "home.jsp";
+    private static final String HOME_RETURN = "homeReturn.jsp";
+    private static final String HOME_NOTICE = "notification.jsp";
+    private static final String ADMIN = "AdminListServlet";
+    private static final String LOGIN = "login.jsp";
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        String uri = LOGIN;
         try {
+
             HttpSession session = request.getSession(false);
             if (session == null) {
                 request.setAttribute("errormessage", "Please login!");
-                request.getRequestDispatcher("/WEB-INF/view/login.jsp").forward(request, response);
+                //request.getRequestDispatcher("/WEB-INF/view/login.jsp").forward(request, response);
             }
             if (session.getAttribute("userdata") != null) {
-                Member memberLogin = (Member) session.getAttribute("userdata");               
-                // Xử lý loại đồ cần filter
-                String itemId = request.getParameter("txtItem");
-                String key = request.getParameter("keySearch");
-                String hId = request.getParameter("hId");
-                ArticleDAO adao = new ArticleDAO();
-                if(itemId != null){
-                ItemTypeDAO iDao = new ItemTypeDAO();
-                Item i = iDao.getItemByID(Integer.parseInt(itemId));                
-                List<Article> listArtsFind = adao.getAllArticlesFindByItemType(i);
-                request.setAttribute("articlesFind", listArtsFind); 
-                List<Article> listArtsReturn = adao.getAllArticlesReturnByItemType(i);
-                request.setAttribute("articlesReturn", listArtsReturn); 
-                List<Article> listArtsShare = adao.getAllArticlesShare();
-                request.setAttribute("articlesShare", listArtsShare); 
-                ItemTypeDAO itDao = new ItemTypeDAO();
-                List<Item> listI = itDao.getAllItems();
-                request.setAttribute("ListItemType", listI);
-                ArticleHashtagDAO ahDao = new ArticleHashtagDAO();
-                List<ArticleHashTag> listAH = ahDao.getAllArticleHashtag();
-                request.setAttribute("listAH", listAH);
+                Member memberLogin = (Member) session.getAttribute("userdata");
+                if (memberLogin.getMemberRole() == 1) {
+                    // Xử lý loại đồ cần filter
+                    String itemId = request.getParameter("txtItem");
+                    String key = request.getParameter("keySearch");
+                    String hId = request.getParameter("hId");
+                    String searchAction = request.getParameter("searchAction");
+                    ArticleDAO adao = new ArticleDAO();
+                    ItemTypeDAO iDao = new ItemTypeDAO();
+                    ArticleHashtagDAO ahDao = new ArticleHashtagDAO();
+                    // search theo filter
+                    if (itemId != null) {
+                        if (searchAction.equals("Find")) {
+
+                            Item i = iDao.getItemByID(Integer.parseInt(itemId));
+                            List<Article> listArtsFind = adao.getAllArticlesFindByItemType(i);
+                            request.setAttribute("articlesFind", listArtsFind);
+                            List<Item> listI = iDao.getAllItems();
+                            request.setAttribute("ListItemType", listI);
+
+                            List<ArticleHashTag> listAH = ahDao.getAllArticleHashtag();
+                            request.setAttribute("listAH", listAH);
+                            uri = HOME_FIND;
+                        } else if (searchAction.equals("Return")) {
+
+                            Item i = iDao.getItemByID(Integer.parseInt(itemId));
+                            List<Article> listArtsReturn = adao.getAllArticlesReturnByItemType(i);
+                            request.setAttribute("articlesReturn", listArtsReturn);
+                            List<Item> listI = iDao.getAllItems();
+                            request.setAttribute("ListItemType", listI);
+
+                            List<ArticleHashTag> listAH = ahDao.getAllArticleHashtag();
+                            request.setAttribute("listAH", listAH);
+                            uri = HOME_RETURN;
+                        } else if (searchAction.equals("Notice")) {
+
+                            Item i = iDao.getItemByID(Integer.parseInt(itemId));
+                            List<Article> listArtsShare = adao.getAllArticlesNoticeByItemType(i);
+                            request.setAttribute("articlesShare", listArtsShare);
+                            List<Item> listI = iDao.getAllItems();
+                            request.setAttribute("ListItemType", listI);
+
+                            List<ArticleHashTag> listAH = ahDao.getAllArticleHashtag();
+                            request.setAttribute("listAH", listAH);
+                            uri = HOME_NOTICE;
+                        }
+                    } else if (key != null) {
+                        // search theo từ khóa
+                        if (searchAction.equals("Find")) {
+                            List<Article> listArtsFind = adao.searchAllArticlesFindByName(key);
+                            request.setAttribute("articlesFind", listArtsFind);
+
+                            List<Item> listI = iDao.getAllItems();
+                            request.setAttribute("ListItemType", listI);
+
+                            List<ArticleHashTag> listAH = ahDao.getAllArticleHashtag();
+                            request.setAttribute("listAH", listAH);
+                            uri = HOME_FIND;
+                        } else if (searchAction.equals("Return")) {
+                            List<Article> listArtsReturn = adao.searchAllArticlesReturnByName(key);
+                            request.setAttribute("articlesReturn", listArtsReturn);
+
+                            List<Item> listI = iDao.getAllItems();
+                            request.setAttribute("ListItemType", listI);
+
+                            List<ArticleHashTag> listAH = ahDao.getAllArticleHashtag();
+                            request.setAttribute("listAH", listAH);
+                            uri = HOME_RETURN;
+                        } else if (searchAction.equals("Notice")) {
+                            List<Article> listArtsShare = adao.searchAllArticlesNoticeByName(key);
+                            request.setAttribute("articlesShare", listArtsShare);
+
+                            List<Item> listI = iDao.getAllItems();
+                            request.setAttribute("ListItemType", listI);
+
+                            List<ArticleHashTag> listAH = ahDao.getAllArticleHashtag();
+                            request.setAttribute("listAH", listAH);
+                            uri = HOME_NOTICE;
+                        }
+                    } //search theo hashtag
+                    else if (hId != null) {
+                        if (searchAction.equals("Find")) {
+                            List<Article> listArtsFind = adao.searchAllArticlesFindByHashtag(hId);
+                            request.setAttribute("articlesFind", listArtsFind);
+
+                            List<Item> listI = iDao.getAllItems();
+                            request.setAttribute("ListItemType", listI);
+
+                            List<ArticleHashTag> listAH = ahDao.getAllArticleHashtag();
+                            request.setAttribute("listAH", listAH);
+                            uri = HOME_FIND;
+                        } else if (searchAction.equals("Return")) {
+                            List<Article> listArtsReturn = adao.searchAllArticlesReturnByHashtag(hId);
+                            request.setAttribute("articlesReturn", listArtsReturn);
+
+                            List<Item> listI = iDao.getAllItems();
+                            request.setAttribute("ListItemType", listI);
+
+                            List<ArticleHashTag> listAH = ahDao.getAllArticleHashtag();
+                            request.setAttribute("listAH", listAH);
+                            uri = HOME_RETURN;
+                        } else if (searchAction.equals("Notice")) {
+                            List<Article> listArtsShare = adao.searchAllArticlesNoticeByHashtag(hId);
+                            request.setAttribute("articlesShare", listArtsShare);
+
+                            List<Item> listI = iDao.getAllItems();
+                            request.setAttribute("ListItemType", listI);
+
+                            List<ArticleHashTag> listAH = ahDao.getAllArticleHashtag();
+                            request.setAttribute("listAH", listAH);
+                            uri = HOME_NOTICE;
+                        }
+                    }
+                } else {
+                    request.setAttribute("errorRole", "Your account can not use this function!");
+                    uri = ADMIN;
                 }
-                else if(key !=null){
-                List<Article> listArtsFind = adao.searchAllArticlesFindByName(key);
-                request.setAttribute("articlesFind", listArtsFind); 
-                List<Article> listArtsReturn = adao.searchAllArticlesReturnByName(key);
-                request.setAttribute("articlesReturn", listArtsReturn); 
-                List<Article> listArtsShare = adao.getAllArticlesShare();
-                request.setAttribute("articlesShare", listArtsShare); 
-                ItemTypeDAO itDao = new ItemTypeDAO();
-                List<Item> listI = itDao.getAllItems();
-                request.setAttribute("ListItemType", listI);
-                ArticleHashtagDAO ahDao = new ArticleHashtagDAO();
-                List<ArticleHashTag> listAH = ahDao.getAllArticleHashtag();
-                request.setAttribute("listAH", listAH);
-                } else if(hId!=null){
-                List<Article> listArtsFind = adao.searchAllArticlesFindByHashtag(hId);
-                request.setAttribute("articlesFind", listArtsFind); 
-                List<Article> listArtsReturn = adao.searchAllArticlesReturnByHashtag(hId);
-                request.setAttribute("articlesReturn", listArtsReturn); 
-                List<Article> listArtsShare = adao.searchAllArticlesShareByHashtag(hId);
-                request.setAttribute("articlesShare", listArtsShare); 
-                ItemTypeDAO itDao = new ItemTypeDAO();
-                List<Item> listI = itDao.getAllItems();
-                request.setAttribute("ListItemType", listI);  
-                ArticleHashtagDAO ahDao = new ArticleHashtagDAO();
-                List<ArticleHashTag> listAH = ahDao.getAllArticleHashtag();
-                request.setAttribute("listAH", listAH);
-                }
-                
             } else {
                 request.setAttribute("errormessage", "Please login!");
                 request.getRequestDispatcher("login.jsp").forward(request, response);
             }
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {            
-            request.getRequestDispatcher("home.jsp").forward(request, response);
+        } finally {
+            request.getRequestDispatcher(uri).forward(request, response);
         }
     }
 
