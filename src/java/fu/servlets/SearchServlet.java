@@ -8,6 +8,7 @@ package fu.servlets;
 import fu.daos.ArticleDAO;
 import fu.daos.ArticleHashtagDAO;
 import fu.daos.ItemTypeDAO;
+import fu.daos.MemberDAO;
 import fu.entities.Article;
 import fu.entities.ArticleHashTag;
 import fu.entities.Item;
@@ -32,6 +33,7 @@ public class SearchServlet extends HttpServlet {
     private static final String HOME_RETURN = "homeReturn.jsp";
     private static final String HOME_NOTICE = "notification.jsp";
     private static final String ADMIN = "AdminListServlet";
+    private static final String MemberList = "listMember.jsp";
     private static final String LOGIN = "login.jsp";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
@@ -46,15 +48,17 @@ public class SearchServlet extends HttpServlet {
             }
             if (session.getAttribute("userdata") != null) {
                 Member memberLogin = (Member) session.getAttribute("userdata");
-                if (memberLogin.getMemberRole() == 1) {
+                
                     // Xử lý loại đồ cần filter
                     String itemId = request.getParameter("txtItem");
                     String key = request.getParameter("keySearch");
                     String hId = request.getParameter("hId");
+                    String mName = request.getParameter("txtMemberName");
                     String searchAction = request.getParameter("searchAction");
+                    if (memberLogin.getMemberRole() == 1) {
                     ArticleDAO adao = new ArticleDAO();
                     ItemTypeDAO iDao = new ItemTypeDAO();
-                    ArticleHashtagDAO ahDao = new ArticleHashtagDAO();
+                    ArticleHashtagDAO ahDao = new ArticleHashtagDAO();                   
                     // search theo filter
                     if (itemId != null) {
                         if (searchAction.equals("Find")) {
@@ -157,11 +161,17 @@ public class SearchServlet extends HttpServlet {
                             request.setAttribute("listAH", listAH);
                             uri = HOME_NOTICE;
                         }
+                        
                     }
-                } else {
-                    request.setAttribute("errorRole", "Your account can not use this function!");
-                    uri = ADMIN;
+                } else if (mName != null){                   
+                       MemberDAO mdao = new MemberDAO();
+                       request.setAttribute("listMembersResult", mdao.findMemberByName(mName));
+                       uri=MemberList;                  
                 }
+                    else{
+                    request.setAttribute("errorRole", "Your account can not use this function!");
+                    uri = ADMIN;}
+                
             } else {
                 request.setAttribute("errormessage", "Please login!");
                 request.getRequestDispatcher("login.jsp").forward(request, response);

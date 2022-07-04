@@ -101,11 +101,15 @@
 
             </div>
             <ul style="width: 13%;" class="navbar-nav container ml-5">
-                <c:if test="${userdata.memberRole eq 0}">
+                
                 <li class="nav-item active">
                     <a class="nav-link" href="AdminListServlet"><i class="fa fa-home mr-1"></i> Home </a>
                 </li>
-                 </c:if>
+                <li class="nav-item">
+                    <a class="nav-link" href="ListMemberServlet"><span class="fa-solid fa-bookmark"></span>
+                        List Members</a>
+                </li>
+                 
             </ul>
 
 

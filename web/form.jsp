@@ -135,7 +135,7 @@
             <ul class="navbar-nav container ml-5">
                 <c:if test="${userdata.memberRole eq 1}">
                 <li class="nav-item">
-                    <a class="nav-link" href="#"><span class="fa-solid fa-user"></span> Personal
+                    <a class="nav-link" href="PersonalServlet?uId=${userdata.memberID}"><span class="fa-solid fa-user"></span> Personal
                         Page</a>
                 </li>
                 </c:if>
@@ -165,20 +165,25 @@
                                     <table>
                 <tr>
                     
-                            <td style="font-size: 20px; padding-bottom: 20px"">Tiêu đề:</td>
+                            <td style="font-size: 20px; padding-bottom: 20px"">Title:</td>
                             <td style="padding-bottom: 20px"><input style="width: 500px; height: 50px;" type="text" name="txtTitle" value="${titlePost}"<font color="red">${titleError}</font></td>
 			</tr>      
-                  <tr>
+                <tr>
                     
-                            <td style="font-size: 20px">Nội dung:</td>
+                            <td style="font-size: 20px">Content:</td>
                             <td style=" padding-bottom: 20px">
                             <%--    <input style="width: 500px; height: 100px" type="text" name="txtContent" value="${content}" --%>
                                 <textarea rows="9" cols="70" name="txtContent"><c:out value="${content}"/></textarea>
                                 <font color="red"> ${contentError} </font>
                             </td>
-			</tr>   
+		</tr> 
                 <tr>
-                <td style="font-size: 20px; padding-bottom: 20px">Loại bài viết:</td>
+                    
+                            <td style="font-size: 20px; padding-bottom: 20px"">Hashtag:</td>
+                            <td style="padding-bottom: 20px"><input style="width: 500px; height: 50px;" type="text" name="txtHashtag" value="${hashtag}"<font color="red">${hashtagError}</font></td>
+			</tr>
+                <tr>
+                <td  style="font-size: 20px; padding-bottom: 20px">Post type:</td>
                     <td style=" padding-bottom: 20px">
                          <select style="width: 250px; height: 40px; font-size: 20px; text-align: center" name="txtArticleType" >
                              <c:forEach var="dt" items="${ListArticleType}" >                                  
@@ -193,7 +198,7 @@
                 </tr>
                 <c:if test="${userdata.memberRole eq 1}">
                 <tr>
-                <td style="font-size: 20px; padding-bottom: 20px">Đồ vật loại:</td>
+                <td style="font-size: 20px; padding-bottom: 20px">Item type:</td>
                     <td style=" padding-bottom: 20px">
                          <select style="width: 250px; height: 40px; font-size: 20px; text-align: center" name="txtItem">
                              <c:forEach var="dt" items="${ListItemType}" >                                  
@@ -227,7 +232,7 @@
                 </c:if> --%>
                 <c:if test="${action eq 'update'}">         
                 <tr>
-                   <td style="font-size: 20px; padding-bottom: 20px">Trạng thái bài viết:</td>
+                   <td style="font-size: 20px; padding-bottom: 20px">Post status:</td>
                     <td style=" padding-bottom: 20px">
                          <select style="width: 250px; height: 40px; font-size: 20px; text-align: center" name="txtStatus" >                                                             
                                 <option <c:if test="${aStatus eq '0'}"> selected </c:if>

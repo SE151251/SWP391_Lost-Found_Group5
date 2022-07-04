@@ -51,6 +51,9 @@ public class CreateFormServlet extends HttpServlet {
                 request.setAttribute("content", request.getAttribute("content"));
                 request.setAttribute("contentError", request.getAttribute("contentError"));
                 
+                request.setAttribute("hashtag", request.getAttribute("hashtag"));
+                request.setAttribute("hashtagError", request.getAttribute("hashtagError"));
+                    
                 request.setAttribute("errorURL", request.getAttribute("errorURL"));                              
                 request.setAttribute("postURL", request.getAttribute("postURL"));
                 

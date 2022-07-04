@@ -5,17 +5,10 @@
  */
 package fu.servlets;
 
-import fu.daos.ArticleDAO;
-import fu.daos.CommentDAO;
 import fu.daos.MemberDAO;
-import fu.daos.ReportDAO;
-import fu.entities.Article;
-import fu.entities.Comment;
 import fu.entities.Member;
-import fu.entities.Report;
 import java.io.IOException;
-import java.time.LocalDateTime;
-import java.util.Random;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -27,9 +20,18 @@ import javax.servlet.http.HttpSession;
  *
  * @author LENOVO
  */
-@WebServlet(name = "CreateReportServlet", urlPatterns = {"/CreateReportServlet"})
-public class CreateReportServlet extends HttpServlet {
+@WebServlet(name = "ListMemberServlet", urlPatterns = {"/ListMemberServlet"})
+public class ListMemberServlet extends HttpServlet {
 
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
@@ -37,47 +39,20 @@ public class CreateReportServlet extends HttpServlet {
             if (session == null) {
                 request.setAttribute("errormessage", "Please login!");
                 request.getRequestDispatcher("login.jsp").forward(request, response);
-            }else
-            if (session.getAttribute("userdata") != null) { // check login
-                Member member = (Member) session.getAttribute("userdata");
-                String rContent = request.getParameter("txtReport");
-                String memberReportId = request.getParameter("memberReport");
-                String aId = request.getParameter("aId");                
-                if(rContent.trim().isEmpty() || rContent.trim().length()>200 ){
-                request.setAttribute("errorReport", "Your report must be from 1 to 200 characters");
-                request.getRequestDispatcher("ViewDetailServlet?aId="+aId).forward(request, response);  
-                return;
-                }else{
-                String newId;
-                ArticleDAO aDao = new ArticleDAO();
-                Article art = aDao.find(aId);
+            }
+            if (session.getAttribute("userdata") != null) {
+                Member memberLogin = (Member) session.getAttribute("userdata");
                 MemberDAO mdao = new MemberDAO();
-                Member memR = mdao.find(memberReportId);
-                ReportDAO rdao = new ReportDAO();
-                do {
-                        newId = "";
-                        Random generator = new Random();
-                        for (int x = 0; x < 10; x++) {
-                            int a = generator.nextInt() % 10;
-                            if (a < 0) {
-                                a = -a;
-                            }
-                            newId = newId.concat(Integer.toString(a));
-                        }
-                    } while (rdao.getReportById(newId) != null);
-                Report r = new Report(newId, rContent, LocalDateTime.now().toString(), null, 1, art, member);
-                rdao.addNewReport(r);
-                aDao.closeArticle(aId);
-                request.getRequestDispatcher("paging").forward(request, response);
-                return;
-                }
+                List<Member> listMem = mdao.getAllMember();
+                request.setAttribute("listMembers", listMem);
             } else {
                 request.setAttribute("errormessage", "Please login!");
                 request.getRequestDispatcher("login.jsp").forward(request, response);
             }
-
         } catch (Exception e) {
-            log("ERROR at CreateCommentServlet: " + e.getMessage());
+            e.printStackTrace();
+        } finally {
+            request.getRequestDispatcher("listMember.jsp").forward(request, response);
         }
     }
 

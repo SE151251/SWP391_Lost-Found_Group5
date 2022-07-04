@@ -72,7 +72,7 @@
     <body>
     
     <div class="container-fuild hero-image">
-        <div class="row">
+        <div style="width: 100%" class=" row">
             <div class="col-md-4"></div>
             <div class="col-md-4 ">            
                     <div class="hero-text">

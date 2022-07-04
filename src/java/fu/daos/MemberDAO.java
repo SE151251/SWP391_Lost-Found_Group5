@@ -73,7 +73,7 @@ public class MemberDAO {
         return false;
     }
     
-    public boolean findMemberById(String mid) throws SQLException, Exception {
+    public boolean checkMemberById(String mid) throws SQLException, Exception {
         String sql = "SELECT * FROM Member WHERE MemberID=?";        
         try {
             con = DBUtils.makeConnection(); 
@@ -101,6 +101,34 @@ public class MemberDAO {
         closeConnection();
         }
         return false;
+    }
+    public ArrayList<Member> findMemberByName(String mName) throws SQLException, Exception {
+        String sql = "SELECT * FROM Member WHERE FullName like ?"; 
+        ArrayList<Member> listmem = new ArrayList<>();
+        try {
+            con = DBUtils.makeConnection(); 
+            if (con != null) {
+                stm = con.prepareStatement(sql);
+                stm.setString(1, "%"+mName+"%");
+                rs = stm.executeQuery();
+                if (rs.next()) { 
+                    String memberId = rs.getString("MemberID");
+                    String memberName = rs.getString("FullName");                    
+                    String memberEmail = rs.getString("Email");
+                    String memberPicture = rs.getString("Picture");
+                    String memberProfile = rs.getString("ProfileInfo");
+                    int memberRole = rs.getInt("MemberRole");
+                    int memberStatus = rs.getInt("MemberStatus");
+                    int memberCount = rs.getInt("CountTime");
+                    Member m = new Member(memberId, memberName, memberEmail, memberPicture, 
+                            memberProfile, memberRole, memberStatus, memberCount);
+                    listmem.add(m);
+                }
+            }
+        } finally {
+        closeConnection();
+        }
+        return listmem;
     }
     
     public ArrayList<Member> getAllMember() throws SQLException, Exception {
@@ -168,13 +196,14 @@ public class MemberDAO {
         return false;
     }
     
-      public boolean banMember(Member m) throws SQLException, Exception {
+      public boolean banOrUnbanMember(Member m) throws SQLException, Exception {
         try {
             con = DBUtils.makeConnection();
             if (con != null) {
-                String sql = "Update Member Set MemberStatus = 0 Where MemberID = ? ";
+                String sql = "Update Member Set MemberStatus = ? Where MemberID = ? ";
                 stm = con.prepareStatement(sql);
-                stm.setString(1, m.getMemberID());                
+                stm.setInt(1, m.getStatus()); 
+                stm.setString(2, m.getMemberID());
                 int row = stm.executeUpdate();
                 if (row > 0) {
                     return true;

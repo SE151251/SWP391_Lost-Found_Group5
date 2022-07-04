@@ -87,26 +87,16 @@
         </div>
 
     </header>
-                        
+             <c:if test="${userdata.memberCount ne 0}">
+            <p class="acc-warning">Tài khoản của bạn bị cảnh cáo lần ${userdata.memberCount}</p>
+                </c:if>           
                             
     <div class="search-form">
-        <c:if test="${userdata.memberCount ne 0}">
-            <p class="acc-warning">Tài khoản của bạn bị cảnh cáo lần ${userdata.memberCount}</p>
-                </c:if>
-        <form class="search col-md-4">
-            <div class="search-field">   
-                <input type="text" name="keySearch" class="search-input p-1" placeholder="Nhập nội dung muốn tìm ở đây">
-            <input type="hidden" name="searchAction" value="Find"/>
-            </div>
-
-            <button formaction="SearchServlet" class="search-button p-1 pl-3 pr-3 ml-2">Tìm</button>
-        </form>
-    </div>
-    <div class="tabs">
-        <div style="width: 45px;" class="dropdown filter">
+        
+       <div style="width: 45px;" class="dropdown filter">
 
             <div style="width: 42px; padding: 0;" class="dropdown-select">
-                <span class="dropdown-value filter-btn btn"><i class=" fa-solid fa-filter"></i></span>
+                <span class="dropdown-value filter-btn"><i class=" fa-solid fa-filter"></i></span>
             </div>
             <div style=" min-width: 170px; max-width: 200px;" class="dropdown-list filter-list mt-3">
                     <c:forEach var="dt" items="${ListItemType}" > 
@@ -114,8 +104,19 @@
                 </c:forEach>
             </div>
         </div>
+        <form class="search col-md-4">
+            <div class="search-field">   
+                <input type="text" name="keySearch" class="search-input p-1" placeholder="Search here">
+            <input type="hidden" name="searchAction" value="Find"/>
+            </div>
+
+            <button formaction="SearchServlet" class="search-button p-1 pl-3 pr-3 ml-2">Search</button>
+        </form>
+    </div>
+    <div class="tabs">
+       
         <div class="tab-item active">
-            Find
+            <a href="paging">Find</a> 
         </div>
         <div class="tab-item">
             <a href="paging1">Return</a> 
@@ -128,7 +129,7 @@
     </div>
     <!-- tab content -->
     <div class="tab-content ">
-        <a type="button" href="CreateFormServlet" class="center createPost--btn btn rounded-circle"><i
+        <a type="button" href="CreateFormServlet" class="center createPost--btn rounded-circle"><i
                 class="fa-solid fa-arrow-up-right-from-square"></i></a>
         <div class="row tab-pane active">
             <c:forEach var="dt" items="${articlesFind}" >
@@ -150,14 +151,13 @@
                         </c:if>    
                     </c:forEach> 
                    </div>
-                       
                     <a href="ViewDetailServlet?aId=${dt.articleID}">View more >></a>                   
                   
                 </div>
             </div>
             </c:forEach>
             <nav aria-label="...">
-            <ul class ="pagination pagination-lg">
+            <ul class ="pagination pagination-lg mt-3">
                 <c:forEach begin="1" end="${a.numberPage}" var="i">
                     <li class="page-item ${indexPage==i?"active":""}"><a class="page-link" href="paging?index=${i}">${i}</a></li>
                 </c:forEach>

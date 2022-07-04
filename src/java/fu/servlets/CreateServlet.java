@@ -68,6 +68,7 @@ public class CreateServlet extends HttpServlet {
                 Member memberLogin = (Member) session.getAttribute("userdata");
                 boolean valid = true;
                 String titleError = "";
+                String hashtagError= "";
                 String contentError = "";
                 String errorURL = "";
                 String newId;
@@ -85,7 +86,57 @@ public class CreateServlet extends HttpServlet {
                     contentError = "Content must be at least 20 and at most 4000 characters!";
                     valid = false;
                 }
+                //Xử lý hashtag
+                String hashtagName = request.getParameter("txtHashtag");
+                ArrayList<Hashtag> lstHashtag = null;
+                HashtagDAO hDao = new HashtagDAO(); 
+                if(hashtagName !=null){
+                String regex = "#\\w*";
+                Pattern p = Pattern.compile(regex);
+                Matcher matcher = p.matcher(hashtagName);
+                while (matcher.find()) {
+                    String hName = matcher.group();
+                    if (hName.trim().length() > 21) {
+                        hashtagError = "Hashtag name cannot exceed 20 characters!";
+                        valid = false;
+                    }
+                }if(valid != false){
+                   // HashtagDAO hDao = new HashtagDAO();                   
+                    // Tạo 1 mảng lưu các hashtag
+                    lstHashtag = new ArrayList<>();
+                    p = Pattern.compile(regex);
+                    matcher = p.matcher(hashtagName);
+                     while (matcher.find()) {
+                     String hName = matcher.group();
+                        //Kiểm tra xem tên hashtag đã tồn tại chưa
 
+                        if (hDao.getHashtagByName(hName) != null) {
+                           
+                            Hashtag hashtag = hDao.getHashtagByName(hName);
+                            lstHashtag.add(hashtag);
+                        } else if (hDao.getHashtagByName(hName) == null) {
+                            //Tạo id mới cho Hashtag
+                            String hId;
+                            do {
+                                hId = "";
+                                Random generator2 = new Random();
+                                for (int x = 0; x < 10; x++) {
+                                    int b = generator2.nextInt() % 10;
+                                    if (b < 0) {
+                                        b = -b;
+                                    }
+                                    hId = hId.concat(Integer.toString(b));
+                                }
+
+                            } while (hDao.getHashtagById(hId) != null); //Ktra để ko bị trùng id
+                            //Thêm mới hashtag zo DB
+                            Hashtag hashtag = new Hashtag(hId, hName);                          
+                            //hDao.addNewHashtag(hashtag);
+                            lstHashtag.add(hashtag);
+                        }
+                     }
+                }
+                }
                 // Xử lý loại đồ vật của bài viết
                 String itemId = request.getParameter("txtItem");
                 Item i = null;
@@ -113,16 +164,16 @@ public class CreateServlet extends HttpServlet {
                     }
                 }
                 // Xử lý hashtag 
-                String regex = "#\\w*";
-                Pattern p = Pattern.compile(regex);
-                Matcher matcher = p.matcher(content);
-                while (matcher.find()) {
-                    String hName = matcher.group();
-                    if (hName.trim().length() > 21) {
-                        contentError = "Hashtag name cannot exceed 20 characters!";
-                        valid = false;
-                    }
-                }
+//                String regex = "#\\w*";
+//                Pattern p = Pattern.compile(regex);
+//                Matcher matcher = p.matcher(content);
+//                while (matcher.find()) {
+//                    String hName = matcher.group();
+//                    if (hName.trim().length() > 21) {
+//                        contentError = "Hashtag name cannot exceed 20 characters!";
+//                        valid = false;
+//                    }
+//                }
 
                 if (valid) {
                     do {
@@ -151,54 +202,64 @@ public class CreateServlet extends HttpServlet {
                     // uploadFileToBuild(request);
                     Article a = new Article(newId, titlePost.trim(), content.trim(), articleURl, LocalDateTime.now().toString(), 1, i, memberLogin, at);
                     // if (aDao.createNewArticle(a)) {
-                    String partern = ".*#.*";
+                    //String partern = ".*#.*";
                     //xử lý hashtag
                             //String regex = "#\\w*";
-                    p = Pattern.compile(regex);
-                    matcher = p.matcher(content);
-                    HashtagDAO hDao = new HashtagDAO();
-                    ArticleHashtagDAO ahDao = new ArticleHashtagDAO();
-                    // Tạo 1 mảng lưu các hashtag
-                    ArrayList<Hashtag> lstHashtag = new ArrayList<>();
-                    // Vòng lặp lấy ra tất cả hashtag trong bài viết
-                    while (matcher.find()) {
-                        String hName = matcher.group();
-                        //Kiểm tra xem tên hashtag đã tồn tại chưa
-
-                        if (hDao.getHashtagByName(hName) != null) {
-                            a.setArticleContent(a.getArticleContent().replace(matcher.group(), ""));
-                            Hashtag hashtag = hDao.getHashtagByName(hName);
-                            lstHashtag.add(hashtag);
-                        } else if (hDao.getHashtagByName(hName) == null) {
-                            //Tạo id mới cho Hashtag
-                            String hId;
-                            do {
-                                hId = "";
-                                Random generator2 = new Random();
-                                for (int x = 0; x < 10; x++) {
-                                    int b = generator2.nextInt() % 10;
-                                    if (b < 0) {
-                                        b = -b;
-                                    }
-                                    hId = hId.concat(Integer.toString(b));
-                                }
-
-                            } while (hDao.getHashtagById(hId) != null); //Ktra để ko bị trùng id
-                            //Thêm mới hashtag zo DB
-                            Hashtag hashtag = new Hashtag(hId, hName);
-                            a.setArticleContent(a.getArticleContent().replace(matcher.group(), ""));
-                            hDao.addNewHashtag(hashtag);
-                            lstHashtag.add(hashtag);
-                        }
-
-                        //System.out.println(matcher.group());                       
-                    }
+                    //p = Pattern.compile(regex);
+                   // matcher = p.matcher(content);
+//                    HashtagDAO hDao = new HashtagDAO();
+//                    ArticleHashtagDAO ahDao = new ArticleHashtagDAO();
+//                    // Tạo 1 mảng lưu các hashtag
+//                    ArrayList<Hashtag> lstHashtag = new ArrayList<>();
+//                    // Vòng lặp lấy ra tất cả hashtag trong bài viết
+//                    while (matcher.find()) {
+//                        String hName = matcher.group();
+//                        //Kiểm tra xem tên hashtag đã tồn tại chưa
+//
+//                        if (hDao.getHashtagByName(hName) != null) {
+//                            a.setArticleContent(a.getArticleContent().replace(matcher.group(), ""));
+//                            Hashtag hashtag = hDao.getHashtagByName(hName);
+//                            lstHashtag.add(hashtag);
+//                        } else if (hDao.getHashtagByName(hName) == null) {
+//                            //Tạo id mới cho Hashtag
+//                            String hId;
+//                            do {
+//                                hId = "";
+//                                Random generator2 = new Random();
+//                                for (int x = 0; x < 10; x++) {
+//                                    int b = generator2.nextInt() % 10;
+//                                    if (b < 0) {
+//                                        b = -b;
+//                                    }
+//                                    hId = hId.concat(Integer.toString(b));
+//                                }
+//
+//                            } while (hDao.getHashtagById(hId) != null); //Ktra để ko bị trùng id
+//                            //Thêm mới hashtag zo DB
+//                            Hashtag hashtag = new Hashtag(hId, hName);
+//                            a.setArticleContent(a.getArticleContent().replace(matcher.group(), ""));
+//                            hDao.addNewHashtag(hashtag);
+//                            lstHashtag.add(hashtag);
+//                        }
+//
+//                        //System.out.println(matcher.group());                       
+//                    }
                     //Tạo bài viết và tạo lien ket cho hashtag và bài viết
                     aDao.createNewArticle(a);
+                    if(lstHashtag != null){
+                    ArticleHashtagDAO ahDao = new ArticleHashtagDAO();
                     for (Hashtag hashtag : lstHashtag) {
-                        ahDao.addNewArticleHashtag(a, hashtag);
+                    if(hDao.getHashtagByName(hashtag.getHashtagName()) == null){
+                      hDao.addNewHashtag(hashtag);
+                        System.out.println("New ht: "+hashtag.getHashtagName());
                     }
-                    // }
+                        System.out.println(hashtag.getHashtagName());
+                    ahDao.addNewArticleHashtag(a, hashtag);
+                    }
+//                    for (Hashtag hashtag : lstHashtag) {
+//                        ahDao.addNewArticleHashtag(a, hashtag);
+//                    }
+                    }
                     if (memberLogin.getMemberRole() == 1) {
                         if(a.getType().getTypeID()==1){
                             url=SUCCESS_FIND;
@@ -218,6 +279,8 @@ public class CreateServlet extends HttpServlet {
                     request.setAttribute("titleError", titleError);
                     request.setAttribute("content", content);
                     request.setAttribute("contentError", contentError);
+                    request.setAttribute("hashtag", hashtagName);
+                    request.setAttribute("hashtagError", hashtagError);
                     request.setAttribute("errorURL", errorURL);
                     request.setAttribute("postURL", postURL);
                     if (itemId != null) {

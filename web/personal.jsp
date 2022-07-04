@@ -45,7 +45,7 @@
             <ul style="width: 13%;" class="navbar-nav container ml-5">
                 <c:if test="${userdata.memberRole eq 1}">
                 <li class="nav-item active">
-                    <a class="nav-link" href="ListPostServlet"><i class="fa fa-home mr-1"></i> Home </a>
+                    <a class="nav-link" href="paging"><i class="fa fa-home mr-1"></i> Home </a>
                 </li>
                 <li class="nav-item">
 

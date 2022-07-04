@@ -53,7 +53,7 @@ public class LoginGoogleServlet extends HttpServlet {
                 String[] email = member.getMemberEmail().split("@");
                 //check form mail
                 if (email[1].equals("fpt.edu.vn") || email[1].equals("fe.edu.vn")) {
-                    boolean check = mdao.findMemberById(member.getMemberID());
+                    boolean check = mdao.checkMemberById(member.getMemberID());
                     //Nếu user chưa có thì add
                     if (!check) {
                         mdao.addNewMember(member);

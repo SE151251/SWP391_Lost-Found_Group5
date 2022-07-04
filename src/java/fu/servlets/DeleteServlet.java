@@ -47,7 +47,7 @@ public class DeleteServlet extends HttpServlet {
                 String aId = request.getParameter("aId");
                 ArticleDAO aDao = new ArticleDAO();
                 aDao.deleteArticle(aId);
-                request.getRequestDispatcher("ListPostServlet").forward(request, response);
+                request.getRequestDispatcher("paging").forward(request, response);
             } else {
                 request.setAttribute("errormessage", "Please login!");
                 request.getRequestDispatcher("login.jsp").forward(request, response);

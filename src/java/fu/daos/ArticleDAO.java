@@ -1162,8 +1162,8 @@ public class ArticleDAO {
                 while (rs.next()) {
                     int total = rs.getInt(1);
                     int coutPage = 0;
-                    coutPage = total / 3;
-                    if (total % 3 != 0) {
+                    coutPage = total / 10;
+                    if (total % 10 != 0) {
                         coutPage++;
                     }
                     return coutPage;
@@ -1181,12 +1181,12 @@ public class ArticleDAO {
             con = DBUtils.makeConnection();
             if (con != null) {
                 String sql = "Select * from Article\n"
-                        + "Where ArticleTypeID = 1\n"
+                        + "Where ArticleTypeID = 1 and ArticleStatus = 1\n"
                         + "order by PostTime DESC \n"
                         + "OFFSET ? ROWS\n"
                         + "FETCH FIRST 10 ROWS ONLY;";
                 stm = con.prepareStatement(sql);
-                stm.setInt(1, (index - 1) * 3);
+                stm.setInt(1, (index - 1) * 10);
                 rs = stm.executeQuery();
                 while (rs.next()) {
                     String articleId = rs.getString("ArticleID");
@@ -1223,8 +1223,8 @@ public class ArticleDAO {
                 while (rs.next()) {
                     int total = rs.getInt(1);
                     int coutPage = 0;
-                    coutPage = total / 3;
-                    if (total % 3 != 0) {
+                    coutPage = total / 10;
+                    if (total % 10 != 0) {
                         coutPage++;
                     }
                     return coutPage;
@@ -1242,12 +1242,12 @@ public class ArticleDAO {
             con = DBUtils.makeConnection();
             if (con != null) {
                 String sql = "Select * from Article\n"
-                        + "Where ArticleTypeID = 2\n"
+                        + "Where ArticleTypeID = 2  and ArticleStatus = 1\n "
                         + "order by PostTime DESC \n"
                         + "OFFSET ? ROWS\n"
                         + "FETCH FIRST 10 ROWS ONLY;";
                 stm = con.prepareStatement(sql);
-                stm.setInt(1, (index - 1) * 3);
+                stm.setInt(1, (index - 1) * 10);
                 rs = stm.executeQuery();
                 while (rs.next()) {
                     String articleId = rs.getString("ArticleID");
@@ -1285,8 +1285,8 @@ public class ArticleDAO {
                 while (rs.next()) {
                     int total = rs.getInt(1);
                     int coutPage = 0;
-                    coutPage = total / 3;
-                    if (total % 3 != 0) {
+                    coutPage = total / 10;
+                    if (total % 10 != 0) {
                         coutPage++;
                     }
                     return coutPage;
@@ -1304,12 +1304,12 @@ public class ArticleDAO {
             con = DBUtils.makeConnection();
             if (con != null) {
                 String sql = "Select * from Article\n"
-                        + "Where ArticleTypeID = 4\n"
+                        + "Where ArticleTypeID = 4 and ArticleStatus = 1 \n"
                         + "order by PostTime DESC \n"
                         + "OFFSET ? ROWS\n"
                         + "FETCH FIRST 10 ROWS ONLY;";
                 stm = con.prepareStatement(sql);
-                stm.setInt(1, (index - 1) * 3);
+                stm.setInt(1, (index - 1) * 10);
                 rs = stm.executeQuery();
                 while (rs.next()) {
                     String articleId = rs.getString("ArticleID");
