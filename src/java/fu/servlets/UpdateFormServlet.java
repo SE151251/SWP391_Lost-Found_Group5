@@ -7,9 +7,11 @@ package fu.servlets;
 
 import fu.daos.ArticleDAO;
 import fu.daos.ArticleTypeDAO;
+import fu.daos.HashtagDAO;
 import fu.daos.ItemTypeDAO;
 import fu.entities.Article;
 import fu.entities.ArticleType;
+import fu.entities.Hashtag;
 import fu.entities.Item;
 import fu.entities.Member;
 import java.io.IOException;
@@ -50,12 +52,22 @@ public class UpdateFormServlet extends HttpServlet {
 
                     List<Item> listI = itDao.getAllItems();
                     request.setAttribute("ListItemType", listI);
+                    
+                    HashtagDAO hDao = new HashtagDAO();
+                    List<Hashtag> listAH = hDao.getAllHashtagByArticleID(aId);
+                    String hashtagList = "";
+                    for (Hashtag hashtag : listAH) {
+                        hashtagList = hashtagList.concat(hashtag.getHashtagName()+" ");
+                    }
+                    request.setAttribute("hashtag", hashtagList);
+                    
                     request.setAttribute("titlePost", a.getTitle());
                     request.setAttribute("content", a.getArticleContent());
                     request.setAttribute("postURL", a.getImgUrl());
                     request.setAttribute("aStatus", a.getArticleStatus());
                     if(a.getItem() != null){
-                    request.setAttribute("itemId", a.getItem().getItemID());}
+                    request.setAttribute("itemId", a.getItem().getItemID());
+                    }
                     request.setAttribute("postTypeId", a.getType().getTypeID());
                     request.setAttribute("action", "update");
                     request.setAttribute("idUpdate", aId);
@@ -65,13 +77,15 @@ public class UpdateFormServlet extends HttpServlet {
                     List<ArticleType> listAT = atDao.getAllArticleType();
                     request.setAttribute("ListArticleType", listAT);
 
-                    List<Item> listI = itDao.getAllItems();
+                    List<Item> listI = itDao.getAllItems();                   
                     request.setAttribute("ListItemType", listI);
                     
                     request.setAttribute("titlePost", request.getAttribute("titlePost"));
                     request.setAttribute("titleError", request.getAttribute("titleError"));
                     request.setAttribute("contentError", request.getAttribute("contentError"));
                     request.setAttribute("content", request.getAttribute("content"));
+                    request.setAttribute("hashtag", request.getAttribute("hashtag"));
+                    request.setAttribute("hashtagError", request.getAttribute("hashtagError"));
                     request.setAttribute("aStatus", request.getAttribute("aStatus"));
                     request.setAttribute("postURL", request.getAttribute("postURL"));
                     request.setAttribute("itemId", request.getAttribute("itemId"));

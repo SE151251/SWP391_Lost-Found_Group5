@@ -106,14 +106,13 @@ public class ArticleDAO {
             conn = DBUtils.makeConnection();
             if (conn != null) {
                 if(b.getItem()==null){
-                String sql = "UPDATE Article SET ArticleTitle = ?, ArticleContent = ?, PostTime=?, ArticleStatus=?, ArticleTypeID=? Where ArticleID=?";
+                String sql = "UPDATE Article SET ArticleTitle = ?, ArticleContent = ?, ArticleStatus=?, ArticleTypeID=? Where ArticleID=?";
                 preStm = conn.prepareStatement(sql);
                 preStm.setString(1, b.getTitle());
-                preStm.setString(2, b.getArticleContent());
-                preStm.setString(3, b.getPostTime());
-                preStm.setInt(4, b.getArticleStatus());
-                preStm.setInt(5, b.getType().getTypeID());
-                preStm.setString(6, b.getArticleID()); 
+                preStm.setString(2, b.getArticleContent());              
+                preStm.setInt(3, b.getArticleStatus());
+                preStm.setInt(4, b.getType().getTypeID());
+                preStm.setString(5, b.getArticleID()); 
                 }
                 else if(b.getItem()!=null){
                 String sql = "UPDATE Article SET ArticleTitle = ?, ArticleContent = ?, PostTime=?, ArticleStatus=?, ArticleTypeID=?, ItemID=? Where ArticleID=?";

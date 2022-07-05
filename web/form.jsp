@@ -177,8 +177,7 @@
                                 <font color="red"> ${contentError} </font>
                             </td>
 		</tr> 
-                <tr>
-                    
+                        <tr>                    
                             <td style="font-size: 20px; padding-bottom: 20px"">Hashtag:</td>
                             <td style="padding-bottom: 20px"><input style="width: 500px; height: 50px;" type="text" name="txtHashtag" value="${hashtag}"<font color="red">${hashtagError}</font></td>
 			</tr>
