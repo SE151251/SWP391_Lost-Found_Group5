@@ -35,13 +35,13 @@ public class ReportDAO {
                 stm = con.prepareStatement(sql);               
                 rs = stm.executeQuery();
                 while (rs.next()) {
-                    String rId = rs.getString("ReportID");                                       
+                    int rId = rs.getInt("ReportID");                                       
                     String rContent = rs.getString("ReportContent");
                     String rTime = rs.getString("ReportTime"); 
                     String cTime = rs.getString("ConfirmTime");
                     int rStatus = rs.getInt("ReportStatus");
                     String memPostCmt = rs.getString("MemberID");
-                    String aR = rs.getString("ArticleID");
+                    int aR = rs.getInt("ArticleID");
                     MemberDAO mdao = new MemberDAO();
                     Member m = mdao.find(memPostCmt);      
                     ArticleDAO adao = new ArticleDAO();
@@ -70,16 +70,15 @@ public class ReportDAO {
         try {
             con = DBUtils.makeConnection();
             if (con != null) {
-                String sql = "INSERT INTO Report "
-                        + "VALUES (?, ?, ?, ?, ?, ?, ?)";
+                String sql = "INSERT INTO Report (ReportContent, ReportTime, ConfirmTime, ReportStatus, ArticleID, MemberID)"
+                        + "VALUES (?, ?, ?, ?, ?, ?)";
                 stm = con.prepareStatement(sql);
-                stm.setString(1, r.getReportID());
-                stm.setString(2, r.getReportContent());
-                stm.setString(3, r.getReportTime());
-                stm.setString(4, r.getConfirmTime());
-                stm.setInt(5, 1);
-                stm.setString(6,r.getArticle().getArticleID());
-                stm.setString(7, r.getMember().getMemberID());               
+                stm.setString(1, r.getReportContent());
+                stm.setString(2, r.getReportTime());
+                stm.setString(3, r.getConfirmTime());
+                stm.setInt(4, 1);
+                stm.setInt(5,r.getArticle().getArticleID());
+                stm.setString(6, r.getMember().getMemberID());               
                 int row = stm.executeUpdate();
                 if (row > 0) {
                     return true;
@@ -96,7 +95,7 @@ public class ReportDAO {
         return false;
     }
 
-    public boolean updateStatusReport(String aId)
+    public boolean updateStatusReport(int aId)
             throws Exception, SQLException {
         Connection con = null;
         PreparedStatement stm = null;
@@ -108,7 +107,7 @@ public class ReportDAO {
                         + "Where ArticleID LIKE ?";
                 stm = con.prepareStatement(sql);
                 stm.setString(1, LocalDateTime.now().toString());
-                stm.setString(2, aId);
+                stm.setInt(2, aId);
                 int row = stm.executeUpdate();
                 if (row > 0) {
                     return true;
@@ -138,13 +137,13 @@ public class ReportDAO {
                 stm.setString(1, rId);
                 rs = stm.executeQuery();
                 while (rs.next()) {
-                    String reportId = rs.getString("ReportID");                                       
+                    int reportId = rs.getInt("ReportID");                                       
                     String rContent = rs.getString("ReportContent");
                     String rTime = rs.getString("ReportTime"); 
                     String cTime = rs.getString("ConfirmTime");
                     int rStatus = rs.getInt("ReportStatus");
                     String memPostCmt = rs.getString("MemberID");
-                    String aR = rs.getString("ArticleID");
+                    int aR = rs.getInt("ArticleID");
                     MemberDAO mdao = new MemberDAO();
                     Member m = mdao.find(memPostCmt);      
                     ArticleDAO adao = new ArticleDAO();
@@ -181,13 +180,13 @@ public class ReportDAO {
                 stm.setString(2, mId);
                 rs = stm.executeQuery();
                 while (rs.next()) {
-                    String reportId = rs.getString("ReportID");                                       
+                    int reportId = rs.getInt("ReportID");                                       
                     String rContent = rs.getString("ReportContent");
                     String rTime = rs.getString("ReportTime");
                     String cTime = rs.getString("ConfirmTime");                    
                     int rStatus = rs.getInt("ReportStatus");
                     String memPostCmt = rs.getString("MemberID");
-                    String aR = rs.getString("ArticleID");
+                    int aR = rs.getInt("ArticleID");
                     MemberDAO mdao = new MemberDAO();
                     Member m = mdao.find(memPostCmt);      
                     ArticleDAO adao = new ArticleDAO();
@@ -222,13 +221,13 @@ public class ReportDAO {
                 stm = con.prepareStatement(sql);               
                 rs = stm.executeQuery();
                 while (rs.next()) {
-                    String rId = rs.getString("ReportID");                                       
+                    int rId = rs.getInt("ReportID");                                       
                     String rContent = rs.getString("ReportContent");
                     String rTime = rs.getString("ReportTime"); 
                     String cTime = rs.getString("ConfirmTime");
                     int rStatus = rs.getInt("ReportStatus");
                     String memPostCmt = rs.getString("MemberID");
-                    String aR = rs.getString("ArticleID");
+                    int aR = rs.getInt("ArticleID");
                     MemberDAO mdao = new MemberDAO();
                     Member m = mdao.find(memPostCmt);      
                     ArticleDAO adao = new ArticleDAO();
@@ -264,13 +263,13 @@ public class ReportDAO {
                 stm = con.prepareStatement(sql);               
                 rs = stm.executeQuery();
                 while (rs.next()) {
-                    String rId = rs.getString("ReportID");                                       
+                    int rId = rs.getInt("ReportID");                                       
                     String rContent = rs.getString("ReportContent");
                     String rTime = rs.getString("ReportTime");
                     String cTime = rs.getString("ConfirmTime");                    
                     int rStatus = rs.getInt("ReportStatus");
                     String memPostCmt = rs.getString("MemberID");
-                    String aR = rs.getString("ArticleID");
+                    int aR = rs.getInt("ArticleID");
                     MemberDAO mdao = new MemberDAO();
                     Member m = mdao.find(memPostCmt);      
                     ArticleDAO adao = new ArticleDAO();

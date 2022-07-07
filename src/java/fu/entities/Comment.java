@@ -12,7 +12,7 @@ import java.io.Serializable;
  * @author Admin
  */
 public class Comment implements Serializable{
-    private String commentId;
+    private int commentId;
     private Article article;
     private Member member;
     private String commentContent;
@@ -20,7 +20,7 @@ public class Comment implements Serializable{
     private int status;
 
     public Comment() {
-        commentId="";
+        commentId=0;
         article=null;
         member=null;
         commentContent="";
@@ -28,7 +28,7 @@ public class Comment implements Serializable{
         status=0;
     }
 
-    public Comment(String commentId, Article article, Member member, String commentContent, String commentTime, int status) {
+    public Comment(int commentId, Article article, Member member, String commentContent, String commentTime, int status) {
         this.commentId = commentId;
         this.article = article;
         this.member = member;
@@ -37,11 +37,11 @@ public class Comment implements Serializable{
         this.status = status;
     }
 
-    public String getCommentId() {
+    public int getCommentId() {
         return commentId;
     }
 
-    public void setCommentId(String commentId) {
+    public void setCommentId(int commentId) {
         this.commentId = commentId;
     }
 

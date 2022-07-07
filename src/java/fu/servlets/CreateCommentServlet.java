@@ -40,31 +40,30 @@ public class CreateCommentServlet extends HttpServlet {
                 Member member = (Member) session.getAttribute("userdata");
                 String cmtContent = request.getParameter("txtCmt");
                 String memberCmtId = request.getParameter("memberCmt");
-                String aId = request.getParameter("aId");
-                System.out.println(aId +" | "+ cmtContent+" | " +memberCmtId);
+                String aId = request.getParameter("aId");                
                 if(cmtContent.trim().isEmpty() || cmtContent.trim().length()>500 ){
                 request.setAttribute("errorCmt", "Your comment must be from 1 to 500 characters");
                 request.getRequestDispatcher("ViewDetailServlet?aId="+aId).forward(request, response);  
                 return;
                 }else{
-                String newId;
+                //String newId;
                 ArticleDAO aDao = new ArticleDAO();
-                Article art = aDao.find(aId);
+                Article art = aDao.find(Integer.parseInt(aId));
                 MemberDAO mdao = new MemberDAO();
                 Member memCmt = mdao.find(memberCmtId);
                 CommentDAO cdao = new CommentDAO();
-                do {
-                        newId = "";
-                        Random generator = new Random();
-                        for (int x = 0; x < 10; x++) {
-                            int a = generator.nextInt() % 10;
-                            if (a < 0) {
-                                a = -a;
-                            }
-                            newId = newId.concat(Integer.toString(a));
-                        }
-                    } while (cdao.getCommentsById(newId) != null);
-                Comment c = new Comment(newId, art, memCmt, cmtContent, LocalDateTime.now().toString(), 1);              
+//                do {
+//                        newId = "";
+//                        Random generator = new Random();
+//                        for (int x = 0; x < 10; x++) {
+//                            int a = generator.nextInt() % 10;
+//                            if (a < 0) {
+//                                a = -a;
+//                            }
+//                            newId = newId.concat(Integer.toString(a));
+//                        }
+//                    } while (cdao.getCommentsById(newId) != null);
+                Comment c = new Comment(0, art, memCmt, cmtContent, LocalDateTime.now().toString(), 1);              
                 cdao.addNewComment(c);                  
                 request.getRequestDispatcher("ViewDetailServlet?aId="+aId).forward(request, response);
                 

@@ -50,7 +50,7 @@ public class DeleteCommentServlet extends HttpServlet {
                 String cmtId = request.getParameter("cmtId");
                 String aId = request.getParameter("aId");
                 CommentDAO cdao = new CommentDAO();
-                cdao.deleteComment(cmtId);                  
+                cdao.deleteComment(Integer.parseInt(cmtId));                  
                 request.getRequestDispatcher("ViewDetailServlet?aId="+aId).forward(request, response);
                 return;               
             } else {

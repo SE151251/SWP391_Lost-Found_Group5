@@ -10,22 +10,22 @@ package fu.entities;
  * @author LENOVO
  */
 public class Hashtag {
-    private String hashtagID;
+    private int hashtagID;
     private String hashtagName;
 
     public Hashtag() {
     }
 
-    public Hashtag(String hashtagID, String hashtagName) {
+    public Hashtag(int hashtagID, String hashtagName) {
         this.hashtagID = hashtagID;
         this.hashtagName = hashtagName;
     }
 
-    public String getHashtagID() {
+    public int getHashtagID() {
         return hashtagID;
     }
 
-    public void setHashtagID(String hashtagID) {
+    public void setHashtagID(int hashtagID) {
         this.hashtagID = hashtagID;
     }
 

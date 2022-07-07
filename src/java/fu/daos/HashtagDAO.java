@@ -6,13 +6,12 @@
 package fu.daos;
 
 import fu.dbhelper.DBUtils;
-import fu.entities.Comment;
 import fu.entities.Hashtag;
-import fu.entities.Item;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,7 +50,7 @@ public class HashtagDAO {
             preStm.setString(1, name);
             rs = preStm.executeQuery();
             if(rs.next()){
-                String hId = rs.getString("HashtagID");
+                int hId = rs.getInt("HashtagID");
                 String hName = rs.getString("HashtagName");                           
                 result = new Hashtag(hId, hName);
                 }
@@ -71,7 +70,7 @@ public class HashtagDAO {
             preStm.setString(1, id);
             rs = preStm.executeQuery();
             if(rs.next()){
-                String hId = rs.getString("HashtagID");
+                int hId = rs.getInt("HashtagID");
                 String hName = rs.getString("HashtagName");                           
                 result = new Hashtag(hId, hName);
                 }
@@ -92,7 +91,7 @@ public class HashtagDAO {
             rs = preStm.executeQuery(); 
             result = new ArrayList<>();
             while (rs.next()){
-                String hId = rs.getString("HashtagID");
+                int hId = rs.getInt("HashtagID");
                 String hName = rs.getString("HashtagName");    
                 Hashtag h = new Hashtag(hId, hName);
                 result.add(h);
@@ -117,7 +116,7 @@ public class HashtagDAO {
             rs = preStm.executeQuery(); 
             result = new ArrayList<>();
             while (rs.next()){
-                String hId = rs.getString("HashtagID");
+                int hId = rs.getInt("HashtagID");
                 String hName = rs.getString("HashtagName");    
                 Hashtag h = new Hashtag(hId, hName);
                 result.add(h);
@@ -128,30 +127,27 @@ public class HashtagDAO {
         }
         return result;
     }
-    public boolean addNewHashtag(Hashtag h) throws SQLException {
-        Connection con = null;
-        PreparedStatement stm = null;
+    public int addNewHashtag(Hashtag h) throws SQLException, Exception {
+        int idPost = 0;
         try {
             con = DBUtils.makeConnection();
             if (con != null) {
-                String sql = "INSERT INTO Hashtag "
-                        + "VALUES (?, ?)";
-                stm = con.prepareStatement(sql);
-                stm.setString(1, h.getHashtagID());
-                stm.setString(2, h.getHashtagName());                
-                int row = stm.executeUpdate();
+                String sql = "INSERT INTO Hashtag (HashtagName) "
+                        + "VALUES (?)";
+                preStm = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+                preStm.setString(1, h.getHashtagName());                
+                int row = preStm.executeUpdate();
                 if (row > 0) {
-                    return true;
+                    rs = preStm.getGeneratedKeys();
+                    if (rs.next()) {
+                        idPost = rs.getInt(1);
+                    }                
+                    return idPost;
                 }
             }
         } finally {
-            if (stm != null) {
-                stm.close();
-            }
-            if (con != null) {
-                con.close();
-            }
+            closeConnection();
         }
-        return false;
+        return idPost;
     }
 }

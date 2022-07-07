@@ -103,14 +103,14 @@
             </div>
             <div style=" min-width: 170px; max-width: 200px;" class="dropdown-list filter-list mt-3">
                     <c:forEach var="dt" items="${ListItemType}" > 
-                <a href="SearchServlet?txtItem=${dt.itemID}&searchAction=Find" class="dropdown-item filter-item text-white"><c:out value="${dt.itemName}"/></a>
+                <a href="SearchServlet?txtItem=${dt.itemID}&searchAction=Return" class="dropdown-item filter-item text-white"><c:out value="${dt.itemName}"/></a>
                 </c:forEach>
             </div>
         </div>
         <form class="search col-md-4">
             <div class="search-field">   
                 <input type="text" name="keySearch" class="search-input p-1" placeholder="Search here">
-            <input type="hidden" name="searchAction" value="Find"/>
+            <input type="hidden" name="searchAction" value="Return"/>
             </div>
 
             <button formaction="SearchServlet" class="search-button p-1 pl-3 pr-3 ml-2">Search</button>
@@ -147,7 +147,7 @@
                 <div class="pane-content">
                     <p style="font-size: 12px">Thời gian: <c:out value="${dt.postTime}"/></p>                 
                     <p style="font-size: 15px; font-weight: bold"><c:out value="${dt.title}"/></p>
-                    <a href="SearchServlet?txtItem=${dt.item.itemID}">    <p><span style="padding: 5px 10px 5px 10px" class="badge badge-pill badge-primary"><c:out value="${dt.item.itemName}"/></span></p>   </a>                                 
+                    <a href="SearchServlet?txtItem=${dt.item.itemID}&searchAction=Return">    <p><span style="padding: 5px 10px 5px 10px" class="badge badge-pill badge-primary"><c:out value="${dt.item.itemName}"/></span></p>   </a>                                 
                    <div class="hashtag-viewmore">
                     <c:forEach var="lah" items="${listAH}" >
                         <c:if test="${dt.articleID eq lah.article.articleID}">

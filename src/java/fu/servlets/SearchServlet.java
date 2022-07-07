@@ -62,7 +62,6 @@ public class SearchServlet extends HttpServlet {
                     // search theo filter
                     if (itemId != null) {
                         if (searchAction.equals("Find")) {
-
                             Item i = iDao.getItemByID(Integer.parseInt(itemId));
                             List<Article> listArtsFind = adao.getAllArticlesFindByItemType(i);
                             request.setAttribute("articlesFind", listArtsFind);

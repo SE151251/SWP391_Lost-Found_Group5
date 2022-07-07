@@ -6,11 +6,9 @@
 package fu.servlets;
 
 import fu.daos.ArticleDAO;
-import fu.daos.CommentDAO;
 import fu.daos.MemberDAO;
 import fu.daos.ReportDAO;
 import fu.entities.Article;
-import fu.entities.Comment;
 import fu.entities.Member;
 import fu.entities.Report;
 import java.io.IOException;
@@ -48,26 +46,26 @@ public class CreateReportServlet extends HttpServlet {
                 request.getRequestDispatcher("ViewDetailServlet?aId="+aId).forward(request, response);  
                 return;
                 }else{
-                String newId;
+                //String newId;
                 ArticleDAO aDao = new ArticleDAO();
-                Article art = aDao.find(aId);
+                Article art = aDao.find(Integer.parseInt(aId));
                 MemberDAO mdao = new MemberDAO();
                 Member memR = mdao.find(memberReportId);
                 ReportDAO rdao = new ReportDAO();
-                do {
-                        newId = "";
-                        Random generator = new Random();
-                        for (int x = 0; x < 10; x++) {
-                            int a = generator.nextInt() % 10;
-                            if (a < 0) {
-                                a = -a;
-                            }
-                            newId = newId.concat(Integer.toString(a));
-                        }
-                    } while (rdao.getReportById(newId) != null);
-                Report r = new Report(newId, rContent, LocalDateTime.now().toString(), null, 1, art, member);
+//                do {
+//                        newId = "";
+//                        Random generator = new Random();
+//                        for (int x = 0; x < 10; x++) {
+//                            int a = generator.nextInt() % 10;
+//                            if (a < 0) {
+//                                a = -a;
+//                            }
+//                            newId = newId.concat(Integer.toString(a));
+//                        }
+//                    } while (rdao.getReportById(newId) != null);
+                Report r = new Report(0, rContent, LocalDateTime.now().toString(), null, 1, art, member);
                 rdao.addNewReport(r);
-                aDao.closeArticle(aId);
+                aDao.closeArticle(Integer.parseInt(aId));
                 request.getRequestDispatcher("paging").forward(request, response);
                 return;
                 }

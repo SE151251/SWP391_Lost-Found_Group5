@@ -46,7 +46,7 @@ public class UpdateFormServlet extends HttpServlet {
                 ItemTypeDAO itDao = new ItemTypeDAO();
                 ArticleTypeDAO atDao = new ArticleTypeDAO();
                 if (aId != null) {
-                    Article a = aDao.find(aId);
+                    Article a = aDao.find(Integer.parseInt(aId));
                     List<ArticleType> listAT = atDao.getAllArticleType();
                     request.setAttribute("ListArticleType", listAT);
 
@@ -54,12 +54,12 @@ public class UpdateFormServlet extends HttpServlet {
                     request.setAttribute("ListItemType", listI);
                     
                     HashtagDAO hDao = new HashtagDAO();
-                    List<Hashtag> listAH = hDao.getAllHashtagByArticleID(aId);
-                    String hashtagList = "";
-                    for (Hashtag hashtag : listAH) {
-                        hashtagList = hashtagList.concat(hashtag.getHashtagName()+" ");
-                    }
-                    request.setAttribute("hashtag", hashtagList);
+//                    List<Hashtag> listAH = hDao.getAllHashtagByArticleID(aId);
+//                    String hashtagList = "";
+//                    for (Hashtag hashtag : listAH) {
+//                        hashtagList = hashtagList.concat(hashtag.getHashtagName()+" ");
+//                    }
+//                    request.setAttribute("hashtag", hashtagList);
                     
                     request.setAttribute("titlePost", a.getTitle());
                     request.setAttribute("content", a.getArticleContent());

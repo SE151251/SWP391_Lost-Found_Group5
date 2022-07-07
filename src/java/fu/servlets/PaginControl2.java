@@ -46,7 +46,7 @@ public class PaginControl2 extends HttpServlet {
                     index2 = "1";
                     int indexPage = Integer.parseInt(index2);
                     
-                    ArrayList<Article> list = dao.getPagingExperience(indexPage);
+                    ArrayList<Article> list = dao.getPagingNotice(indexPage);
                     request.setAttribute("articlesShare", list);
                     request.setAttribute("indexPage2", indexPage);
                     
@@ -59,7 +59,7 @@ public class PaginControl2 extends HttpServlet {
                 } else if (index2 != null) {
                     int indexPage = Integer.parseInt(index2);
                    
-                    ArrayList<Article> list = dao.getPagingExperience(indexPage);
+                    ArrayList<Article> list = dao.getPagingNotice(indexPage);
                     request.setAttribute("articlesShare", list);
                     request.setAttribute("indexPage2", indexPage);
                     

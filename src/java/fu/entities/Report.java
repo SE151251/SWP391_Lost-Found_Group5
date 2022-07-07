@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
  */
 public class Report implements Serializable {
 
-    private String reportID;
+    private int reportID;
     private String reportContent;
     private String reportTime;
     private String confirmTime;
@@ -23,7 +23,7 @@ public class Report implements Serializable {
     private Member member;
 
     public Report() {
-        reportID = "";
+        reportID = 0;
         reportContent = "";
         reportTime = "";
         confirmTime = "";
@@ -32,7 +32,7 @@ public class Report implements Serializable {
         member = null;
     }
 
-    public Report(String reportID, String reportConntet, String reportTime, String confirmTime, int status, Article article, Member member) {
+    public Report(int reportID, String reportConntet, String reportTime, String confirmTime, int status, Article article, Member member) {
         this.reportID = reportID;
         this.reportContent = reportConntet;
         this.reportTime = reportTime;
@@ -50,11 +50,11 @@ public class Report implements Serializable {
         this.confirmTime = confirmTime;
     }
 
-    public String getReportID() {
+    public int getReportID() {
         return reportID;
     }
 
-    public void setReportID(String reportID) {
+    public void setReportID(int reportID) {
         this.reportID = reportID;
     }
 

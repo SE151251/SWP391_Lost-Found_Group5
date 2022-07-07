@@ -43,7 +43,7 @@ public class WarningMemberServlet extends HttpServlet {
                 String adminAction = request.getParameter("adminAction");
 
                 ArticleDAO aDao = new ArticleDAO();
-                Article a = aDao.find(aId);
+                Article a = aDao.find(Integer.parseInt(aId));
 
                 MemberDAO mdao = new MemberDAO();
 
@@ -58,10 +58,10 @@ public class WarningMemberServlet extends HttpServlet {
                         mdao.warningMember(memberWarn);
 
                         //Thay đổi trạng thái của tất cả report về bài viết này thành 0 (tức là đã xử lý all report của bài viết)
-                        rdao.updateStatusReport(aId);
+                        rdao.updateStatusReport(Integer.parseInt(aId));
 
                         //Thay đổi trạng thái bài viết thành InActive
-                        aDao.closeArticle(aId);
+                        aDao.closeArticle(Integer.parseInt(aId));
                     } else if (uId != null) {
                         Member memberWarn = mdao.find(uId);
                         memberWarn.setMemberCount(memberWarn.getMemberCount() + 1);
@@ -97,9 +97,9 @@ public class WarningMemberServlet extends HttpServlet {
                     // Trường hợp member bị tố cáo không có vấn đề gì
                 } else if (adminAction.equalsIgnoreCase("none")) {
                     //Thay đổi trạng thái của tất cả report về bài viết này thành 0 (tức là đã xử lý all report của bài viết)
-                    rdao.updateStatusReport(aId);
+                    rdao.updateStatusReport(Integer.parseInt(aId));
                     // Trả bài viết về trạng thái Active
-                    aDao.openArticle(aId);
+                    aDao.openArticle(Integer.parseInt(aId));
                 } else if (adminAction.equalsIgnoreCase("unban")) {
                     Member memberBan = mdao.find(uId);
                     memberBan.setStatus(1);

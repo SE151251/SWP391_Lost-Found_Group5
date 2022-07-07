@@ -46,7 +46,7 @@ public class DeleteServlet extends HttpServlet {
                 Member member = (Member) session.getAttribute("userdata");
                 String aId = request.getParameter("aId");
                 ArticleDAO aDao = new ArticleDAO();
-                aDao.deleteArticle(aId);
+                aDao.deleteArticle(Integer.parseInt(aId));
                 request.getRequestDispatcher("paging").forward(request, response);
             } else {
                 request.setAttribute("errormessage", "Please login!");

@@ -52,7 +52,7 @@ public class ArticleHashtagDAO {
             result = new ArrayList<>();
             while (rs.next()){
                 String hId = rs.getString("HashtagID");
-                String aId = rs.getString("ArticleID"); 
+                int aId = rs.getInt("ArticleID"); 
                 ArticleDAO aDao = new ArticleDAO();
                 HashtagDAO hDao = new HashtagDAO();
                 Article a = aDao.find(aId);
@@ -75,8 +75,8 @@ public class ArticleHashtagDAO {
                 String sql = "INSERT INTO ArticleHashtag "
                         + "VALUES (?, ?)";
                 stm = con.prepareStatement(sql);
-                stm.setString(1, a.getArticleID());
-                stm.setString(2, h.getHashtagID());                
+                stm.setInt(1, a.getArticleID());
+                stm.setInt(2, h.getHashtagID());                
                 int row = stm.executeUpdate();
                 if (row > 0) {
                     return true;

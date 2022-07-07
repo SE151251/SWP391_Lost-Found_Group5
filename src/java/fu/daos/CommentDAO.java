@@ -34,10 +34,10 @@ public class CommentDAO {
                         + "Where ArticleID Like ? and CommentStatus = 1 "
                         + "Order By CommentTime ASC";
                 stm = con.prepareStatement(sql);
-                stm.setString(1, a.getArticleID());
+                stm.setInt(1, a.getArticleID());
                 rs = stm.executeQuery();
                 while (rs.next()) {
-                    String cmtId = rs.getString("CommentID");                    
+                    int cmtId = rs.getInt("CommentID");                    
                     String memPostCmt = rs.getString("MemberID");
                     String cmtContent = rs.getString("CommentContent");
                     String cmtTime = rs.getString("CommentTime");                    
@@ -68,15 +68,14 @@ public class CommentDAO {
         try {
             con = DBUtils.makeConnection();
             if (con != null) {
-                String sql = "INSERT INTO Comment "
-                        + "VALUES (?, ?, ?, ?, ?, ?)";
+                String sql = "INSERT INTO Comment (ArticleID, MemberID, CommentContent, CommentTime, CommentStatus) "
+                        + "VALUES (?, ?, ?, ?, ?)";
                 stm = con.prepareStatement(sql);
-                stm.setString(1, b.getCommentId());
-                stm.setString(2, b.getArticle().getArticleID());
-                stm.setString(3, b.getMember().getMemberID());
-                stm.setString(4, b.getCommentContent());
-                stm.setString(5, b.getCommentTime());
-                stm.setInt(6, 1);               
+                stm.setInt(1, b.getArticle().getArticleID());
+                stm.setString(2, b.getMember().getMemberID());
+                stm.setString(3, b.getCommentContent());
+                stm.setString(4, b.getCommentTime());
+                stm.setInt(5, 1);               
                 int row = stm.executeUpdate();
                 if (row > 0) {
                     return true;
@@ -93,7 +92,7 @@ public class CommentDAO {
         return false;
     }
 
-    public boolean deleteComment(String cId)
+    public boolean deleteComment(int cId)
             throws Exception, SQLException {
         Connection con = null;
         PreparedStatement stm = null;
@@ -104,7 +103,7 @@ public class CommentDAO {
                         + "SET CommentStatus = 0 "
                         + "Where CommentID = ?";
                 stm = con.prepareStatement(sql);
-                stm.setString(1, cId);
+                stm.setInt(1, cId);
                 int row = stm.executeUpdate();
                 if (row > 0) {
                     return true;
@@ -134,8 +133,8 @@ public class CommentDAO {
                 stm.setString(1, cId);
                 rs = stm.executeQuery();
                 while (rs.next()) {
-                    String cmtId = rs.getString("CommentID");  
-                    String aId = rs.getString("ArticleID");
+                    int cmtId = rs.getInt("CommentID");  
+                    int aId = rs.getInt("ArticleID");
                     String memPostCmt = rs.getString("MemberID");
                     String cmtContent = rs.getString("CommentContent");
                     String cmtTime = rs.getString("CommentTime");                    

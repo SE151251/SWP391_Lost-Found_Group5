@@ -71,7 +71,7 @@ public class CreateServlet extends HttpServlet {
                 String hashtagError= "";
                 String contentError = "";
                 String errorURL = "";
-                String newId;
+                //String newId;
                 String textURL = request.getParameter("articleURL");
                 ArticleDAO aDao = new ArticleDAO();
                 // Xử lý title bài viết    
@@ -116,21 +116,21 @@ public class CreateServlet extends HttpServlet {
                             lstHashtag.add(hashtag);
                         } else if (hDao.getHashtagByName(hName) == null) {
                             //Tạo id mới cho Hashtag
-                            String hId;
-                            do {
-                                hId = "";
-                                Random generator2 = new Random();
-                                for (int x = 0; x < 10; x++) {
-                                    int b = generator2.nextInt() % 10;
-                                    if (b < 0) {
-                                        b = -b;
-                                    }
-                                    hId = hId.concat(Integer.toString(b));
-                                }
-
-                            } while (hDao.getHashtagById(hId) != null); //Ktra để ko bị trùng id
+//                            String hId;
+//                            do {
+//                                hId = "";
+//                                Random generator2 = new Random();
+//                                for (int x = 0; x < 10; x++) {
+//                                    int b = generator2.nextInt() % 10;
+//                                    if (b < 0) {
+//                                        b = -b;
+//                                    }
+//                                    hId = hId.concat(Integer.toString(b));
+//                                }
+//
+//                            } while (hDao.getHashtagById(hId) != null); //Ktra để ko bị trùng id
                             //Thêm mới hashtag zo DB
-                            Hashtag hashtag = new Hashtag(hId, hName);                          
+                            Hashtag hashtag = new Hashtag(0, hName);                          
                             //hDao.addNewHashtag(hashtag);
                             lstHashtag.add(hashtag);
                         }
@@ -176,17 +176,17 @@ public class CreateServlet extends HttpServlet {
 //                }
 
                 if (valid) {
-                    do {
-                        newId = "";
-                        Random generator = new Random();
-                        for (int x = 0; x < 10; x++) {
-                            int a = generator.nextInt() % 10;
-                            if (a < 0) {
-                                a = -a;
-                            }
-                            newId = newId.concat(Integer.toString(a));
-                        }
-                    } while (aDao.find(newId) != null);
+//                    do {
+//                        newId = "";
+//                        Random generator = new Random();
+//                        for (int x = 0; x < 10; x++) {
+//                            int a = generator.nextInt() % 10;
+//                            if (a < 0) {
+//                                a = -a;
+//                            }
+//                            newId = newId.concat(Integer.toString(a));
+//                        }
+//                    } while (aDao.find(newId) != null);
                     // Xử lý ảnh để thêm vô DB
                     String articleURl;
                     if (postURL.equals("")) {
@@ -200,7 +200,7 @@ public class CreateServlet extends HttpServlet {
                         articleURl = uploadFile(request);
                     }
                     // uploadFileToBuild(request);
-                    Article a = new Article(newId, titlePost.trim(), content.trim(), articleURl, LocalDateTime.now().toString(), 1, i, memberLogin, at);
+                    Article a = new Article(0, titlePost.trim(), content.trim(), articleURl, LocalDateTime.now().toString(), 1, 0, i, memberLogin, at);
                     // if (aDao.createNewArticle(a)) {
                     //String partern = ".*#.*";
                     //xử lý hashtag
@@ -245,15 +245,16 @@ public class CreateServlet extends HttpServlet {
 //                        //System.out.println(matcher.group());                       
 //                    }
                     //Tạo bài viết và tạo lien ket cho hashtag và bài viết
-                    aDao.createNewArticle(a);
+                    int idPost = aDao.createNewArticle(a);
+                    a.setArticleID(idPost);
                     if(lstHashtag != null){
                     ArticleHashtagDAO ahDao = new ArticleHashtagDAO();
                     for (Hashtag hashtag : lstHashtag) {
                     if(hDao.getHashtagByName(hashtag.getHashtagName()) == null){
-                      hDao.addNewHashtag(hashtag);
-                        System.out.println("New ht: "+hashtag.getHashtagName());
+                      int idHashtag = hDao.addNewHashtag(hashtag); 
+                      hashtag.setHashtagID(idHashtag);
                     }
-                        System.out.println(hashtag.getHashtagName());
+                        
                     ahDao.addNewArticleHashtag(a, hashtag);
                     }
 //                    for (Hashtag hashtag : lstHashtag) {

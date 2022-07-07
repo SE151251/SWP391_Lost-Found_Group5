@@ -44,9 +44,7 @@ public class ListPostServlet extends HttpServlet {
                 List<Article> listArtsFind = adao.getAllArticlesFind();
                 request.setAttribute("articlesFind", listArtsFind);
                 List<Article> listArtsReturn = adao.getAllArticlesReturn();
-                request.setAttribute("articlesReturn", listArtsReturn);
-                List<Article> listArtsShare = adao.getAllArticlesShare();
-                request.setAttribute("articlesShare", listArtsShare);
+                request.setAttribute("articlesReturn", listArtsReturn);               
                 List<Article> listArtsNotice = adao.getAllArticlesNotice();
                 request.setAttribute("articlesNotice", listArtsNotice);
                 ItemTypeDAO itDao = new ItemTypeDAO();

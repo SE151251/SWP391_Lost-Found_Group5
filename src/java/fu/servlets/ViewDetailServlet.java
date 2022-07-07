@@ -43,7 +43,7 @@ public class ViewDetailServlet extends HttpServlet {
                 String aId = request.getParameter("aId");
                 String memRpId = request.getParameter("memReportID");
                 ArticleDAO aDao = new ArticleDAO();
-                Article a = aDao.find(aId);
+                Article a = aDao.find(Integer.parseInt(aId));
                 request.setAttribute("postDetail", a);
                 CommentDAO cdao = new CommentDAO();
                 request.setAttribute("listCmt", cdao.getAllCommentsByArticles(a));

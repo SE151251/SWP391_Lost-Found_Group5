@@ -143,7 +143,7 @@
                 <div class="pane-content">
                     <p style="font-size: 12px">Thời gian: <c:out value="${dt.postTime}"/></p>                 
                     <p style="font-size: 15px; font-weight: bold"><c:out value="${dt.title}"/></p>
-                    <a href="SearchServlet?txtItem=${dt.item.itemID}">    <p><span style="padding: 5px 10px 5px 10px" class="badge badge-pill badge-primary"><c:out value="${dt.item.itemName}"/></span></p>   </a>                                 
+                    <a href="SearchServlet?txtItem=${dt.item.itemID}&searchAction=Find">    <p><span style="padding: 5px 10px 5px 10px" class="badge badge-pill badge-primary"><c:out value="${dt.item.itemName}"/></span></p>   </a>                                 
                    <div class="hashtag-viewmore">
                     <c:forEach var="lah" items="${listAH}" >
                         <c:if test="${dt.articleID eq lah.article.articleID}">

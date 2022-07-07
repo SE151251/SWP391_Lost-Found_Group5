@@ -14,45 +14,56 @@ import java.time.LocalDateTime;
  */
 public class Article implements Serializable {
 
-    private String articleID;
+    private int articleID;
     private String title;
     private String articleContent;
     private String imgUrl;
     private String postTime;
     private int articleStatus;
+    private int warningStatus;
     private Item item;
     private Member member;
     private ArticleType type;
 
     public Article() {
-        articleID = "";
-        title="";
+        articleID = 0;
+        title = "";
         articleContent = "";
         imgUrl = "";
         postTime = null;
         articleStatus = 1;
+        warningStatus = 0;
         item = null;
         member = null;
         type = null;
     }
 
-    public Article(String articleID, String title, String articleContent, String imgUrl, String postTime, int articleStatus, Item item, Member member, ArticleType type) {
+    public Article(int articleID, String title, String articleContent, String imgUrl, String postTime, int articleStatus, int warningStatus, Item item, Member member, ArticleType type) {
         this.articleID = articleID;
         this.title = title;
         this.articleContent = articleContent;
         this.imgUrl = imgUrl;
         this.postTime = postTime;
         this.articleStatus = articleStatus;
+        this.warningStatus = warningStatus;
         this.item = item;
         this.member = member;
         this.type = type;
     }
 
-    public String getArticleID() {
+    public int getWarningStatus() {
+        return warningStatus;
+    }
+
+    public void setWarningStatus(int warningStatus) {
+        this.warningStatus = warningStatus;
+    }
+
+    public int getArticleID() {
         return articleID;
     }
 
-    public void setArticleID(String articleID) {
+    public void setArticleID(int articleID) {
         this.articleID = articleID;
     }
 
@@ -119,6 +130,5 @@ public class Article implements Serializable {
     public void setTitle(String title) {
         this.title = title;
     }
-    
-    
+
 }
