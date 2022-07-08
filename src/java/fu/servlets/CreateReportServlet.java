@@ -44,7 +44,6 @@ public class CreateReportServlet extends HttpServlet {
                 if(rContent.trim().isEmpty() || rContent.trim().length()>200 ){
                 request.setAttribute("errorReport", "Your report must be from 1 to 200 characters");
                 request.getRequestDispatcher("ViewDetailServlet?aId="+aId).forward(request, response);  
-                return;
                 }else{
                 //String newId;
                 ArticleDAO aDao = new ArticleDAO();
@@ -65,9 +64,8 @@ public class CreateReportServlet extends HttpServlet {
 //                    } while (rdao.getReportById(newId) != null);
                 Report r = new Report(0, rContent, LocalDateTime.now().toString(), null, 1, art, member);
                 rdao.addNewReport(r);
-                aDao.closeArticle(Integer.parseInt(aId));
+                //aDao.closeArticle(Integer.parseInt(aId));
                 request.getRequestDispatcher("paging").forward(request, response);
-                return;
                 }
             } else {
                 request.setAttribute("errormessage", "Please login!");

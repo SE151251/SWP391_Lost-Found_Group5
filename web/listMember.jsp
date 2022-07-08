@@ -40,7 +40,7 @@
                     <td>${dt.memberCount}</td>
                     <td>
                     <c:if test="${dt.status eq 0}"><a href="WarningMemberServlet?uId=${dt.memberID}&adminAction=unban">UNBAN</a></c:if>
-                    <c:if test="${dt.status eq 1}"><a href="WarningMemberServlet?uId=${dt.memberID}&adminAction=ban">BAN</a> | <a href="WarningMemberServlet?uId=${dt.memberID}&adminAction=warn">WARNING</a></c:if>
+                    <c:if test="${dt.status eq 1}"><a href="WarningMemberServlet?uId=${dt.memberID}&adminAction=ban">BAN</a> | <a href="WarningMemberServlet?uId=${dt.memberID}&adminAction=warnMember">WARNING</a></c:if>
                     </td>                   
                 </tr>
                 </c:forEach>

@@ -254,14 +254,15 @@ public class ArticleDAO {
     }
     
     //Hàm này để đóng tất cả các bài viết của account bị ban
-    public boolean updateStatusArticlesOfMemberBanned(Member m) throws Exception {
+    public boolean updateStatusArticlesOfMemberBanned(Member m, int aId) throws Exception {
         boolean check = false;
-        String sql = ("UPDATE Article SET ArticleStatus=0 Where MemberID=?");
+        String sql = ("UPDATE Article SET ArticleStatus=0 Where MemberID=? and ArticleID = ?");
         try {
             con = DBUtils.makeConnection();
             if (con != null) {
                 stm = con.prepareStatement(sql);
-                stm.setString(1, m.getMemberID());                           
+                stm.setString(1, m.getMemberID());  
+                stm.setInt(2, aId);
                 stm.executeUpdate();
                 check = stm.executeUpdate() > 0;
             }
@@ -328,7 +329,39 @@ public class ArticleDAO {
         }
         return check;
     }
-    
+    // Hàm này lấy ra các bài viết bị report của 1 member
+    public ArrayList<Integer> getAllArticlesBeReportedOfAMember(String mId)throws ClassNotFoundException, SQLException, Exception {
+       
+        ArrayList<Integer> lb = new ArrayList<>();
+        try {
+            con = DBUtils.makeConnection();
+            if (con != null) {
+                String sql = "select A.ArticleID\n" +
+                            "from Article A inner join Report R on A.ArticleID = R.ArticleID\n" +
+                            "inner join Member M on M.MemberID = A.MemberID\n" +
+                            "where A.MemberID = ?\n" +
+                            "group by M.FullName,A.MemberID,A.ArticleID";
+                stm = con.prepareStatement(sql);
+                stm.setString(1, mId);
+                rs = stm.executeQuery();
+                while (rs.next()) {
+                    int articleId = rs.getInt("ArticleID");                    
+                    lb.add(articleId);
+                }
+            }
+        } finally {
+            if (rs != null) {
+                rs.close();
+            }
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return lb;
+    }
   // Lấy tất cả các bài loại "Tìm đồ"
     public ArrayList<Article> getAllArticlesFind() throws ClassNotFoundException, SQLException, Exception {
        
@@ -1206,5 +1239,29 @@ public class ArticleDAO {
 
         }
         return lb;
+    }
+    public boolean warningArticle(int aId) throws Exception {
+        boolean check = false;
+        String sql = ("UPDATE Article SET WarningStatus = 1 Where ArticleID=?");
+        try {
+            con = DBUtils.makeConnection();
+            if (con != null) {
+                stm = con.prepareStatement(sql);
+                stm.setInt(1, aId);                           
+                stm.executeUpdate();
+                check = stm.executeUpdate() > 0;
+            }
+        } finally {
+            if (rs != null) {
+                rs.close();
+            }
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return check;
     }
 }

@@ -52,7 +52,7 @@ CREATE TABLE Comment
 	CommentTime DateTime NOT NULL,
 	CommentStatus decimal(1, 0) NOT NULL
 );
-
+drop table Notification
 CREATE TABLE Notification
 (
 	NotificationID int IDENTITY(1,1) primary key,
@@ -171,16 +171,51 @@ update Article
 set ArticleStatus = 1
 where MemberID = 109377370807180139934
 --Query lấy ra các member đã từng bị report và số lần bị report
-select M.FullName, A.MemberID, count(A.MemberID) as total
+select M.FullName, A.MemberID, A.ArticleID, count(A.MemberID) as total
 from Article A inner join Report R on A.ArticleID = R.ArticleID
 inner join Member M on M.MemberID = A.MemberID
-group by M.FullName,A.MemberID
+group by M.FullName,A.MemberID,A.ArticleID
 update Member
-set MemberRole = 1
-where MemberID = 101545683166224559624
+set MemberRole = 0
+where MemberID = 107703834893877697636
 -- Lấy ra các bài viết đăng trong hôm nay
 select count(*) As total from Article A
 where DAY(A.PostTime) = DAY(GETDATE())
---Lấy ra danh sách các member có bài viết bị cảnh cáo
+-- Đếm số bài viết
+select count(*) As total from Article A
+where A.ArticleTypeID = 3
+-- Lấy ra danh sách các member có bài viết bị cảnh cáo
+select m.FullName, m.Email, m.CountTime, m.MemberStatus, m.ProfileInfo
+from Member M inner join Article A on m.MemberID = a.MemberID
+where a.WarningStatus = 1
 -- Lấy ra tổng số bài viết bị cảnh cáo bởi admin của 1 member
+select count(A.ArticleID) as total
+from Member M inner join Article A on m.MemberID = a.MemberID
+where M.MemberID = 107703834893877697636 and A.WarningStatus = 1
+group by A.MemberID
 -- Lấy ra tổng số bài viết bị tố cáo bởi các member khác của 1 member
+-- Lấy ra tổng số bài viết Lost đã đăng của 1 member
+select count(A.ArticleID) as total
+from Member M inner join Article A on m.MemberID = a.MemberID
+where M.MemberID = 114512282810993535016 and A.ArticleTypeID = 1
+group by A.MemberID
+-- Lấy ra tổng số bài viết Found đã đăng của 1 member
+select count(A.ArticleID) as total
+from Member M inner join Article A on m.MemberID = a.MemberID
+where M.MemberID = 114512282810993535016 and A.ArticleTypeID = 2
+group by A.MemberID
+-- Lấy ra tổng số bài viết đã đăng của 1 member
+select count(A.ArticleID) as total
+from Member M inner join Article A on m.MemberID = a.MemberID
+where M.MemberID = 114512282810993535016
+group by A.MemberID
+-- Lấy ra các id bài viết của member bị Ban có trong bảng report
+select A.ArticleID
+from Article A inner join Report R on A.ArticleID = R.ArticleID
+inner join Member M on M.MemberID = A.MemberID
+where A.MemberID = 107703834893877697636
+group by M.FullName,A.MemberID,A.ArticleID
+
+select * from Article
+select * from Member
+select * from report

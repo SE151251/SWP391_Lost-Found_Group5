@@ -95,7 +95,7 @@ public class ReportDAO {
         return false;
     }
 
-    public boolean updateStatusReport(int aId)
+    public boolean updateStatusReportByArticleID(int aId)
             throws Exception, SQLException {
         Connection con = null;
         PreparedStatement stm = null;
@@ -104,7 +104,7 @@ public class ReportDAO {
             if (con != null) {
                 String sql = "UPDATE Report "
                         + "SET ReportStatus = 0, ConfirmTime = ? "
-                        + "Where ArticleID LIKE ?";
+                        + "Where ArticleID = ?";
                 stm = con.prepareStatement(sql);
                 stm.setString(1, LocalDateTime.now().toString());
                 stm.setInt(2, aId);
@@ -123,6 +123,7 @@ public class ReportDAO {
         }
         return false;
     }
+    
     public Report getReportById(String rId) throws ClassNotFoundException, SQLException, Exception {
         Connection con = null;
         PreparedStatement stm = null;

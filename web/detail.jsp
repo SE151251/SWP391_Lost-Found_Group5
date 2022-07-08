@@ -123,20 +123,21 @@
                 </div>
                 </c:if>
             <c:if test="${userdata.memberRole eq 0}">
-                            <div>
+                <%-- 
+                <div>
                                 <a href="WarningMemberServlet?adminAction=ban&aId=${postDetail.articleID}">
                                 <img src="images/banned.png" alt="">Banned</a>
-                            </div>                            
+                            </div>  --%>                          
                         <div>
                             <div>
-                                <a href="WarningMemberServlet?adminAction=warn&aId=${postDetail.articleID}">
-                                <img src="images/warning.png" alt="">Warning ${postDetail.member.memberCount + 1}</a>
+                                <a href="WarningMemberServlet?adminAction=warnPost&aId=${postDetail.articleID}">
+                                <img src="images/warning.png" alt="">Warning this post</a>
                             </div>
                         </div>
                             <div>
                             <div>
                                 <a href="WarningMemberServlet?adminAction=none&aId=${postDetail.articleID}">
-                                    <img src="images/confirmation.png" alt="">Confirmation</a>                           
+                                    <img src="images/confirmation.png" alt="">Confirm</a>                           
                             </div>
                             </div>
             </c:if>
