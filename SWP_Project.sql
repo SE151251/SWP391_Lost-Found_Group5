@@ -52,11 +52,13 @@ CREATE TABLE Comment
 	CommentTime DateTime NOT NULL,
 	CommentStatus decimal(1, 0) NOT NULL
 );
+
 CREATE TABLE Notification
 (
 	NotificationID int IDENTITY(1,1) primary key,
+	SenderID varchar(30) NOT NULL FOREIGN KEY REFERENCES Member(MemberID),	
+	ReceiverID varchar(30) NOT NULL FOREIGN KEY REFERENCES Member(MemberID),
 	ArticleID int  NOT NULL FOREIGN KEY REFERENCES Article(ArticleID),
-	MemberID varchar(30) NOT NULL FOREIGN KEY REFERENCES Member(MemberID),	
 	NotificationContent nvarchar(100) NOT NULL,
 	NotificationTime DateTime NOT NULL,
 	NotificationStatus decimal(1, 0) NOT NULL
@@ -176,3 +178,9 @@ group by M.FullName,A.MemberID
 update Member
 set MemberRole = 1
 where MemberID = 101545683166224559624
+-- Lấy ra các bài viết đăng trong hôm nay
+select count(*) As total from Article A
+where DAY(A.PostTime) = DAY(GETDATE())
+--Lấy ra danh sách các member có bài viết bị cảnh cáo
+-- Lấy ra tổng số bài viết bị cảnh cáo bởi admin của 1 member
+-- Lấy ra tổng số bài viết bị tố cáo bởi các member khác của 1 member

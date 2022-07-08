@@ -32,13 +32,13 @@ public class PaginControl1 extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            HttpSession session = request.getSession(false);
-            if (session == null) {
-                request.setAttribute("errormessage", "Please login!");
-                request.getRequestDispatcher("login.jsp").forward(request, response);
-            }
-            if (session.getAttribute("userdata") != null) {
-                Member memberLogin = (Member) session.getAttribute("userdata");
+//            HttpSession session = request.getSession(false);
+//            if (session == null) {
+//                request.setAttribute("errormessage", "Please login!");
+//                request.getRequestDispatcher("login.jsp").forward(request, response);
+//            }
+//            if (session.getAttribute("userdata") != null) {
+//                Member memberLogin = (Member) session.getAttribute("userdata");
                 String index1 = request.getParameter("index1");
                 ArticleDAO dao = new ArticleDAO();
                 ItemTypeDAO itDao = new ItemTypeDAO();
@@ -65,10 +65,10 @@ public class PaginControl1 extends HttpServlet {
                     request.setAttribute("listAH", listAH);
                     request.getRequestDispatcher("homeReturn.jsp").forward(request, response);
                 }
-            } else {
-                request.setAttribute("errormessage", "Please login!");
-                request.getRequestDispatcher("login.jsp").forward(request, response);
-            }
+//            } else {
+//                request.setAttribute("errormessage", "Please login!");
+//                request.getRequestDispatcher("login.jsp").forward(request, response);
+//            }
         } catch (Exception e) {
             e.printStackTrace();
         }

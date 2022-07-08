@@ -135,13 +135,13 @@
                                 <c:if test="${userdata.memberID eq memberInfo.memberID}">   
                                     <form action="ProfileServlet">   
                                     </c:if>                               
-                                    <textarea rows="9" cols="70" name="txtProfile" minlength="20" maxlength="4000">${memberInfo.memberProfile}</textarea>
+                                        <textarea <c:if test="${userdata.memberID ne memberInfo.memberID}">readonly</c:if> rows="9" cols="70" name="txtProfile" minlength="20" maxlength="4000">${memberInfo.memberProfile}</textarea>
                                     <c:if test="${userdata.memberID eq memberInfo.memberID}">
                                         <input type="hidden" name="uId" value="${memberInfo.memberID}"/>
                                         <br/>    
                                         <font color="red"> ${errorProfile} </font>
                                         <br/>
-                                        <input type="submit" value="Edit Profile"/>
+                                        <input type="submit" value="Save"/>
                                     </form>
                                 </c:if>
                             </td>

@@ -42,7 +42,19 @@
 
 <body>
      <header>
-        <nav class="navbar navbar-dark navbar-expand-md fixed-top">
+        
+        <c:if test="${empty userdata.memberID}">
+            <nav class="navbar navbar-dark navbar-expand-md fixed-top">
+                
+                <ul style="width: 13%;" class="navbar-nav container ml-5">
+           <li class="nav-item active">
+                    <a class="nav-link" href="paging"><i class="fa fa-home mr-1"></i> Home </a>
+                </li> 
+           </ul>
+           </nav>
+        </c:if>
+        <c:if test="${not empty userdata.memberID}">
+            <nav class="navbar navbar-dark navbar-expand-md fixed-top">
             <div class="navbar">
 
                 <button class="rounded-circle p-0" type="button" data-toggle="collapse" data-target="#Navbar">
@@ -85,9 +97,9 @@
                 </li>
             </ul>
         </div>
-
+                        </c:if>
     </header>
-             <c:if test="${userdata.memberCount ne 0}">
+             <c:if test="${userdata.memberCount ne 0 && not empty userdata}">
             <p class="acc-warning">Tài khoản của bạn bị cảnh cáo lần ${userdata.memberCount}</p>
                 </c:if>           
                             

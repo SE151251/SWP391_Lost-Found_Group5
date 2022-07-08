@@ -11,9 +11,7 @@ import fu.daos.ItemTypeDAO;
 import fu.entities.Article;
 import fu.entities.ArticleHashTag;
 import fu.entities.Item;
-import fu.entities.Member;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.ServletException;
@@ -21,7 +19,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -34,13 +31,13 @@ public class PaginControl extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try {
-            HttpSession session = request.getSession(false);
-            if (session == null) {
-                request.setAttribute("errormessage", "Please login!");
-                request.getRequestDispatcher("login.jsp").forward(request, response);
-            }
-            if (session.getAttribute("userdata") != null) {
-                Member memberLogin = (Member) session.getAttribute("userdata");
+//            HttpSession session = request.getSession(false);
+//            if (session == null) {
+//                request.setAttribute("errormessage", "Please login!");
+//                request.getRequestDispatcher("login.jsp").forward(request, response);
+//            }
+//            if (session.getAttribute("userdata") != null) {
+//                Member memberLogin = (Member) session.getAttribute("userdata");
                 String index = request.getParameter("index");
                 ArticleDAO dao = new ArticleDAO();
                 ItemTypeDAO itDao = new ItemTypeDAO();
@@ -75,10 +72,10 @@ public class PaginControl extends HttpServlet {
                     request.setAttribute("listAH", listAH);
                     request.getRequestDispatcher("home.jsp").forward(request, response);
                 }
-            } else {
-                request.setAttribute("errormessage", "Please login!");
-                request.getRequestDispatcher("login.jsp").forward(request, response);
-            }
+//            } else {
+//                request.setAttribute("errormessage", "Please login!");
+//                request.getRequestDispatcher("login.jsp").forward(request, response);
+//            }
         } catch (Exception e) {
             e.printStackTrace();
         }

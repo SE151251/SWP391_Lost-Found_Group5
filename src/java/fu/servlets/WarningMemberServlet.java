@@ -33,7 +33,7 @@ public class WarningMemberServlet extends HttpServlet {
         try {
             HttpSession session = request.getSession(false);
             if (session == null) {
-                request.setAttribute("errormessage", "Please login!");
+                request.setAttribute("errormessage", "Please login with ADMIN account!");
                 request.getRequestDispatcher("login.jsp").forward(request, response);
             }
             if (session.getAttribute("userdata") != null) {
@@ -48,7 +48,12 @@ public class WarningMemberServlet extends HttpServlet {
                 MemberDAO mdao = new MemberDAO();
 
                 ReportDAO rdao = new ReportDAO();
-
+                // Thêm trường hợp cảnh cáo bài viết
+                // Với bài viết bị cảnh cáo thì close bài viết đó
+                // Với member bị cảnh cáo thì chỉ thay đổi count
+                // Với member bị Ban thì đóng hết các bài viết bị report
+                // Sau khi xử lý 1 report thì các report liên quan tới bài viết đó đều được xử lý theo 1 lượt.
+                
                 // Trường hợp member bị cảnh cáo
                 if (adminAction.equalsIgnoreCase("warn")) {
                     // Tìm member đăng bài post by id rồi tăng count của member post bài lên +1

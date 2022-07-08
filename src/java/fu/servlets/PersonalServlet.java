@@ -29,11 +29,11 @@ public class PersonalServlet extends HttpServlet {
             throws ServletException, IOException {
         try {
             HttpSession session = request.getSession(false);
-            if (session == null) {
-                request.setAttribute("errormessage", "Please login!");
-                request.getRequestDispatcher("login.jsp").forward(request, response);
-                return;
-            }
+//            if (session == null) {
+//                request.setAttribute("errormessage", "Please login!");
+//                request.getRequestDispatcher("login.jsp").forward(request, response);
+//                return;
+//            }
             if (session.getAttribute("userdata") != null) {
                 Member memberLogin = (Member) session.getAttribute("userdata");
                 String uId = request.getParameter("uId");
@@ -46,11 +46,18 @@ public class PersonalServlet extends HttpServlet {
                 List<Article> listArts = adao.getAllArticlesByMemberID(memDetail);
                 request.setAttribute("articlesPersonal", listArts);              
                 request.setAttribute("memberInfo", memDetail);
-                request.getRequestDispatcher("personal.jsp").forward(request, response);
-                return;
+                request.getRequestDispatcher("personal.jsp").forward(request, response);               
             } else {
-                request.setAttribute("errormessage", "Please login!");
-                request.getRequestDispatcher("login.jsp").forward(request, response);
+                //request.setAttribute("errormessage", "Please login!");
+                //request.getRequestDispatcher("login.jsp").forward(request, response);
+                String uId = request.getParameter("uId");
+                MemberDAO mdao = new MemberDAO();
+                Member memDetail = mdao.find(uId);
+                ArticleDAO adao = new ArticleDAO();
+                List<Article> listArts = adao.getAllArticlesByMemberID(memDetail);
+                request.setAttribute("articlesPersonal", listArts);              
+                request.setAttribute("memberInfo", memDetail);
+                request.getRequestDispatcher("personal.jsp").forward(request, response);
             }
         } catch (Exception e) {
             e.printStackTrace();

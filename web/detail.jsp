@@ -88,7 +88,16 @@
             <div style="width: 400px">
             
             <c:forEach var="lah" items="${listAH}" >
-            <span><a href="SearchServlet?hId=${lah.hashtagID}"><c:out value="${lah.hashtagName}"/></a></span>                          
+            
+            <c:if test="${postDetail.type.typeID eq 1}">
+                <span><a href="SearchServlet?hId=${lah.hashtagID}&searchAction=Find"><c:out value="${lah.hashtagName}"/></a></span>
+                </c:if>             
+                <c:if test="${postDetail.type.typeID eq 2}">
+                <span><a href="SearchServlet?hId=${lah.hashtagID}&searchAction=Return"><c:out value="${lah.hashtagName}"/></a></span>
+                </c:if>
+                <c:if test="${postDetail.type.typeID eq 3}">
+                <span><a href="SearchServlet?hId=${lah.hashtagID}&searchAction=Notice"><c:out value="${lah.hashtagName}"/></a></span>
+                </c:if>
             </c:forEach> 
             
             <br/>
