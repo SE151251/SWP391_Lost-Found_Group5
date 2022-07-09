@@ -107,11 +107,11 @@ public class MemberDAO {
         ArrayList<Member> listmem = new ArrayList<>();
         try {
             con = DBUtils.makeConnection(); 
-            if (con != null) {
+            if(con != null) {
                 stm = con.prepareStatement(sql);
                 stm.setString(1, "%"+mName+"%");
                 rs = stm.executeQuery();
-                if (rs.next()) { 
+                while (rs.next()) { 
                     String memberId = rs.getString("MemberID");
                     String memberName = rs.getString("FullName");                    
                     String memberEmail = rs.getString("Email");
@@ -122,6 +122,7 @@ public class MemberDAO {
                     int memberCount = rs.getInt("CountTime");
                     Member m = new Member(memberId, memberName, memberEmail, memberPicture, 
                             memberProfile, memberRole, memberStatus, memberCount);
+                    System.out.println(m.getMemberName());
                     listmem.add(m);
                 }
             }

@@ -26,8 +26,9 @@
                 <tr>
             <td>Member Name</td>
             <td>Member Email</td>
-            <td>Number Of Warnings</td>
-            <td>Function</td>           
+            <td>Number Warnings Of This Member</td>
+            <td>Function</td>
+            <td>Detail</td>
             </tr>
             </thead>
             <tbody>
@@ -41,8 +42,11 @@
                     <td>
                     <c:if test="${dt.status eq 0}"><a href="WarningMemberServlet?uId=${dt.memberID}&adminAction=unban">UNBAN</a></c:if>
                     <c:if test="${dt.status eq 1}"><a href="WarningMemberServlet?uId=${dt.memberID}&adminAction=ban">BAN</a> | <a href="WarningMemberServlet?uId=${dt.memberID}&adminAction=warnMember">WARNING</a></c:if>
-                    </td>                   
+                    
+                    </td>
+                    <td><a href="ViewDetailMemberByAdminServlet?uId=${dt.memberID}">View detail >></a></td>
                 </tr>
+                
                 </c:forEach>
                 </c:if>
                 <c:if test="${not empty listMembersResult}">
@@ -53,8 +57,9 @@
                     <td>${dt.memberCount}</td>
                     <td>
                     <c:if test="${dt.status eq 0}"><a href="WarningMemberServlet?uId=${dt.memberID}&adminAction=unban">UNBAN</a></c:if>
-                    <c:if test="${dt.status eq 1}"><a href="WarningMemberServlet?uId=${dt.memberID}&adminAction=ban">BAN</a></c:if>
-                    </td>                   
+                    <c:if test="${dt.status eq 1}"><a href="WarningMemberServlet?uId=${dt.memberID}&adminAction=ban">BAN</a> | <a href="WarningMemberServlet?uId=${dt.memberID}&adminAction=warnMember">WARNING</a></c:if>
+                    </td>
+                    <td><a href="ViewDetailMemberByAdminServlet?uId=${dt.memberID}">View detail >></a></td>
                 </tr>
                 </c:forEach>
                 </c:if>

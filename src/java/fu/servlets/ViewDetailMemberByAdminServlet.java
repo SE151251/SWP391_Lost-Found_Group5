@@ -55,7 +55,7 @@ public class ViewDetailMemberByAdminServlet extends HttpServlet {
                     // Tổng số bài đã Post
                     // Tổng số report
                 Member memberLogin = (Member) session.getAttribute("userdata");
-                String memberID = request.getParameter("memberID");
+                String memberID = request.getParameter("uId");
                 MemberDAO mdao = new MemberDAO();
                 Member member = mdao.find(memberID);
                 request.setAttribute("MemberInfo", member);
@@ -80,7 +80,7 @@ public class ViewDetailMemberByAdminServlet extends HttpServlet {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            request.getRequestDispatcher("admin.jsp").forward(request, response);
+            request.getRequestDispatcher("detailMember.jsp").forward(request, response);
         }
     }
 
