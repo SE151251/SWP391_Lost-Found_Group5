@@ -170,45 +170,97 @@ update report set ReportContent = 'abcdeaasas' where ReportID = 5277208749
 update Article
 set ArticleStatus = 1
 where MemberID = 109377370807180139934
+
+----------------------------------------------------------------------------
 --Query lấy ra các member đã từng bị report và số lần bị report
 select M.FullName, A.MemberID, A.ArticleID, count(A.MemberID) as total
 from Article A inner join Report R on A.ArticleID = R.ArticleID
 inner join Member M on M.MemberID = A.MemberID
 group by M.FullName,A.MemberID,A.ArticleID
+
+
+-------------------------------------------------------
 update Member
 set MemberRole = 0
 where MemberID = 107703834893877697636
+-------------------------------------------------------
+
+
+----------------------------------------------------------------------------
 -- Lấy ra các bài viết đăng trong hôm nay
 select count(*) As total from Article A
-where DAY(A.PostTime) = DAY(GETDATE())
+where DAY(A.PostTime) = DAY(GETDATE()) and A.ArticleTypeID = 1
+----------------------------------------------------------------------------
+
 -- Đếm số bài viết
 select count(*) As total from Article A
 where A.ArticleTypeID = 3
+----------------------------------------------------------------------------
+
+
+-- Đếm số bài report
+select count(*) As total from Report R
+where R.ReportStatus = 1
+
+
+----------------------------------------------------------------------------
+
+
 -- Lấy ra danh sách các member có bài viết bị cảnh cáo
-select m.FullName, m.Email, m.CountTime, m.MemberStatus, m.ProfileInfo
+select m.FullName, m.MemberID, m.MemberRole,m.Picture, m.Email, m.CountTime, m.MemberStatus, m.ProfileInfo
 from Member M inner join Article A on m.MemberID = a.MemberID
 where a.WarningStatus = 1
+
+----------------------------------------------------------------------------
+
 -- Lấy ra tổng số bài viết bị cảnh cáo bởi admin của 1 member
 select count(A.ArticleID) as total
 from Member M inner join Article A on m.MemberID = a.MemberID
 where M.MemberID = 107703834893877697636 and A.WarningStatus = 1
 group by A.MemberID
--- Lấy ra tổng số bài viết bị tố cáo bởi các member khác của 1 member
+
+
+----------------------------------------------------------------------------
+-- Lấy ra các bài viết bị tố cáo bởi các member khác của 1 member
+select R.ReportID, R.ReportContent, R.ArticleID, R.MemberID, R.ReportStatus, R.ReportTime, R.ConfirmTime
+from Article A inner join Report R on A.ArticleID = R.ArticleID
+inner join Member M on M.MemberID = A.MemberID
+where A.MemberID = 107703834893877697636
+group by R.ReportID, R.ReportContent, R.ArticleID, R.MemberID, R.ReportStatus, R.ReportTime, R.ConfirmTime, M.FullName,A.MemberID,A.ArticleID
+----------------------------------------------------------------------------
+select * from Member
+
+-- Lấy ra các bài viết bị cảnh cáo của 1 member
+select A.ArticleID,A.ArticleContent,A.ArticleTitle,A.ArticleTypeID, A.ArticleStatus, A.ImgURL, A.ItemID, A.PostTime, A.WarningStatus, A.MemberID
+from Member M inner join Article A on m.MemberID = a.MemberID
+where M.MemberID = 107703834893877697636 and A.WarningStatus = 1
+group by A.ArticleID,A.ArticleContent,A.ArticleTitle,A.ArticleTypeID, A.ArticleStatus, A.ImgURL, A.ItemID, A.PostTime, A.WarningStatus, A.MemberID
+
+----------------------------------------------------------------------------
+
 -- Lấy ra tổng số bài viết Lost đã đăng của 1 member
 select count(A.ArticleID) as total
 from Member M inner join Article A on m.MemberID = a.MemberID
 where M.MemberID = 114512282810993535016 and A.ArticleTypeID = 1
 group by A.MemberID
+
+----------------------------------------------------------------------------
+
 -- Lấy ra tổng số bài viết Found đã đăng của 1 member
 select count(A.ArticleID) as total
 from Member M inner join Article A on m.MemberID = a.MemberID
 where M.MemberID = 114512282810993535016 and A.ArticleTypeID = 2
 group by A.MemberID
+----------------------------------------------------------------------------
+
 -- Lấy ra tổng số bài viết đã đăng của 1 member
 select count(A.ArticleID) as total
 from Member M inner join Article A on m.MemberID = a.MemberID
 where M.MemberID = 114512282810993535016
 group by A.MemberID
+
+----------------------------------------------------------------------------
+
 -- Lấy ra các id bài viết của member bị Ban có trong bảng report
 select A.ArticleID
 from Article A inner join Report R on A.ArticleID = R.ArticleID

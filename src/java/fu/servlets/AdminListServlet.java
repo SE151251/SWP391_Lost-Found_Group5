@@ -46,18 +46,25 @@ public class AdminListServlet extends HttpServlet {
                 request.setAttribute("errormessage", "Please login!");
                 request.getRequestDispatcher("login.jsp").forward(request, response);
             }else if (session.getAttribute("userdata") != null) {
+                //Trang Dashboard:
+                // Thống kê tổng số bài report trong ngày hôm nay
+                // Thống kê tổng số bài LOST trong ngày hôm nay
+                // Thống kê tổng số bài FOUND trong ngày hôm nay
+                // Thống kê tổng số bài LOST trong system
+                // Thống kê tổng số bài FOUND trong system
                 Member memberLogin = (Member) session.getAttribute("userdata");
                 ReportDAO rdao = new ReportDAO();
-                List<Report> listReportsNotConfirm = rdao.getAllReportsNotComfirm();
-                request.setAttribute("listReportsNotConfirm", listReportsNotConfirm);
-                List<Report> listReportsConfirmed = rdao.getAllReportsComfirmed();
-                request.setAttribute("listReportsConfirmed", listReportsConfirmed);
+                int numberReport = rdao.countAllReports();               
+                request.setAttribute("numberReport", numberReport);
                 ArticleDAO adao = new ArticleDAO();
-                List<Article> listArtsNotice = adao.getAllArticlesNotice();
-                request.setAttribute("articlesNotice", listArtsNotice);
-                ItemTypeDAO itDao = new ItemTypeDAO();
-                List<Item> listI = itDao.getAllItems();
-                request.setAttribute("ListItemType", listI);
+                int numberLostToday = adao.countAllPostsToday(1);
+                int numberFoundToday = adao.countAllPostsToday(2);
+                int numberLost = adao.countAllPosts(1);
+                int numberFound = adao.countAllPosts(2);
+                request.setAttribute("numberLostToday", numberLostToday);
+                request.setAttribute("numberFoundToday", numberFoundToday);
+                request.setAttribute("numberLost", numberLost);
+                request.setAttribute("numberFound", numberFound);
             } else {
                 request.setAttribute("errormessage", "Please login!");
                 request.getRequestDispatcher("login.jsp").forward(request, response);

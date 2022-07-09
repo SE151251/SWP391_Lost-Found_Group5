@@ -94,7 +94,35 @@ public class ReportDAO {
         }
         return false;
     }
-
+    public int countAllReports() throws SQLException, Exception {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        int count=0;
+        try {
+            con = DBUtils.makeConnection();
+            if (con != null) {
+                String sql = "select count(*) As total from Report R\n" +
+                             "where R.ReportStatus = 1";
+                stm = con.prepareStatement(sql);
+                rs = stm.executeQuery();
+                while (rs.next()) {
+                    count = rs.getInt("total");                   
+                }
+            }
+        } finally {
+            if (rs != null) {
+                rs.close();
+            }
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return count;
+    }
     public boolean updateStatusReportByArticleID(int aId)
             throws Exception, SQLException {
         Connection con = null;
@@ -250,8 +278,8 @@ public class ReportDAO {
         }
         return lb;
     }   
-    // Hàm này lấy ra các report đã xử lý
-    public ArrayList<Report> getAllReportsComfirmed() throws ClassNotFoundException, SQLException, Exception {
+    // Hàm này lấy ra các report của 1 member bất kỳ.
+    public ArrayList<Report> getAllReportsOfAMember(String mId) throws ClassNotFoundException, SQLException, Exception {
         Connection con = null;
         PreparedStatement stm = null;
         ResultSet rs = null;
@@ -259,9 +287,13 @@ public class ReportDAO {
         try {
             con = DBUtils.makeConnection();
             if (con != null) {
-                String sql = "Select * From Report where ReportStatus = 0"                        
-                        + "Order By ReportTime ASC";
-                stm = con.prepareStatement(sql);               
+                String sql = "select R.ReportID, R.ReportContent, R.ArticleID, R.MemberID, R.ReportStatus, R.ReportTime, R.ConfirmTime\n" +
+                    "from Article A inner join Report R on A.ArticleID = R.ArticleID\n" +
+                    "inner join Member M on M.MemberID = A.MemberID\n" +
+                    "where A.MemberID = ?\n" +
+                    "group by R.ReportID, R.ReportContent, R.ArticleID, R.MemberID, R.ReportStatus, R.ReportTime, R.ConfirmTime, M.FullName,A.MemberID,A.ArticleID";
+                stm = con.prepareStatement(sql);   
+                stm.setString(1, mId);
                 rs = stm.executeQuery();
                 while (rs.next()) {
                     int rId = rs.getInt("ReportID");                                       

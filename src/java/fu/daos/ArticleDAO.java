@@ -1201,7 +1201,7 @@ public class ArticleDAO {
         return 0;
     }
 
-    public ArrayList<Article> getPagingNotice(int index) {
+    public ArrayList<Article> getPagingNotice(int index) throws SQLException, Exception {
         ArrayList<Article> lb = new ArrayList<>();
         try {
             con = DBUtils.makeConnection();
@@ -1235,8 +1235,16 @@ public class ArticleDAO {
                     lb.add(art);
                 }
             }
-        } catch (Exception e) {
-
+        } finally {
+            if (rs != null) {
+                rs.close();
+            }
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
         }
         return lb;
     }
@@ -1263,5 +1271,165 @@ public class ArticleDAO {
             }
         }
         return check;
+    }
+    
+    public int countAllPostsToday(int type) throws SQLException, Exception {
+        int count=0;
+        try {
+            con = DBUtils.makeConnection();
+            if (con != null) {
+                String sql = "select count(*) As total from Article A\n" +
+                            "where DAY(A.PostTime) = DAY(GETDATE()) and A.ArticleTypeID = ?";
+                stm = con.prepareStatement(sql);
+                stm.setInt(1, type);
+                rs = stm.executeQuery();
+                while (rs.next()) {
+                    count = rs.getInt("total");                   
+                }
+            }
+        } finally {
+            if (rs != null) {
+                rs.close();
+            }
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return count;
+    }
+    public int countAllPosts(int type) throws SQLException, Exception {
+        int count=0;
+        try {
+            con = DBUtils.makeConnection();
+            if (con != null) {
+                String sql = "select count(*) As total from Article A\n" +
+                              "where A.ArticleTypeID = ?";
+                stm = con.prepareStatement(sql);
+                stm.setInt(1, type);
+                rs = stm.executeQuery();
+                while (rs.next()) {
+                    count = rs.getInt("total");                   
+                }
+            }
+        } finally {
+            if (rs != null) {
+                rs.close();
+            }
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return count;
+    }
+     public int countAllPostsOfAMemberByType(String mId, int typeID) throws SQLException, Exception {
+        int count=0;
+        try {
+            con = DBUtils.makeConnection();
+            if (con != null) {
+                String sql = "select count(A.ArticleID) as total\n" +
+                            "from Member M inner join Article A on m.MemberID = a.MemberID\n" +
+                            "where M.MemberID = ? and A.ArticleTypeID = ?\n" +
+                            "group by A.MemberID";
+                stm = con.prepareStatement(sql);
+                stm.setString(1, mId);
+                stm.setInt(2,typeID);
+                rs = stm.executeQuery();
+                while (rs.next()) {
+                    count = rs.getInt("total");                   
+                }
+            }
+        } finally {
+            if (rs != null) {
+                rs.close();
+            }
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return count;
+    }
+     public int countAllPostsOfAMember(String mId) throws SQLException, Exception {
+        int count=0;
+        try {
+            con = DBUtils.makeConnection();
+            if (con != null) {
+                String sql = "select count(A.ArticleID) as total\n" +
+                            "from Member M inner join Article A on m.MemberID = a.MemberID\n" +
+                            "where M.MemberID = ?\n" +
+                            "group by A.MemberID";
+                stm = con.prepareStatement(sql);
+                stm.setString(1, mId);
+                rs = stm.executeQuery();
+                while (rs.next()) {
+                    count = rs.getInt("total");                   
+                }
+            }
+        } finally {
+            if (rs != null) {
+                rs.close();
+            }
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return count;
+    }
+     public ArrayList<Article> getAllPostWarningOfMember(String mId) throws SQLException, Exception {
+        ArrayList<Article> lb = new ArrayList<>();
+        try {
+            con = DBUtils.makeConnection();
+            if (con != null) {
+                String sql = "select A.ArticleID,A.ArticleContent,A.ArticleTitle,A.ArticleTypeID, A.ArticleStatus, A.ImgURL, A.ItemID, A.PostTime, A.WarningStatus, A.MemberID\n" +
+"from Member M inner join Article A on m.MemberID = a.MemberID\n" +
+"where M.MemberID = ? and A.WarningStatus = 1\n" +
+"group by A.ArticleID,A.ArticleContent,A.ArticleTitle,A.ArticleTypeID, A.ArticleStatus, A.ImgURL, A.ItemID, A.PostTime, A.WarningStatus, A.MemberID";
+                stm = con.prepareStatement(sql);
+                stm.setString(1, mId);
+                rs = stm.executeQuery();
+                while (rs.next()) {
+                    int articleId = rs.getInt("ArticleID");
+                    String articleTitle = rs.getString("ArticleTitle");
+                    String articleContent = rs.getString("ArticleContent");
+                    String articleURL = rs.getString("ImgURL");
+                    String articleTime = rs.getString("PostTime");
+                    int articleStatus = rs.getInt("ArticleStatus");
+                    int warningStatus = rs.getInt("WarningStatus");
+                    int articleTypeId = rs.getInt("ArticleTypeID");
+                    String memberId = rs.getString("MemberID");
+                    int itemId = rs.getInt("ItemID");
+                    MemberDAO mdao = new MemberDAO();
+                    Member m = mdao.find(memberId);
+                    ItemTypeDAO idao = new ItemTypeDAO();
+                    Item i = idao.getItemByID(itemId);
+                    ArticleTypeDAO adao = new ArticleTypeDAO();
+                    ArticleType a = adao.getArticleTypeByID(articleTypeId);
+                    Article art = new Article(articleId,articleTitle, articleContent, articleURL, articleTime, articleStatus,warningStatus, i, m, a);
+                    lb.add(art);
+                }
+            }
+        } finally {
+            if (rs != null) {
+                rs.close();
+            }
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return lb;
     }
 }

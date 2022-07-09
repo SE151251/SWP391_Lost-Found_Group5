@@ -158,6 +158,35 @@ public class MemberDAO {
         }
         return listmem;
     }
+    public ArrayList<Member> getAllMembersHaveWarningPost() throws SQLException, Exception {
+        ArrayList<Member> listmem = new ArrayList<>();
+        try {
+            con = DBUtils.makeConnection();
+            if (con != null) {
+                String sql = "select m.FullName, m.MemberID, m.MemberRole,m.Picture, m.Email, m.CountTime, m.MemberStatus, m.ProfileInfo\n" +
+                            "from Member M inner join Article A on m.MemberID = a.MemberID\n" +
+                            "where a.WarningStatus = 1";
+                stm = con.prepareStatement(sql);
+                rs = stm.executeQuery();
+                while (rs.next()) {
+                    String memberId = rs.getString("MemberID");
+                    String memberName = rs.getString("FullName");                    
+                    String memberEmail = rs.getString("Email");
+                    String memberPicture = rs.getString("Picture");
+                    String memberProfile = rs.getString("ProfileInfo");
+                    int memberRole = rs.getInt("MemberRole");
+                    int memberStatus = rs.getInt("MemberStatus");
+                    int memberCount = rs.getInt("CountTime");                   
+                    Member m = new Member(memberId, memberName, memberEmail, memberPicture, 
+                    memberProfile, memberRole, memberStatus, memberCount);                   
+                    listmem.add(m);
+                }
+            }
+        } finally {
+            closeConnection();
+        }
+        return listmem;
+    }
     public boolean updateProfileMember(Member m, String profile) throws SQLException, Exception {
         try {
             con = DBUtils.makeConnection();

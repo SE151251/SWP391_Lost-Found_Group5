@@ -5,9 +5,14 @@
  */
 package fu.servlets;
 
+import fu.daos.ArticleDAO;
 import fu.daos.MemberDAO;
+import fu.daos.ReportDAO;
+import fu.entities.Article;
 import fu.entities.Member;
+import fu.entities.Report;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -20,8 +25,8 @@ import javax.servlet.http.HttpSession;
  *
  * @author LENOVO
  */
-@WebServlet(name = "ListMemberServlet", urlPatterns = {"/ListMemberServlet"})
-public class ListMemberServlet extends HttpServlet {
+@WebServlet(name = "ViewDetailMemberByAdminServlet", urlPatterns = {"/ViewDetailMemberByAdminServlet"})
+public class ViewDetailMemberByAdminServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -39,12 +44,35 @@ public class ListMemberServlet extends HttpServlet {
             if (session == null) {
                 request.setAttribute("errormessage", "Please login!");
                 request.getRequestDispatcher("login.jsp").forward(request, response);
-            }
-            if (session.getAttribute("userdata") != null) {
+            }else if (session.getAttribute("userdata") != null) {
+                // Xem chi tiết Member bằng quyền ADMIN
+                    // Xem ttin khái quát của member 
+                    // Xem tổng số bài viết mà member này đã đăng
+                    // Xem số bài Lost member này đã đăng
+                    // Xem số bài Found member này đã đăng
+                    // Xem tất cả các bài tố cáo đối với member này
+                    // Xem các bài viết bị cảnh cáo bởi ADMIN đối với member này
+                    // Tổng số bài đã Post
+                    // Tổng số report
                 Member memberLogin = (Member) session.getAttribute("userdata");
+                String memberID = request.getParameter("memberID");
                 MemberDAO mdao = new MemberDAO();
-                List<Member> listMem = mdao.getAllMembersHaveWarningPost();
-                request.setAttribute("listMembers", listMem);
+                Member member = mdao.find(memberID);
+                request.setAttribute("MemberInfo", member);
+                ReportDAO rdao = new ReportDAO();
+                // Lấy ra các report của member này
+                List<Report> listReports = rdao.getAllReportsOfAMember(memberID);
+                request.setAttribute("listReports", listReports);
+                
+                ArticleDAO adao = new ArticleDAO();
+                int numberPost = adao.countAllPostsOfAMember(memberID);
+                int numberLost = adao.countAllPostsOfAMemberByType(memberID, 1);
+                int numberFound = adao.countAllPostsOfAMemberByType(memberID, 2);
+                List<Article> listPostWarning = adao.getAllPostWarningOfMember(memberID);
+                request.setAttribute("numberPost", numberPost);
+                request.setAttribute("numberLost", numberLost);
+                request.setAttribute("numberFound", numberFound);
+                request.setAttribute("listPostWarning", listPostWarning);                
             } else {
                 request.setAttribute("errormessage", "Please login!");
                 request.getRequestDispatcher("login.jsp").forward(request, response);
@@ -52,7 +80,7 @@ public class ListMemberServlet extends HttpServlet {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            request.getRequestDispatcher("listMember.jsp").forward(request, response);
+            request.getRequestDispatcher("admin.jsp").forward(request, response);
         }
     }
 
