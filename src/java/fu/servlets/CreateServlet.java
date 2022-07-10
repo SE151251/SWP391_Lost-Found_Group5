@@ -10,11 +10,14 @@ import fu.daos.ArticleHashtagDAO;
 import fu.daos.ArticleTypeDAO;
 import fu.daos.HashtagDAO;
 import fu.daos.ItemTypeDAO;
+import fu.daos.MemberDAO;
+import fu.daos.NotificationDAO;
 import fu.entities.Article;
 import fu.entities.ArticleType;
 import fu.entities.Hashtag;
 import fu.entities.Item;
 import fu.entities.Member;
+import fu.entities.Notification;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -23,7 +26,6 @@ import java.io.OutputStream;
 import javax.servlet.annotation.MultipartConfig;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.servlet.ServletException;
@@ -257,9 +259,35 @@ public class CreateServlet extends HttpServlet {
                         
                     ahDao.addNewArticleHashtag(a, hashtag);
                     }
-//                    for (Hashtag hashtag : lstHashtag) {
-//                        ahDao.addNewArticleHashtag(a, hashtag);
-//                    }
+                    // Tạo thông báo cho các member khác
+                    //B1: Lấy ra các memberID có bài viết có type khớp với bài viết này
+                    //B2: đưa zo bảng noti
+                    MemberDAO mdao = new MemberDAO();
+                    // Trường hợp bài viết của member đăng
+                    NotificationDAO ndao = new NotificationDAO();
+                    if(itemId != null && at.getTypeID()==1){
+                    ArrayList<Member> listMembers = mdao.getAllMemberHavePostWithArticleTypeCorresponding(2, itemId, memberLogin.getMemberID());
+                    
+                        for (Member listMember : listMembers) {
+                        String notiContent = memberLogin.getMemberName()+" posted articles related to "+i.getItemName();
+                        ndao.addNewNotifications(new Notification(0, memberLogin, listMember, a, notiContent, LocalDateTime.now().toString() , 1));
+                        }
+                    }else if(itemId != null && at.getTypeID()==2){
+                    ArrayList<Member> listMembers = mdao.getAllMemberHavePostWithArticleTypeCorresponding(1, itemId, memberLogin.getMemberID());
+                    
+                        for (Member memReceive : listMembers) {
+                        String notiContent = memberLogin.getMemberName()+" posted articles related to "+i.getItemName();
+                        ndao.addNewNotifications(new Notification(0, memberLogin, memReceive, a, notiContent, LocalDateTime.now().toString() , 1));
+                        }
+                    }
+                    else{ // Trường hợp bài viết của ADMIN
+                    ArrayList<Member> listMembers = mdao.getAllMembersReceiveNotiFromAdmin();
+                     for (Member listMember : listMembers) {
+                        String notiContent = "The administrator has posted a notice about the system";
+                        ndao.addNewNotifications(new Notification(0, memberLogin, listMember, a, notiContent, LocalDateTime.now().toString() , 1));
+                        }
+                    }
+
                     }
                     if (memberLogin.getMemberRole() == 1) {
                         if(a.getType().getTypeID()==1){

@@ -45,7 +45,7 @@
 
 <body>
      <header>
-         <c:if test="${empty userdata.memberID}">
+         <c:if test="${empty userdata}">
             <nav class="navbar navbar-dark navbar-expand-md fixed-top">
                 
                 <ul style="width: 13%;" class="navbar-nav container ml-5">
@@ -55,7 +55,7 @@
            </ul>
            </nav>
         </c:if>
-     <c:if test="${not empty userdata.memberID}">
+     <c:if test="${not empty userdata}">
         <nav class="navbar navbar-dark navbar-expand-md fixed-top">
             <div class="navbar">
 
@@ -144,8 +144,10 @@
 
     <!-- tab content -->
     <div class="tab-content ">
+    <c:if test="${not empty userdata}">
         <a type="button" href="CreateFormServlet" class="center createPost--btn rounded-circle"><i
                 class="fa-solid fa-arrow-up-right-from-square"></i></a>
+        </c:if>
         <div class="row tab-pane active">
             <c:forEach var="dt" items="${articlesShare}" >
             <div class="pane col-md-2">

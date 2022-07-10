@@ -1058,7 +1058,7 @@ public class ArticleDAO {
         try {
             con = DBUtils.makeConnection();
             if (con != null) {
-                String query = "Select count(*) from Article where ArticleTypeID = 1";
+                String query = "Select count(*) from Article where ArticleTypeID = 1 and ArticleStatus = 1";
                 stm = con.prepareStatement(query);
                 rs = stm.executeQuery();
                 while (rs.next()) {
@@ -1120,7 +1120,7 @@ public class ArticleDAO {
         try {
             con = DBUtils.makeConnection();
             if (con != null) {
-                String query = "Select count(*) from Article where ArticleTypeID = 2";
+                String query = "Select count(*) from Article where ArticleTypeID = 2 and ArticleStatus = 1";
                 stm = con.prepareStatement(query);
                 rs = stm.executeQuery();
                 while (rs.next()) {
@@ -1182,7 +1182,7 @@ public class ArticleDAO {
         try {
             con = DBUtils.makeConnection();
             if (con != null) {
-                String query = "Select count(*) from Article where ArticleTypeID = 4";
+                String query = "Select count(*) from Article where ArticleTypeID = 3 and ArticleStatus = 1";
                 stm = con.prepareStatement(query);
                 rs = stm.executeQuery();
                 while (rs.next()) {

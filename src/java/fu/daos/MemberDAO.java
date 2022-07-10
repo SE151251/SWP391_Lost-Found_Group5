@@ -159,6 +159,66 @@ public class MemberDAO {
         }
         return listmem;
     }
+    public ArrayList<Member> getAllMembersReceiveNotiFromAdmin() throws SQLException, Exception {
+        ArrayList<Member> listmem = new ArrayList<>();
+        try {
+            con = DBUtils.makeConnection();
+            if (con != null) {
+                String sql = "SELECT * FROM Member where MemberRole = 1";
+                stm = con.prepareStatement(sql);
+                rs = stm.executeQuery();
+                while (rs.next()) {
+                    String memberId = rs.getString("MemberID");
+                    String memberName = rs.getString("FullName");                    
+                    String memberEmail = rs.getString("Email");
+                    String memberPicture = rs.getString("Picture");
+                    String memberProfile = rs.getString("ProfileInfo");
+                    int memberRole = rs.getInt("MemberRole");
+                    int memberStatus = rs.getInt("MemberStatus");
+                    int memberCount = rs.getInt("CountTime");                   
+                    Member m = new Member(memberId, memberName, memberEmail, memberPicture, 
+                            memberProfile, memberRole, memberStatus, memberCount);                   
+                    listmem.add(m);
+                }
+            }
+        } finally {
+            closeConnection();
+        }
+        return listmem;
+    }
+    public ArrayList<Member> getAllMemberHavePostWithArticleTypeCorresponding(int typeID, String itemId, String mIdExcept) throws SQLException, Exception {
+        ArrayList<Member> listmem = new ArrayList<>();
+        try {
+            con = DBUtils.makeConnection();
+            if (con != null) {
+                String sql = "select DISTINCT M.MemberID, M.Email, m.FullName, m.Picture, m.ProfileInfo, m.MemberRole, m.MemberStatus, m.CountTime \n" +
+                            "from Member M inner join Article A on M.MemberID = A.MemberID\n" +
+                            "where A.ArticleTypeID = ? and A.ItemID = ? and M.MemberRole = 1 and M.MemberID not like ?";
+                stm = con.prepareStatement(sql);
+                stm.setInt(1, typeID);
+                stm.setString(2, itemId);
+                stm.setString(3, mIdExcept);
+                rs = stm.executeQuery();
+                while (rs.next()) {
+                    String memberId = rs.getString("MemberID");
+                    String memberName = rs.getString("FullName");                    
+                    String memberEmail = rs.getString("Email");
+                    String memberPicture = rs.getString("Picture");
+                    String memberProfile = rs.getString("ProfileInfo");
+                    int memberRole = rs.getInt("MemberRole");
+                    int memberStatus = rs.getInt("MemberStatus");
+                    int memberCount = rs.getInt("CountTime");                   
+                    Member m = new Member(memberId, memberName, memberEmail, memberPicture, 
+                            memberProfile, memberRole, memberStatus, memberCount);                   
+                    listmem.add(m);
+                }
+            }
+        } finally {
+            closeConnection();
+        }
+        return listmem;
+    }
+    
     public ArrayList<Member> getAllMembersHaveWarningPost() throws SQLException, Exception {
         ArrayList<Member> listmem = new ArrayList<>();
         try {

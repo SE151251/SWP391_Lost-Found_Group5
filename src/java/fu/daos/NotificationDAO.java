@@ -71,7 +71,7 @@ public class NotificationDAO {
         try {
             con = DBUtils.makeConnection();
             if (con != null) {
-                String sql = "INSERT INTO Report (SenderID, ReceiverID, ArticleID, NotificationContent, NotificationTime, NotificationStatus)"
+                String sql = "INSERT INTO Notification (SenderID, ReceiverID, ArticleID, NotificationContent, NotificationTime, NotificationStatus)"
                         + "VALUES (?, ?, ?, ?, ?, ?)";
                 stm = con.prepareStatement(sql);
                 stm.setString(1, n.getSender().getMemberID());

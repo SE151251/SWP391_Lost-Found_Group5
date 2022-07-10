@@ -8,12 +8,13 @@ package fu.servlets;
 import fu.daos.ArticleDAO;
 import fu.daos.CommentDAO;
 import fu.daos.MemberDAO;
+import fu.daos.NotificationDAO;
 import fu.entities.Article;
 import fu.entities.Comment;
 import fu.entities.Member;
+import fu.entities.Notification;
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.Random;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -46,25 +47,19 @@ public class CreateCommentServlet extends HttpServlet {
                 request.getRequestDispatcher("ViewDetailServlet?aId="+aId).forward(request, response);  
                 return;
                 }else{
-                //String newId;
                 ArticleDAO aDao = new ArticleDAO();
                 Article art = aDao.find(Integer.parseInt(aId));
                 MemberDAO mdao = new MemberDAO();
                 Member memCmt = mdao.find(memberCmtId);
+                Member memReceive = mdao.find(art.getMember().getMemberID());
                 CommentDAO cdao = new CommentDAO();
-//                do {
-//                        newId = "";
-//                        Random generator = new Random();
-//                        for (int x = 0; x < 10; x++) {
-//                            int a = generator.nextInt() % 10;
-//                            if (a < 0) {
-//                                a = -a;
-//                            }
-//                            newId = newId.concat(Integer.toString(a));
-//                        }
-//                    } while (cdao.getCommentsById(newId) != null);
                 Comment c = new Comment(0, art, memCmt, cmtContent, LocalDateTime.now().toString(), 1);              
-                cdao.addNewComment(c);                  
+                cdao.addNewComment(c);
+                if(!memCmt.getMemberID().equals(memReceive.getMemberID())){
+                NotificationDAO ndao = new NotificationDAO();
+                String notiContent = member.getMemberName()+" commented on your post";
+                ndao.addNewNotifications(new Notification(0, memCmt, memReceive, art, notiContent, LocalDateTime.now().toString() , 1));
+                }
                 request.getRequestDispatcher("ViewDetailServlet?aId="+aId).forward(request, response);
                 
                 }
