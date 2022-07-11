@@ -195,7 +195,7 @@
                     <td>${noti.sender.memberName}</td>
                     <td>${noti.content}</td>
                     <td>${noti.notiTime}</td>
-                    <td><a href="ViewDetailServlet?aId=${noti.article.articleID}">View</a></td>
+                    <td><a href="ViewDetailServlet?aId=${noti.article.articleID}&notiID=${noti.notiId}">View</a></td>
                 </tr>
                 </c:forEach>
             </tbody>

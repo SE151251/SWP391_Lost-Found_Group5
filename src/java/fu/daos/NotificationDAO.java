@@ -29,7 +29,7 @@ public class NotificationDAO {
         try {
             con = DBUtils.makeConnection();
             if (con != null) {
-                String sql = "Select * From Notification where ReceiverID like ? "
+                String sql = "Select * From Notification where ReceiverID like ? and NotificationStatus = 1"
                         + "Order By NotificationTime DESC";
                 stm = con.prepareStatement(sql);
                 stm.setString(1, mId);
@@ -80,6 +80,33 @@ public class NotificationDAO {
                 stm.setString(4, n.getContent());
                 stm.setString(5, n.getNotiTime());
                 stm.setInt(6, 1);
+                int row = stm.executeUpdate();
+                if (row > 0) {
+                    return true;
+                }
+            }
+        } finally {
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return false;
+    }
+    public boolean changeNotiStatus(int nId)
+            throws Exception, SQLException {
+        Connection con = null;
+        PreparedStatement stm = null;
+        try {
+            con = DBUtils.makeConnection();
+            if (con != null) {
+                String sql = "UPDATE Notification "
+                        + "SET NotificationStatus = 0 "
+                        + "Where NotificationID = ?";
+                stm = con.prepareStatement(sql);
+                stm.setInt(1, nId);
                 int row = stm.executeUpdate();
                 if (row > 0) {
                     return true;

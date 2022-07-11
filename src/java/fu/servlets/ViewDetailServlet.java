@@ -38,13 +38,18 @@ public class ViewDetailServlet extends HttpServlet {
               HttpSession session = request.getSession(false);
             if (session.getAttribute("userdata") != null) {
                 Member member = (Member) session.getAttribute("userdata");
-                if(member.getMemberRole()==1){
                 NotificationDAO ndao = new NotificationDAO();
+                if(member.getMemberRole()==1){
+                
                 List<Notification> listNoti = ndao.getAllNotificationsByMember(member.getMemberID());
                 request.setAttribute("listNoti", listNoti);
                 }
                 String aId = request.getParameter("aId");
                 String memRpId = request.getParameter("memReportID");
+                String notiID = request.getParameter("notiID");
+                if(notiID!=null){
+                ndao.changeNotiStatus(Integer.parseInt(notiID));
+                }
                 ArticleDAO aDao = new ArticleDAO();
                 Article a = aDao.find(Integer.parseInt(aId));
                 request.setAttribute("postDetail", a);
