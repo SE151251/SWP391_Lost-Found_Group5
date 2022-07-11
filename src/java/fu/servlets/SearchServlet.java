@@ -9,10 +9,12 @@ import fu.daos.ArticleDAO;
 import fu.daos.ArticleHashtagDAO;
 import fu.daos.ItemTypeDAO;
 import fu.daos.MemberDAO;
+import fu.daos.NotificationDAO;
 import fu.entities.Article;
 import fu.entities.ArticleHashTag;
 import fu.entities.Item;
 import fu.entities.Member;
+import fu.entities.Notification;
 import java.io.IOException;
 import java.util.List;
 import javax.servlet.ServletException;
@@ -48,7 +50,11 @@ public class SearchServlet extends HttpServlet {
 //            }
             if (session.getAttribute("userdata") != null) {
                 Member memberLogin = (Member) session.getAttribute("userdata");
-
+                if(memberLogin.getMemberRole()==1){
+                NotificationDAO ndao = new NotificationDAO();
+                List<Notification> listNoti = ndao.getAllNotificationsByMember(memberLogin.getMemberID());
+                request.setAttribute("listNoti", listNoti);
+                }
                 // Xử lý loại đồ cần filter
                 String itemId = request.getParameter("txtItem");
                 String key = request.getParameter("keySearch");

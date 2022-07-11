@@ -29,8 +29,8 @@ public class NotificationDAO {
         try {
             con = DBUtils.makeConnection();
             if (con != null) {
-                String sql = "Select * From Notification where SenderID like ? "
-                        + "Order By NotificationTime ASC";
+                String sql = "Select * From Notification where ReceiverID like ? "
+                        + "Order By NotificationTime DESC";
                 stm = con.prepareStatement(sql);
                 stm.setString(1, mId);
                 rs = stm.executeQuery();

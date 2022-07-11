@@ -1306,7 +1306,7 @@ public class ArticleDAO {
             con = DBUtils.makeConnection();
             if (con != null) {
                 String sql = "select count(*) As total from Article A\n" +
-                              "where A.ArticleTypeID = ?";
+                              "where A.ArticleTypeID = ? and ArticleStatus = 1";
                 stm = con.prepareStatement(sql);
                 stm.setInt(1, type);
                 rs = stm.executeQuery();

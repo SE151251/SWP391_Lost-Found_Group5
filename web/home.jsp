@@ -179,6 +179,29 @@
         </nav>
         </div>
     </div>
+    <div>
+        <table>
+            <thead>
+                <tr>
+                    <td>Sender</td>
+                    <td>Content</td>
+                    <td>Time</td>
+                    <td>View more</td>
+                </tr>
+            </thead>
+            <tbody>
+            <c:forEach var="noti" items="${listNoti}" >
+                <tr>
+                    <td>${noti.sender.memberName}</td>
+                    <td>${noti.content}</td>
+                    <td>${noti.notiTime}</td>
+                    <td><a href="ViewDetailServlet?aId=${noti.article.articleID}">View</a></td>
+                </tr>
+                </c:forEach>
+            </tbody>
+            
+        </table>
+    </div>
             <!-- Footer -->
         <footer class="text-center text-lg-start bg-light text-muted">
             <!-- Section: Social media -->

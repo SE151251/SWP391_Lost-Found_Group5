@@ -8,10 +8,12 @@ package fu.servlets;
 import fu.daos.ArticleDAO;
 import fu.daos.ArticleHashtagDAO;
 import fu.daos.ItemTypeDAO;
+import fu.daos.NotificationDAO;
 import fu.entities.Article;
 import fu.entities.ArticleHashTag;
 import fu.entities.Item;
 import fu.entities.Member;
+import fu.entities.Notification;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,13 +33,15 @@ public class PaginControl2 extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-//            HttpSession session = request.getSession(false);
-//            if (session == null) {
-//                request.setAttribute("errormessage", "Please login!");
-//                request.getRequestDispatcher("login.jsp").forward(request, response);
-//            }
-//            if (session.getAttribute("userdata") != null) {
-//                Member memberLogin = (Member) session.getAttribute("userdata");
+                HttpSession session = request.getSession(false);
+                if (session.getAttribute("userdata") != null) {
+                Member memberLogin = (Member) session.getAttribute("userdata");
+                if(memberLogin.getMemberRole()==1){
+                NotificationDAO ndao = new NotificationDAO();
+                List<Notification> listNoti = ndao.getAllNotificationsByMember(memberLogin.getMemberID());
+                request.setAttribute("listNoti", listNoti);
+                }
+                }
                 String index2 = request.getParameter("index2");
                 ArticleDAO dao = new ArticleDAO();
                 ItemTypeDAO itDao = new ItemTypeDAO();

@@ -9,10 +9,12 @@ import fu.daos.ArticleDAO;
 import fu.daos.CommentDAO;
 import fu.daos.HashtagDAO;
 import fu.daos.MemberDAO;
+import fu.daos.NotificationDAO;
 import fu.daos.ReportDAO;
 import fu.entities.Article;
 import fu.entities.Hashtag;
 import fu.entities.Member;
+import fu.entities.Notification;
 import fu.entities.Report;
 import java.io.IOException;
 import java.util.List;
@@ -34,12 +36,13 @@ public class ViewDetailServlet extends HttpServlet {
             throws ServletException, IOException {
         try {           
               HttpSession session = request.getSession(false);
-//            if (session == null) {
-//                request.setAttribute("errormessage", "Please login!");
-//                request.getRequestDispatcher("login.jsp").forward(request, response);
-//            }
             if (session.getAttribute("userdata") != null) {
                 Member member = (Member) session.getAttribute("userdata");
+                if(member.getMemberRole()==1){
+                NotificationDAO ndao = new NotificationDAO();
+                List<Notification> listNoti = ndao.getAllNotificationsByMember(member.getMemberID());
+                request.setAttribute("listNoti", listNoti);
+                }
                 String aId = request.getParameter("aId");
                 String memRpId = request.getParameter("memReportID");
                 ArticleDAO aDao = new ArticleDAO();

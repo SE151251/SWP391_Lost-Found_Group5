@@ -7,8 +7,10 @@ package fu.servlets;
 
 import fu.daos.ArticleDAO;
 import fu.daos.MemberDAO;
+import fu.daos.NotificationDAO;
 import fu.entities.Article;
 import fu.entities.Member;
+import fu.entities.Notification;
 import java.io.IOException;
 import java.util.List;
 import javax.servlet.ServletException;
@@ -29,13 +31,13 @@ public class PersonalServlet extends HttpServlet {
             throws ServletException, IOException {
         try {
             HttpSession session = request.getSession(false);
-//            if (session == null) {
-//                request.setAttribute("errormessage", "Please login!");
-//                request.getRequestDispatcher("login.jsp").forward(request, response);
-//                return;
-//            }
             if (session.getAttribute("userdata") != null) {
                 Member memberLogin = (Member) session.getAttribute("userdata");
+                if(memberLogin.getMemberRole()==1){
+                NotificationDAO ndao = new NotificationDAO();
+                List<Notification> listNoti = ndao.getAllNotificationsByMember(memberLogin.getMemberID());
+                request.setAttribute("listNoti", listNoti);
+                }
                 String uId = request.getParameter("uId");
                 MemberDAO mdao = new MemberDAO();
                 Member memDetail = mdao.find(uId);

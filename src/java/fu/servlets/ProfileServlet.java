@@ -50,7 +50,6 @@ public class ProfileServlet extends HttpServlet {
                 }else{
                 MemberDAO mdao = new MemberDAO();
                 mdao.updateProfileMember(member, mProfile);             
-                    System.out.println(member.getMemberProfile());
                 request.getRequestDispatcher("PersonalServlet?uId=" +member.getMemberID()).forward(request, response);
                 return;
                 }
