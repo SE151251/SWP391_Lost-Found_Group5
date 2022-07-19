@@ -131,12 +131,12 @@
         </div>
         <div class="post-reaction">
             <div class="activity-icons">
-                <c:if test="${postDetail.articleStatus eq 1 && userdata.memberRole eq 1 && postDetail.type.typeID ne 3}">
+                <c:if test="${postDetail.articleStatus eq 1 && userdata.memberRole eq 1 && postDetail.type.typeID ne 3 && userdata.status eq 1}">
                 <div onclick="comment_dl()">
                     <img src="images/comments.png" alt="">Comment
                 </div>
                 </c:if>
-            <c:if test="${userdata.memberRole eq 1 && userdata.memberID ne postDetail.member.memberID && checkReport eq null && postDetail.type.typeID ne 3}">
+            <c:if test="${userdata.memberRole eq 1 && userdata.memberID ne postDetail.member.memberID && checkReport eq null && postDetail.type.typeID ne 3 && userdata.status eq 1}">
                 <div onclick="report_dl()">
                 <div><img style="padding-left: 165px;" src="images/report.png" alt="">Report</div>
                 </div>
@@ -173,7 +173,7 @@
                 </c:if>
             </c:if>
                            
-            <c:if test="${userdata.memberID eq postDetail.member.memberID && postDetail.articleStatus ne -1}">
+            <c:if test="${userdata.memberID eq postDetail.member.memberID && postDetail.articleStatus ne -1 && userdata.status eq 1}">
                 <div><a style="text-decoration: none; color: black; padding-left: 376px" href="UpdateFormServlet?aId=${postDetail.articleID}"><img src="images/update.png" alt="">Update</a></div>
                 <div><a style="text-decoration: none; color: black; padding-left: 0px;" href="DeleteServlet?aId=${postDetail.articleID}" onclick="return confirm('Are you sure?')"><img src="images/remove.png" alt="">Remove</a>  </div>
             </c:if>   

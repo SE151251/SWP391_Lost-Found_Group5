@@ -40,7 +40,13 @@ public class PaginControl extends HttpServlet {
                 Member memberLogin = (Member) session.getAttribute("userdata");
                 if(memberLogin.getMemberRole()==1){
                 NotificationDAO ndao = new NotificationDAO();
+                String notiID = request.getParameter("notiID");
+                if(notiID!=null){
+                ndao.changeNotiStatus(Integer.parseInt(notiID));
+                }                
                 List<Notification> listNoti = ndao.getAllNotificationsByMember(memberLogin.getMemberID());
+                int count = listNoti.size();
+                request.setAttribute("totalNotiNew", count);
                 request.setAttribute("listNoti", listNoti);
                 }
             }

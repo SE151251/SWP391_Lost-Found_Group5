@@ -29,8 +29,8 @@ public class NotificationDAO {
         try {
             con = DBUtils.makeConnection();
             if (con != null) {
-                String sql = "Select * From Notification where ReceiverID like ? and NotificationStatus = 1"
-                        + "Order By NotificationTime DESC";
+                String sql = "Select * From Notification where ReceiverID like ? "
+                        + "Order By NotificationStatus DESC";
                 stm = con.prepareStatement(sql);
                 stm.setString(1, mId);
                 rs = stm.executeQuery();
@@ -38,7 +38,7 @@ public class NotificationDAO {
                     int notiId = rs.getInt("NotificationID");
                     String senderID = rs.getString("SenderID");
                     String receiverID = rs.getString("ReceiverID");
-                    int articleID = rs.getInt("ArticleID");
+                    String articleID = rs.getString("ArticleID");
                     String content = rs.getString("NotificationContent");
                     int status = rs.getInt("NotificationStatus");
                     String time = rs.getString("NotificationTime");
@@ -46,7 +46,10 @@ public class NotificationDAO {
                     Member sender = mdao.find(senderID);
                     Member receiver = mdao.find(receiverID);
                     ArticleDAO adao = new ArticleDAO();
-                    Article a = adao.find(articleID);
+                    Article a = null;
+                    if(articleID!=null){
+                    a = adao.find(Integer.parseInt(articleID));
+                    }
                     Notification n = new Notification(notiId, sender, receiver, a, content, time, status);
                     lb.add(n);
                 }
@@ -71,15 +74,26 @@ public class NotificationDAO {
         try {
             con = DBUtils.makeConnection();
             if (con != null) {
+                if(n.getArticle()!=null){
                 String sql = "INSERT INTO Notification (SenderID, ReceiverID, ArticleID, NotificationContent, NotificationTime, NotificationStatus)"
                         + "VALUES (?, ?, ?, ?, ?, ?)";
                 stm = con.prepareStatement(sql);
                 stm.setString(1, n.getSender().getMemberID());
-                stm.setString(2, n.getReceiver().getMemberID());
-                stm.setInt(3, n.getArticle().getArticleID());
+                stm.setString(2, n.getReceiver().getMemberID());               
+                stm.setInt(3, n.getArticle().getArticleID());           
                 stm.setString(4, n.getContent());
                 stm.setString(5, n.getNotiTime());
                 stm.setInt(6, 1);
+                }else{
+                String sql = "INSERT INTO Notification (SenderID, ReceiverID, NotificationContent, NotificationTime, NotificationStatus)"
+                        + "VALUES (?, ?, ?, ?, ?)";
+                stm = con.prepareStatement(sql);
+                stm.setString(1, n.getSender().getMemberID());
+                stm.setString(2, n.getReceiver().getMemberID());                                         
+                stm.setString(3, n.getContent());
+                stm.setString(4, n.getNotiTime());
+                stm.setInt(5, 1);    
+                }
                 int row = stm.executeUpdate();
                 if (row > 0) {
                     return true;

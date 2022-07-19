@@ -45,7 +45,7 @@ public class JavaMailUtil {
         message.setFrom(new InternetAddress(myAccountEmail));
         message.setRecipient(Message.RecipientType.TO,new InternetAddress(recepient) );
         message.setSubject("Announcememnt from ADMIN of FPTU Lost & Found system");
-        String htmlCode="<h3> Your post has been flagged by admin,please check your post again,thanks.</h3></br>";
+        String htmlCode="<h3>"+reason+"</h3></br>";
         message.setContent(htmlCode, "text/html");
         return message;
     }catch(Exception ex){

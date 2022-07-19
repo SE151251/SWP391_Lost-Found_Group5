@@ -50,6 +50,10 @@
            <li class="nav-item active">
                     <a class="nav-link" href="paging"><i class="fa fa-home mr-1"></i> Home </a>
                 </li> 
+                <li class="nav-item active">
+                    <a class="nav-link" href="https://accounts.google.com/o/oauth2/auth?scope=email profile&redirect_uri=http://localhost:8080/SWP39_LostAndFound/login-google&response_type=code
+    &client_id=287706363103-nelsjcm2sdr3ruldha94fink89tk87tg.apps.googleusercontent.com&approval_prompt=force"><i class="fa-solid fa-bookmark"></i>Login</a>
+                </li>
            </ul>
            </nav>
         </c:if>
@@ -99,6 +103,9 @@
         </div>
                         </c:if>
     </header>
+    <c:if test="${not empty errormessage}">
+            <p class="acc-warning">${errormessage}</p>
+                </c:if>
              <c:if test="${userdata.memberCount ne 0 && not empty userdata}">
             <p class="acc-warning">Tài khoản của bạn bị cảnh cáo lần ${userdata.memberCount}</p>
                 </c:if>           
@@ -141,7 +148,7 @@
     </div>
     <!-- tab content -->
     <div class="tab-content ">
-        <c:if test="${not empty userdata}">
+        <c:if test="${not empty userdata && userdata.status eq 1}">
         <a type="button" href="CreateFormServlet" class="center createPost--btn rounded-circle"><i
                 class="fa-solid fa-arrow-up-right-from-square"></i></a> 
         </c:if>
@@ -194,8 +201,11 @@
                 <tr>
                     <td>${noti.sender.memberName}</td>
                     <td>${noti.content}</td>
-                    <td>${noti.notiTime}</td>
-                    <td><a href="ViewDetailServlet?aId=${noti.article.articleID}&notiID=${noti.notiId}">View</a></td>
+                    <td>${noti.notiTime}</td>                  
+                    <td><a                  
+                        <c:if test="${empty noti.article}">href="paging?notiID=${noti.notiId}"</c:if>
+                    <c:if test="${not empty noti.article}">href="ViewDetailServlet?aId=${noti.article.articleID}&notiID=${noti.notiId}"</c:if>
+                        >View</a></td>
                 </tr>
                 </c:forEach>
             </tbody>

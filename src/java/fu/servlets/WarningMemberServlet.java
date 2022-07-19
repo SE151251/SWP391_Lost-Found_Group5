@@ -5,6 +5,7 @@
  */
 package fu.servlets;
 
+import SendMail.JavaMailUtil;
 import fu.daos.ArticleDAO;
 import fu.daos.MemberDAO;
 import fu.daos.NotificationDAO;
@@ -67,6 +68,7 @@ public class WarningMemberServlet extends HttpServlet {
                     Article postFlag = aDao.find(Integer.parseInt(aId));
                     String notiContent = "Your post has been FLAGGED by ADMIN";
                     ndao.addNewNotifications(new Notification(0, member, postFlag.getMember(), postFlag, notiContent, LocalDateTime.now().toString() , 1));
+                JavaMailUtil.sendMail(postFlag.getMember().getMemberEmail(), "Your post has been FLAGGED by ADMIN");
                 }else if (adminAction.equalsIgnoreCase("unFlag")) {
                     aDao.unFlagArticle(Integer.parseInt(aId));
                     //rdao.updateStatusReportByArticleID(Integer.parseInt(aId));
@@ -74,6 +76,7 @@ public class WarningMemberServlet extends HttpServlet {
                     Article postFlag = aDao.find(Integer.parseInt(aId));
                     String notiContent = "Your post has been UNFLAG by ADMIN";
                     ndao.addNewNotifications(new Notification(0, member, postFlag.getMember(), postFlag, notiContent, LocalDateTime.now().toString() , 1));
+                 JavaMailUtil.sendMail(postFlag.getMember().getMemberEmail(), "Your post has been UNFLAG by ADMIN");
                 }
                 else if (adminAction.equalsIgnoreCase("warnMember")) {
                     // Tìm member đăng bài post by id rồi tăng count của member post bài lên +1
@@ -93,6 +96,7 @@ public class WarningMemberServlet extends HttpServlet {
                     mdao.warningMember(memberWarn);
                     String notiContent = "Your account has been WARNED by ADMIN";
                     ndao.addNewNotifications(new Notification(0, member, memberWarn, null, notiContent, LocalDateTime.now().toString() , 1));
+                    JavaMailUtil.sendMail(memberWarn.getMemberEmail(), "Your account has been WARNED by ADMIN");
                     url = LIST_MEMBERS_PAGE;
 
                     // Trường hợp member bị ban
@@ -128,6 +132,7 @@ public class WarningMemberServlet extends HttpServlet {
                     }  
                     String notiContent = "Your account has been BANNED by ADMIN";
                     ndao.addNewNotifications(new Notification(0, member, memberBan, null, notiContent, LocalDateTime.now().toString() , 1));
+                    JavaMailUtil.sendMail(memberBan.getMemberEmail(), "Your account has been BANNED by ADMIN");
                     url = LIST_MEMBERS_PAGE;
 
                     // Trường hợp member bị tố cáo không có vấn đề gì
@@ -142,6 +147,7 @@ public class WarningMemberServlet extends HttpServlet {
                     mdao.banOrUnbanMember(memberBan);
                     String notiContent = "Your account has been UNLOCKED by ADMIN";
                     ndao.addNewNotifications(new Notification(0, member, memberBan, null, notiContent, LocalDateTime.now().toString() , 1));
+                    JavaMailUtil.sendMail(memberBan.getMemberEmail(), "Your account has been UNLOCKED by ADMIN");
                     url = LIST_MEMBERS_PAGE;
                 }
 

@@ -43,14 +43,20 @@ public class DeleteServlet extends HttpServlet {
                 request.getRequestDispatcher("login.jsp").forward(request, response);
             }
             if (session.getAttribute("userdata") != null) { // check login
+
                 Member member = (Member) session.getAttribute("userdata");
-                String aId = request.getParameter("aId");
-                ArticleDAO aDao = new ArticleDAO();
-                aDao.deleteArticle(Integer.parseInt(aId));
-                request.getRequestDispatcher("paging").forward(request, response);
+                if (member.getStatus() == 1) {
+                    String aId = request.getParameter("aId");
+                    ArticleDAO aDao = new ArticleDAO();
+                    aDao.deleteArticle(Integer.parseInt(aId));
+                    request.getRequestDispatcher("paging").forward(request, response);
+                } else {
+                    request.setAttribute("errormessage", "Your account has been banned!");
+                    request.getRequestDispatcher("paging").forward(request, response);
+                }
             } else {
                 request.setAttribute("errormessage", "Please login!");
-                request.getRequestDispatcher("login.jsp").forward(request, response);
+                request.getRequestDispatcher("paging").forward(request, response);
             }
 
         } catch (Exception e) {

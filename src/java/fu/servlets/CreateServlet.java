@@ -68,6 +68,7 @@ public class CreateServlet extends HttpServlet {
             }
             if (session.getAttribute("userdata") != null) {
                 Member memberLogin = (Member) session.getAttribute("userdata");
+                if (memberLogin.getStatus() == 1) {
                 boolean valid = true;
                 String titleError = "";
                 String hashtagError= "";
@@ -117,23 +118,9 @@ public class CreateServlet extends HttpServlet {
                             Hashtag hashtag = hDao.getHashtagByName(hName);
                             lstHashtag.add(hashtag);
                         } else if (hDao.getHashtagByName(hName) == null) {
-                            //Tạo id mới cho Hashtag
-//                            String hId;
-//                            do {
-//                                hId = "";
-//                                Random generator2 = new Random();
-//                                for (int x = 0; x < 10; x++) {
-//                                    int b = generator2.nextInt() % 10;
-//                                    if (b < 0) {
-//                                        b = -b;
-//                                    }
-//                                    hId = hId.concat(Integer.toString(b));
-//                                }
-//
-//                            } while (hDao.getHashtagById(hId) != null); //Ktra để ko bị trùng id
                             //Thêm mới hashtag zo DB
                             Hashtag hashtag = new Hashtag(0, hName);                          
-                            //hDao.addNewHashtag(hashtag);
+                            
                             lstHashtag.add(hashtag);
                         }
                      }
@@ -165,30 +152,8 @@ public class CreateServlet extends HttpServlet {
                         valid = false;
                     }
                 }
-                // Xử lý hashtag 
-//                String regex = "#\\w*";
-//                Pattern p = Pattern.compile(regex);
-//                Matcher matcher = p.matcher(content);
-//                while (matcher.find()) {
-//                    String hName = matcher.group();
-//                    if (hName.trim().length() > 21) {
-//                        contentError = "Hashtag name cannot exceed 20 characters!";
-//                        valid = false;
-//                    }
-//                }
 
                 if (valid) {
-//                    do {
-//                        newId = "";
-//                        Random generator = new Random();
-//                        for (int x = 0; x < 10; x++) {
-//                            int a = generator.nextInt() % 10;
-//                            if (a < 0) {
-//                                a = -a;
-//                            }
-//                            newId = newId.concat(Integer.toString(a));
-//                        }
-//                    } while (aDao.find(newId) != null);
                     // Xử lý ảnh để thêm vô DB
                     String articleURl;
                     if (postURL.equals("")) {
@@ -203,49 +168,7 @@ public class CreateServlet extends HttpServlet {
                     }
                     // uploadFileToBuild(request);
                     Article a = new Article(0, titlePost.trim(), content.trim(), articleURl, LocalDateTime.now().toString(), 1, 0, i, memberLogin, at);
-                    // if (aDao.createNewArticle(a)) {
-                    //String partern = ".*#.*";
-                    //xử lý hashtag
-                            //String regex = "#\\w*";
-                    //p = Pattern.compile(regex);
-                   // matcher = p.matcher(content);
-//                    HashtagDAO hDao = new HashtagDAO();
-//                    ArticleHashtagDAO ahDao = new ArticleHashtagDAO();
-//                    // Tạo 1 mảng lưu các hashtag
-//                    ArrayList<Hashtag> lstHashtag = new ArrayList<>();
-//                    // Vòng lặp lấy ra tất cả hashtag trong bài viết
-//                    while (matcher.find()) {
-//                        String hName = matcher.group();
-//                        //Kiểm tra xem tên hashtag đã tồn tại chưa
-//
-//                        if (hDao.getHashtagByName(hName) != null) {
-//                            a.setArticleContent(a.getArticleContent().replace(matcher.group(), ""));
-//                            Hashtag hashtag = hDao.getHashtagByName(hName);
-//                            lstHashtag.add(hashtag);
-//                        } else if (hDao.getHashtagByName(hName) == null) {
-//                            //Tạo id mới cho Hashtag
-//                            String hId;
-//                            do {
-//                                hId = "";
-//                                Random generator2 = new Random();
-//                                for (int x = 0; x < 10; x++) {
-//                                    int b = generator2.nextInt() % 10;
-//                                    if (b < 0) {
-//                                        b = -b;
-//                                    }
-//                                    hId = hId.concat(Integer.toString(b));
-//                                }
-//
-//                            } while (hDao.getHashtagById(hId) != null); //Ktra để ko bị trùng id
-//                            //Thêm mới hashtag zo DB
-//                            Hashtag hashtag = new Hashtag(hId, hName);
-//                            a.setArticleContent(a.getArticleContent().replace(matcher.group(), ""));
-//                            hDao.addNewHashtag(hashtag);
-//                            lstHashtag.add(hashtag);
-//                        }
-//
-//                        //System.out.println(matcher.group());                       
-//                    }
+                    
                     //Tạo bài viết và tạo lien ket cho hashtag và bài viết
                     int idPost = aDao.createNewArticle(a);
                     a.setArticleID(idPost);
@@ -317,9 +240,13 @@ public class CreateServlet extends HttpServlet {
                     }
                     request.setAttribute("postTypeId", Integer.parseInt(postTypeId));
                 }
+                } else {
+                        request.setAttribute("errormessage", "Your account has been banned!");
+                        request.getRequestDispatcher("paging").forward(request, response);
+                    }
             } else {
                 request.setAttribute("errormessage", "Please login!");
-                request.getRequestDispatcher("login.jsp").forward(request, response);
+                request.getRequestDispatcher("paging").forward(request, response);
             }
         } catch (Exception e) {
             e.printStackTrace();

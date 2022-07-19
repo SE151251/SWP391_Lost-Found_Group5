@@ -224,7 +224,7 @@ public class MemberDAO {
         try {
             con = DBUtils.makeConnection();
             if (con != null) {
-                String sql = "select m.FullName, m.MemberID, m.MemberRole,m.Picture, m.Email, m.CountTime, m.MemberStatus, m.ProfileInfo\n" +
+                String sql = "select DISTINCT m.FullName, m.MemberID, m.MemberRole,m.Picture, m.Email, m.CountTime, m.MemberStatus, m.ProfileInfo\n" +
                             "from Member M inner join Article A on m.MemberID = a.MemberID\n" +
                             "where a.WarningStatus = 1";
                 stm = con.prepareStatement(sql);
