@@ -50,16 +50,16 @@ public class SearchServlet extends HttpServlet {
 //            }
             if (session.getAttribute("userdata") != null) {
                 Member memberLogin = (Member) session.getAttribute("userdata");
+                String mName = request.getParameter("txtMemberName");
                 if(memberLogin.getMemberRole()==1){
                 NotificationDAO ndao = new NotificationDAO();
                 List<Notification> listNoti = ndao.getAllNotificationsByMember(memberLogin.getMemberID());
-                request.setAttribute("listNoti", listNoti);
-                }
+                request.setAttribute("listNoti", listNoti);                
                 // Xử lý loại đồ cần filter
                 String itemId = request.getParameter("txtItem");
                 String key = request.getParameter("keySearch");
                 String hId = request.getParameter("hId");
-                String mName = request.getParameter("txtMemberName");
+                
                 String searchAction = request.getParameter("searchAction");
                 // if (memberLogin.getMemberRole() == 1) {
                 ArticleDAO adao = new ArticleDAO();
@@ -168,7 +168,7 @@ public class SearchServlet extends HttpServlet {
 
                     }
 
-                } else if (mName != null) {
+                }} else if (mName != null && memberLogin.getMemberRole()==0) {
                     MemberDAO mdao = new MemberDAO();
                     request.setAttribute("listMembersResult", mdao.findMemberByName(mName));
                     uri = MemberList;

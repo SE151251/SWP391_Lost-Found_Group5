@@ -63,7 +63,12 @@ public class ViewDetailServlet extends HttpServlet {
                 Report r = rdao.checkReport(aId, member.getMemberID());
                 if(memRpId != null){
                 Report rView = rdao.checkReport(aId, memRpId);
-                request.setAttribute("viewReport", rView);
+                request.setAttribute("viewReport", rView);                  
+                }
+                String canConfirm = request.getParameter("canConfirm");
+                if(canConfirm!=null){
+                if(canConfirm.equals("yes")){
+                request.setAttribute("confirmReport", "no"); }
                 }
                 request.setAttribute("checkReport", r);
                 

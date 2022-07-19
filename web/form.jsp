@@ -233,14 +233,17 @@
                 <tr>
                    <td style="font-size: 20px; padding-bottom: 20px">Post status:</td>
                     <td style=" padding-bottom: 20px">
-                        <select <c:if test="${isFlag eq 1}">disabled</c:if>style="width: 250px; height: 40px; font-size: 20px; text-align: center" name="txtStatus" >                                                             
-                                <option <c:if test="${aStatus eq '0'}"> selected </c:if>
+                        <select style="width: 250px; height: 40px; font-size: 20px; text-align: center" name="txtStatus" <c:if test="${isFlag eq 1}"> disabled </c:if> >                                                             
+                                <option  <c:if test="${aStatus eq '0'}"> selected </c:if>
                                 value="0">In Active</option>
                                 <option <c:if test="${aStatus eq '1'}">selected </c:if>
                                                                              value="1">Active</option>                        
                          </select> 
                     </td>              
                 </tr>
+                </c:if>
+                <c:if test="${action eq 'update' && isFlag eq 1}">
+                    <input type="hidden" name="txtStatus" value="0">
                 </c:if>
                  <tr>
                     <td  colspan="2">                   

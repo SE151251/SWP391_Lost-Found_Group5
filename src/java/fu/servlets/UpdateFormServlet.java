@@ -60,6 +60,7 @@ public class UpdateFormServlet extends HttpServlet {
 //                        hashtagList = hashtagList.concat(hashtag.getHashtagName()+" ");
 //                    }
 //                    request.setAttribute("hashtag", hashtagList);
+
                     request.setAttribute("isFlag", a.getWarningStatus());
                     request.setAttribute("titlePost", a.getTitle());
                     request.setAttribute("content", a.getArticleContent());

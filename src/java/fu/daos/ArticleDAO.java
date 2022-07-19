@@ -56,7 +56,6 @@ public class ArticleDAO {
             con = DBUtils.makeConnection();
             if (con != null) {
                 String sql = "Select * From Article "
-                        + "Where ArticleStatus = 1 or ArticleStatus = 0 "
                         + "Order By PostTime DESC";
                 stm = con.prepareStatement(sql);
                 rs = stm.executeQuery();
@@ -111,15 +110,14 @@ public class ArticleDAO {
                 stm.setInt(5, b.getArticleID()); 
                 }
                 else if(b.getItem()!=null){
-                String sql = "UPDATE Article SET ArticleTitle = ?, ArticleContent = ?, PostTime=?, ArticleStatus=?, ArticleTypeID=?, ItemID=? Where ArticleID=?";
+                String sql = "UPDATE Article SET ArticleTitle = ?, ArticleContent = ?, ArticleStatus=?, ArticleTypeID=?, ItemID=? Where ArticleID=?";
                 stm = con.prepareStatement(sql);
                 stm.setString(1, b.getTitle());
                 stm.setString(2, b.getArticleContent());
-                stm.setString(3, b.getPostTime());
-                stm.setInt(4, b.getArticleStatus());
-                stm.setInt(5, b.getType().getTypeID());
-                stm.setInt(6, b.getItem().getItemID());
-                stm.setInt(7, b.getArticleID()); 
+                stm.setInt(3, b.getArticleStatus());
+                stm.setInt(4, b.getType().getTypeID());
+                stm.setInt(5, b.getItem().getItemID());
+                stm.setInt(6, b.getArticleID()); 
                 }
                               
                 stm.executeUpdate();
@@ -233,7 +231,7 @@ public class ArticleDAO {
             con = DBUtils.makeConnection();
             if (con != null) {
                 String sql = "UPDATE Article "
-                        + "SET ArticleStatus = -1 "
+                        + "SET ArticleStatus = 0 "
                         + "Where ArticleID = ?";
                 stm = con.prepareStatement(sql);
                 stm.setInt(1, aId);
@@ -789,7 +787,7 @@ public class ArticleDAO {
                 String sql = "select A.ArticleID,A.ArticleTitle, A.ArticleContent, A.ImgURL, A.PostTime, A.ArticleStatus, A.WarningStatus, A.MemberID, A.ArticleTypeID, A.ItemID\n" +
                             "from Article A inner join ArticleHashtag AH on A.ArticleID = AH.ArticleID\n" +
                             "				inner join Hashtag H on AH.HashtagID = H.HashtagID\n" +
-                            "where H.HashtagID = ? and A.ArticleTypeID = 1\n" +
+                            "where H.HashtagID = ? and A.ArticleTypeID = 1 and A.ArticleStatus not like -1\n" +
                             "Order By PostTime DESC";
                 stm = con.prepareStatement(sql);
                 stm.setString(1, hId);
@@ -837,7 +835,7 @@ public class ArticleDAO {
                 String sql = "select A.ArticleID,A.ArticleTitle, A.ArticleContent, A.ImgURL, A.PostTime, A.ArticleStatus, A.WarningStatus, A.MemberID, A.ArticleTypeID, A.ItemID\n" +
                             "from Article A inner join ArticleHashtag AH on A.ArticleID = AH.ArticleID\n" +
                             "				inner join Hashtag H on AH.HashtagID = H.HashtagID\n" +
-                            "where H.HashtagID = ? and A.ArticleTypeID = 2\n" +
+                            "where H.HashtagID = ? and A.ArticleTypeID = 2 and A.ArticleStatus not like -1\n" +
                             "Order By PostTime DESC";
                 stm = con.prepareStatement(sql);
                 stm.setString(1, hId);
@@ -885,7 +883,7 @@ public class ArticleDAO {
                 String sql = "select A.ArticleID, A.ArticleTitle, A.ArticleContent, A.ImgURL, A.PostTime, A.ArticleStatus, A.WarningStatus, A.MemberID, A.ArticleTypeID, A.ItemID\n" +
                             "from Article A inner join ArticleHashtag AH on A.ArticleID = AH.ArticleID\n" +
                             "				inner join Hashtag H on AH.HashtagID = H.HashtagID\n" +
-                            "where H.HashtagID = ? and A.ArticleTypeID = 3\n" +
+                            "where H.HashtagID = ? and A.ArticleTypeID = 3 and A.ArticleStatus not like -1\n" +
                             "Order By PostTime DESC";
                 stm = con.prepareStatement(sql);
                 stm.setString(1, hId);

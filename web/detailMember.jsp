@@ -59,9 +59,17 @@
                     <td>${dt.articleID}</td>
                     <td>${dt.title}</td>
                     <td>${dt.postTime}</td>
-                    <td>${dt.articleStatus}</td>                   
+                    <c:if test="${dt.articleStatus eq 0}">
+                        <td>Closed</td>
+                    </c:if>
+                    <c:if test="${dt.articleStatus eq 1}">
+                        <td>Active</td>
+                    </c:if>
+                    <c:if test="${dt.articleStatus eq -1}">
+                        <td>Deleted</td>
+                    </c:if>                                      
                     <td>${dt.type.typeName}</td>
-                     <td><a href="ViewDetailServlet?aId=${dt.article.articleID}">View</a></td>
+                     <td><a href="ViewDetailServlet?aId=${dt.articleID}">View</a></td>
                 </tr>
                 </c:forEach>
               
@@ -95,8 +103,8 @@
                     <c:if test="${dt.status eq 1}">
                         <td>Not yet</td>                        
                     </c:if>
-                        <td><a href="ViewDetailServlet?memReportID=${dt.member.memberID}&aId=${dt.article.articleID}">View</a></td>
-                                       
+                        <td><a href="ViewDetailServlet?memReportID=${dt.member.memberID}&aId=${dt.article.articleID}<c:if test="${dt.status eq 1}">&canConfirm=yes</c:if>">View</a></td>
+                                         
                 </tr>
                 </c:forEach>
               
