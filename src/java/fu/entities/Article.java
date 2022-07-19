@@ -6,7 +6,6 @@
 package fu.entities;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 
 /**
  *

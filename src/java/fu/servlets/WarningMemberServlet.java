@@ -7,10 +7,13 @@ package fu.servlets;
 
 import fu.daos.ArticleDAO;
 import fu.daos.MemberDAO;
+import fu.daos.NotificationDAO;
 import fu.daos.ReportDAO;
 import fu.entities.Article;
 import fu.entities.Member;
+import fu.entities.Notification;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -43,13 +46,12 @@ public class WarningMemberServlet extends HttpServlet {
                 String uId = request.getParameter("uId");
                 String aId = request.getParameter("aId");
                 String adminAction = request.getParameter("adminAction");
-
+                NotificationDAO ndao = new NotificationDAO();
                 ArticleDAO aDao = new ArticleDAO();
 //                if(aId!=null){
 //                Article a = aDao.find(Integer.parseInt(aId));
 //                }
                 MemberDAO mdao = new MemberDAO();
-
                 ReportDAO rdao = new ReportDAO();
                 // Thêm trường hợp cảnh cáo bài viết
                 // Với bài viết bị cảnh cáo thì close bài viết đó
@@ -58,11 +60,22 @@ public class WarningMemberServlet extends HttpServlet {
                 // Sau khi xử lý 1 report thì các report liên quan tới bài viết đó đều được xử lý theo 1 lượt.
 
                 // Trường hợp member bị cảnh cáo
-                if (adminAction.equalsIgnoreCase("warnPost")) {
-                    aDao.warningArticle(Integer.parseInt(aId));
+                if (adminAction.equalsIgnoreCase("flag")) {
+                    aDao.flagArticle(Integer.parseInt(aId));
                     rdao.updateStatusReportByArticleID(Integer.parseInt(aId));
                     aDao.closeArticle(Integer.parseInt(aId));
-                } else if (adminAction.equalsIgnoreCase("warnMember")) {
+                    Article postFlag = aDao.find(Integer.parseInt(aId));
+                    String notiContent = "Your post has been FLAGGED by ADMIN";
+                    ndao.addNewNotifications(new Notification(0, member, postFlag.getMember(), postFlag, notiContent, LocalDateTime.now().toString() , 1));
+                }else if (adminAction.equalsIgnoreCase("unFlag")) {
+                    aDao.unFlagArticle(Integer.parseInt(aId));
+                    //rdao.updateStatusReportByArticleID(Integer.parseInt(aId));
+                    aDao.openArticle(Integer.parseInt(aId));
+                    Article postFlag = aDao.find(Integer.parseInt(aId));
+                    String notiContent = "Your post has been UNFLAG by ADMIN";
+                    ndao.addNewNotifications(new Notification(0, member, postFlag.getMember(), postFlag, notiContent, LocalDateTime.now().toString() , 1));
+                }
+                else if (adminAction.equalsIgnoreCase("warnMember")) {
                     // Tìm member đăng bài post by id rồi tăng count của member post bài lên +1
 //                    if (aId != null) {
 //                        Member memberWarn = mdao.find(a.getMember().getMemberID());
@@ -78,6 +91,8 @@ public class WarningMemberServlet extends HttpServlet {
                     Member memberWarn = mdao.find(uId);
                     memberWarn.setMemberCount(memberWarn.getMemberCount() + 1);
                     mdao.warningMember(memberWarn);
+                    String notiContent = "Your account has been WARNED by ADMIN";
+                    ndao.addNewNotifications(new Notification(0, member, memberWarn, null, notiContent, LocalDateTime.now().toString() , 1));
                     url = LIST_MEMBERS_PAGE;
 
                     // Trường hợp member bị ban
@@ -102,6 +117,7 @@ public class WarningMemberServlet extends HttpServlet {
                     Member memberBan = mdao.find(uId);
                     memberBan.setStatus(0);
                     mdao.banOrUnbanMember(memberBan);
+                    
                     // Đóng tất cả bài viết bị report
                        //B1: Lấy ra tất cả bài viết bị report của member này
                        //B2: Đổi all post với status thành 0 (closed), đồng thời đóng các report liên quan đến từng post
@@ -109,7 +125,9 @@ public class WarningMemberServlet extends HttpServlet {
                     for (Integer i : list) {
                     aDao.updateStatusArticlesOfMemberBanned(memberBan,i);  
                     rdao.updateStatusReportByArticleID(i);
-                    }                   
+                    }  
+                    String notiContent = "Your account has been BANNED by ADMIN";
+                    ndao.addNewNotifications(new Notification(0, member, memberBan, null, notiContent, LocalDateTime.now().toString() , 1));
                     url = LIST_MEMBERS_PAGE;
 
                     // Trường hợp member bị tố cáo không có vấn đề gì
@@ -122,6 +140,8 @@ public class WarningMemberServlet extends HttpServlet {
                     Member memberBan = mdao.find(uId);
                     memberBan.setStatus(1);
                     mdao.banOrUnbanMember(memberBan);
+                    String notiContent = "Your account has been UNLOCKED by ADMIN";
+                    ndao.addNewNotifications(new Notification(0, member, memberBan, null, notiContent, LocalDateTime.now().toString() , 1));
                     url = LIST_MEMBERS_PAGE;
                 }
 

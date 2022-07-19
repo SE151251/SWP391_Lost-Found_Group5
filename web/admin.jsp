@@ -51,6 +51,7 @@
             <a href="ListMemberServlet">ListMembers</a>
             <a href="#">ListReports</a>
             <a href="#">Post</a>
+            <a href="LogoutServlet">Logout</a>
         </nav>
         <table style="border: 2px solid black">
             <thead>

@@ -1248,9 +1248,33 @@ public class ArticleDAO {
         }
         return lb;
     }
-    public boolean warningArticle(int aId) throws Exception {
+    public boolean flagArticle(int aId) throws Exception {
         boolean check = false;
         String sql = ("UPDATE Article SET WarningStatus = 1 Where ArticleID=?");
+        try {
+            con = DBUtils.makeConnection();
+            if (con != null) {
+                stm = con.prepareStatement(sql);
+                stm.setInt(1, aId);                           
+                stm.executeUpdate();
+                check = stm.executeUpdate() > 0;
+            }
+        } finally {
+            if (rs != null) {
+                rs.close();
+            }
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return check;
+    }
+     public boolean unFlagArticle(int aId) throws Exception {
+        boolean check = false;
+        String sql = ("UPDATE Article SET WarningStatus = 0 Where ArticleID=?");
         try {
             con = DBUtils.makeConnection();
             if (con != null) {

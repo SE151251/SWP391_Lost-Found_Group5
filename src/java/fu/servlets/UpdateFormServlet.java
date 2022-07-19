@@ -60,7 +60,7 @@ public class UpdateFormServlet extends HttpServlet {
 //                        hashtagList = hashtagList.concat(hashtag.getHashtagName()+" ");
 //                    }
 //                    request.setAttribute("hashtag", hashtagList);
-                    
+                    request.setAttribute("isFlag", a.getWarningStatus());
                     request.setAttribute("titlePost", a.getTitle());
                     request.setAttribute("content", a.getArticleContent());
                     request.setAttribute("postURL", a.getImgUrl());
@@ -76,10 +76,8 @@ public class UpdateFormServlet extends HttpServlet {
                 } else {
                     List<ArticleType> listAT = atDao.getAllArticleType();
                     request.setAttribute("ListArticleType", listAT);
-
                     List<Item> listI = itDao.getAllItems();                   
-                    request.setAttribute("ListItemType", listI);
-                    
+                    request.setAttribute("ListItemType", listI);                   
                     request.setAttribute("titlePost", request.getAttribute("titlePost"));
                     request.setAttribute("titleError", request.getAttribute("titleError"));
                     request.setAttribute("contentError", request.getAttribute("contentError"));

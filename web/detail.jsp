@@ -77,14 +77,33 @@
             <div class="user-profile">                
                 <img src="${postDetail.member.picture}" alt="">
                 <div>
-                    <p><a href="PersonalServlet?uId=${postDetail.member.memberID}">${postDetail.member.memberName}</a></p>
+                    <p><a href="PersonalServlet?uId=${postDetail.member.memberID}">${postDetail.member.memberName}</a>
+            <c:if test="${postDetail.type.typeID eq 1}">
+            <span style="padding: 5px 10px 5px 10px" class="badge badge-pill badge-primary">LOST</span>                                                   
+            </c:if>
+            <c:if test="${postDetail.type.typeID eq 2}">
+            <span style="padding: 5px 10px 5px 10px" class="badge badge-pill badge-primary">FOUND</span>                                                   
+            </c:if>
+            <c:if test="${postDetail.type.typeID eq 3}">
+            <span style="padding: 5px 10px 5px 10px" class="badge badge-pill badge-primary">NOTICE</span>                                                   
+            </c:if>
+                    </p>
                     <small>${postDetail.postTime}</small>
                 </div>
+            <c:if test="${postDetail.warningStatus eq 1}">
+            <span style="padding: 5px 10px 5px 10px" class="badge badge-pill badge-danger">Flagged</span>                                                   
+            </c:if>
             </div>
            
         </div>
         <div class="status-field">
             <pre style="font-size: 20px; margin-top: 15px;">${postDetail.articleContent}</pre>
+            <c:if test="${postDetail.type.typeID eq 1}">
+            <a href="SearchServlet?txtItem=${postDetail.item.itemID}&searchAction=Find">    <p><span style="padding: 5px 10px 5px 10px" class="badge badge-pill badge-primary"><c:out value="${postDetail.item.itemName}"/></span></p>   </a>                                                   
+            </c:if>
+            <c:if test="${postDetail.type.typeID eq 2}">
+            <a href="SearchServlet?txtItem=${postDetail.item.itemID}&searchAction=Return">    <p><span style="padding: 5px 10px 5px 10px" class="badge badge-pill badge-primary"><c:out value="${postDetail.item.itemName}"/></span></p>   </a>                                                   
+            </c:if>
             <div style="width: 400px">
             
             <c:forEach var="lah" items="${listAH}" >
@@ -128,12 +147,22 @@
                                 <a href="WarningMemberServlet?adminAction=ban&aId=${postDetail.articleID}">
                                 <img src="images/banned.png" alt="">Banned</a>
                             </div>  --%>                          
-                        <div>
+                <c:if test="${postDetail.warningStatus eq 0}">    
+                <div>
                             <div>
-                                <a href="WarningMemberServlet?adminAction=warnPost&aId=${postDetail.articleID}">
-                                <img src="images/warning.png" alt="">Warning this post</a>
+                                <a href="WarningMemberServlet?adminAction=flag&aId=${postDetail.articleID}">
+                                <img src="images/warning.png" alt="">Flag</a>
                             </div>
                         </div>
+                </c:if>
+                <c:if test="${postDetail.warningStatus eq 1}">       
+                <div>
+                            <div>
+                                <a href="WarningMemberServlet?adminAction=unFlag&aId=${postDetail.articleID}">
+                                <img src="images/warning.png" alt="">Unflag</a>
+                            </div>
+                        </div>
+                </c:if> 
                             <div>
                             <div>
                                 <a href="WarningMemberServlet?adminAction=none&aId=${postDetail.articleID}">

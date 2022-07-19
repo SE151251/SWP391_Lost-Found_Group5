@@ -61,6 +61,7 @@
                     <td>${dt.postTime}</td>
                     <td>${dt.articleStatus}</td>                   
                     <td>${dt.type.typeName}</td>
+                     <td><a href="ViewDetailServlet?aId=${dt.article.articleID}">View</a></td>
                 </tr>
                 </c:forEach>
               
@@ -94,6 +95,7 @@
                     <c:if test="${dt.status eq 1}">
                         <td>Not yet</td>                        
                     </c:if>
+                        <td><a href="ViewDetailServlet?memReportID=${dt.member.memberID}&aId=${dt.article.articleID}">View</a></td>
                                        
                 </tr>
                 </c:forEach>
