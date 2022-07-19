@@ -52,13 +52,13 @@ CREATE TABLE Comment
 	CommentTime DateTime NOT NULL,
 	CommentStatus decimal(1, 0) NOT NULL
 );
-drop table Notification
+
 CREATE TABLE Notification
 (
 	NotificationID int IDENTITY(1,1) primary key,
 	SenderID varchar(30) NOT NULL FOREIGN KEY REFERENCES Member(MemberID),	
 	ReceiverID varchar(30) NOT NULL FOREIGN KEY REFERENCES Member(MemberID),
-	ArticleID int  NOT NULL FOREIGN KEY REFERENCES Article(ArticleID),
+	ArticleID int FOREIGN KEY REFERENCES Article(ArticleID),
 	NotificationContent nvarchar(100) NOT NULL,
 	NotificationTime DateTime NOT NULL,
 	NotificationStatus decimal(1, 0) NOT NULL
@@ -267,7 +267,29 @@ from Article A inner join Report R on A.ArticleID = R.ArticleID
 inner join Member M on M.MemberID = A.MemberID
 where A.MemberID = 107703834893877697636
 group by M.FullName,A.MemberID,A.ArticleID
+-- Lấy ra các member có bài viết có type là LOST và role là 1
+select DISTINCT M.MemberID, M.Email, m.FullName, m.Picture, m.ProfileInfo, m.MemberRole, m.MemberStatus, m.CountTime 
+from Member M inner join Article A on M.MemberID = A.MemberID
+where A.ArticleTypeID = 2 and A.ItemID = 9 and M.MemberRole = 1 and M.MemberID not like 114512282810993535016
 
-select * from Article
+
+----------------------------------------------------------------------------
+
+select * from Article A where A.MemberID = 114512282810993535016
 select * from Member
 select * from report
+select * from Notification N
+Order By N.NotificationStatus DESC
+
+
+select A.ArticleID,A.ArticleTitle, A.ArticleContent, A.ImgURL, A.PostTime, A.ArticleStatus, A.WarningStatus, A.MemberID, A.ArticleTypeID, A.ItemID
+                            from Article A inner join ArticleHashtag AH on A.ArticleID = AH.ArticleID
+                            				inner join Hashtag H on AH.HashtagID = H.HashtagID
+                            where H.HashtagID = 2 and A.ArticleTypeID = 1 and A.ArticleStatus not like -1
+                            Order By PostTime DESC
+
+select R.ReportID, R.ReportContent, R.ArticleID, R.MemberID, R.ReportStatus, R.ReportTime, R.ConfirmTime
+                    from Article A inner join Report R on A.ArticleID = R.ArticleID
+                    inner join Member M on M.MemberID = A.MemberID
+                    where A.MemberID = 114512282810993535016
+                    group by R.ReportID, R.ReportContent, R.ArticleID, R.MemberID, R.ReportStatus, R.ReportTime, R.ConfirmTime, M.FullName,A.MemberID,A.ArticleID
