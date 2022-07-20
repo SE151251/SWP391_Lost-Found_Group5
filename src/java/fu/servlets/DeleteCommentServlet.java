@@ -5,15 +5,9 @@
  */
 package fu.servlets;
 
-import fu.daos.ArticleDAO;
 import fu.daos.CommentDAO;
-import fu.daos.MemberDAO;
-import fu.entities.Article;
-import fu.entities.Comment;
 import fu.entities.Member;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.time.LocalDateTime;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -43,16 +37,19 @@ public class DeleteCommentServlet extends HttpServlet {
             HttpSession session = request.getSession(false);
             if (session == null) {
                 request.setAttribute("errormessage", "Please login!");
-                request.getRequestDispatcher("login.jsp").forward(request, response);
-            }
-            if (session.getAttribute("userdata") != null) { // check login
+                request.getRequestDispatcher("paging").forward(request, response);
+            } else if (session.getAttribute("userdata") != null) { // check login              
                 Member member = (Member) session.getAttribute("userdata");
-                String cmtId = request.getParameter("cmtId");
-                String aId = request.getParameter("aId");
-                CommentDAO cdao = new CommentDAO();
-                cdao.deleteComment(Integer.parseInt(cmtId));                  
-                request.getRequestDispatcher("ViewDetailServlet?aId="+aId).forward(request, response);
-                return;               
+                if (member.getStatus() == 1) {
+                    String cmtId = request.getParameter("cmtId");
+                    String aId = request.getParameter("aId");
+                    CommentDAO cdao = new CommentDAO();
+                    cdao.deleteComment(Integer.parseInt(cmtId));
+                    request.getRequestDispatcher("ViewDetailServlet?aId=" + aId).forward(request, response);
+                } else {
+                    request.setAttribute("errormessage", "Your account has been banned!");
+                    request.getRequestDispatcher("paging").forward(request, response);
+                }
             } else {
                 request.setAttribute("errormessage", "Please login!");
                 request.getRequestDispatcher("login.jsp").forward(request, response);

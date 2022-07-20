@@ -8,7 +8,6 @@ package fu.servlets;
 import fu.daos.MemberDAO;
 import fu.entities.Member;
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -38,24 +37,27 @@ public class ProfileServlet extends HttpServlet {
             HttpSession session = request.getSession(false);
             if (session == null) {
                 request.setAttribute("errormessage", "Please login!");
-                request.getRequestDispatcher("login.jsp").forward(request, response);
-            }
-            if (session.getAttribute("userdata") != null) { // check login
+                request.getRequestDispatcher("paging").forward(request, response);
+            } else if (session.getAttribute("userdata") != null) { // check login
                 Member member = (Member) session.getAttribute("userdata");
-                String mProfile = request.getParameter("txtProfile");               
-                if(mProfile.trim().isEmpty() || mProfile.trim().length()>4000 || mProfile.trim().length()<20){
-                request.setAttribute("errorProfile", "Your profile must be 20 - 4000 characters");
-                request.getRequestDispatcher("PersonalServlet").forward(request, response);  
-                return;
-                }else{
-                MemberDAO mdao = new MemberDAO();
-                mdao.updateProfileMember(member, mProfile);             
-                request.getRequestDispatcher("PersonalServlet?uId=" +member.getMemberID()).forward(request, response);
-                return;
+                if (member.getStatus() == 1) {
+                    String mProfile = request.getParameter("txtProfile");
+                    if (mProfile.trim().isEmpty() || mProfile.trim().length() > 4000 || mProfile.trim().length() < 20) {
+                        request.setAttribute("errorProfile", "Your profile must be 20 - 4000 characters");
+                        request.getRequestDispatcher("PersonalServlet").forward(request, response);
+                        return;
+                    } else {
+                        MemberDAO mdao = new MemberDAO();
+                        mdao.updateProfileMember(member, mProfile);
+                        request.getRequestDispatcher("PersonalServlet?uId=" + member.getMemberID()).forward(request, response);
+                    }
+                } else {
+                    request.setAttribute("errormessage", "Your account has been banned!");
+                    request.getRequestDispatcher("paging").forward(request, response);
                 }
             } else {
                 request.setAttribute("errormessage", "Please login!");
-                request.getRequestDispatcher("login.jsp").forward(request, response);
+                request.getRequestDispatcher("paging").forward(request, response);
             }
 
         } catch (Exception e) {

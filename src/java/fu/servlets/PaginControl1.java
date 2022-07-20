@@ -35,12 +35,14 @@ public class PaginControl1 extends HttpServlet {
             throws ServletException, IOException {
         try {
                 HttpSession session = request.getSession(false);
+                if (session != null) {
                 if (session.getAttribute("userdata") != null) {
                 Member memberLogin = (Member) session.getAttribute("userdata");
                 if(memberLogin.getMemberRole()==1){
                 NotificationDAO ndao = new NotificationDAO();
                 List<Notification> listNoti = ndao.getAllNotificationsByMember(memberLogin.getMemberID());
                 request.setAttribute("listNoti", listNoti);
+                }
                 }
                 }
                 String index1 = request.getParameter("index1");

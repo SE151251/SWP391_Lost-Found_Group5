@@ -64,186 +64,185 @@ public class CreateServlet extends HttpServlet {
             HttpSession session = request.getSession(false);
             if (session == null) {
                 request.setAttribute("errormessage", "Please login!");
-                request.getRequestDispatcher("login.jsp").forward(request, response);
-            }
-            if (session.getAttribute("userdata") != null) {
+                request.getRequestDispatcher("paging").forward(request, response);
+            } else if (session.getAttribute("userdata") != null) {
                 Member memberLogin = (Member) session.getAttribute("userdata");
                 if (memberLogin.getStatus() == 1) {
-                boolean valid = true;
-                String titleError = "";
-                String hashtagError= "";
-                String contentError = "";
-                String errorURL = "";
-                //String newId;
-                String textURL = request.getParameter("articleURL");
-                ArticleDAO aDao = new ArticleDAO();
-                // Xử lý title bài viết    
-                String titlePost = request.getParameter("txtTitle");
-                if (titlePost.trim().isEmpty() || titlePost.trim().length() < 10 || titlePost.trim().length() > 50) {
-                    titleError = "Title must be at least 10 and at most 50 characters!";
-                    valid = false;
-                }
-                // Xử lý nội dung bài viết 
-                String content = request.getParameter("txtContent");
-                if (content.trim().isEmpty() || content.trim().length() < 20 || content.trim().length() > 4000) {
-                    contentError = "Content must be at least 20 and at most 4000 characters!";
-                    valid = false;
-                }
-                //Xử lý hashtag
-                String hashtagName = request.getParameter("txtHashtag");
-                ArrayList<Hashtag> lstHashtag = null;
-                HashtagDAO hDao = new HashtagDAO(); 
-                if(hashtagName !=null){
-                String regex = "#\\w*";
-                Pattern p = Pattern.compile(regex);
-                Matcher matcher = p.matcher(hashtagName);
-                while (matcher.find()) {
-                    String hName = matcher.group();
-                    if (hName.trim().length() > 21) {
-                        hashtagError = "Hashtag name cannot exceed 20 characters!";
+                    boolean valid = true;
+                    String titleError = "";
+                    String hashtagError = "";
+                    String contentError = "";
+                    String errorURL = "";
+                    //String newId;
+                    String textURL = request.getParameter("articleURL");
+                    ArticleDAO aDao = new ArticleDAO();
+                    // Xử lý title bài viết    
+                    String titlePost = request.getParameter("txtTitle");
+                    if (titlePost.trim().isEmpty() || titlePost.trim().length() < 10 || titlePost.trim().length() > 50) {
+                        titleError = "Title must be at least 10 and at most 50 characters!";
                         valid = false;
                     }
-                }if(valid != false){
-                   // HashtagDAO hDao = new HashtagDAO();                   
-                    // Tạo 1 mảng lưu các hashtag
-                    lstHashtag = new ArrayList<>();
-                    p = Pattern.compile(regex);
-                    matcher = p.matcher(hashtagName);
-                     while (matcher.find()) {
-                     String hName = matcher.group();
-                        //Kiểm tra xem tên hashtag đã tồn tại chưa
-
-                        if (hDao.getHashtagByName(hName) != null) {
-                           
-                            Hashtag hashtag = hDao.getHashtagByName(hName);
-                            lstHashtag.add(hashtag);
-                        } else if (hDao.getHashtagByName(hName) == null) {
-                            //Thêm mới hashtag zo DB
-                            Hashtag hashtag = new Hashtag(0, hName);                          
-                            
-                            lstHashtag.add(hashtag);
+                    // Xử lý nội dung bài viết 
+                    String content = request.getParameter("txtContent");
+                    if (content.trim().isEmpty() || content.trim().length() < 20 || content.trim().length() > 4000) {
+                        contentError = "Content must be at least 20 and at most 4000 characters!";
+                        valid = false;
+                    }
+                    //Xử lý hashtag
+                    String hashtagName = request.getParameter("txtHashtag");
+                    ArrayList<Hashtag> lstHashtag = null;
+                    HashtagDAO hDao = new HashtagDAO();
+                    if (hashtagName != null) {
+                        String regex = "#\\w*";
+                        Pattern p = Pattern.compile(regex);
+                        Matcher matcher = p.matcher(hashtagName);
+                        while (matcher.find()) {
+                            String hName = matcher.group();
+                            if (hName.trim().length() > 21) {
+                                hashtagError = "Hashtag name cannot exceed 20 characters!";
+                                valid = false;
+                            }
                         }
-                     }
-                }
-                }
-                // Xử lý loại đồ vật của bài viết
-                String itemId = request.getParameter("txtItem");
-                Item i = null;
-                if (itemId != null) {
-                    ItemTypeDAO iDao = new ItemTypeDAO();
-                    i = iDao.getItemByID(Integer.parseInt(itemId));
-                }
+                        if (valid != false) {
+                            // HashtagDAO hDao = new HashtagDAO();                   
+                            // Tạo 1 mảng lưu các hashtag
+                            lstHashtag = new ArrayList<>();
+                            p = Pattern.compile(regex);
+                            matcher = p.matcher(hashtagName);
+                            while (matcher.find()) {
+                                String hName = matcher.group();
+                                //Kiểm tra xem tên hashtag đã tồn tại chưa
 
-                // Xử lý loại bài viết
-                String postTypeId = request.getParameter("txtArticleType");
-                ArticleTypeDAO aTDao = new ArticleTypeDAO();
-                ArticleType at = aTDao.getArticleTypeByID(Integer.parseInt(postTypeId));
+                                if (hDao.getHashtagByName(hName) != null) {
 
-                //Xử lý ảnh của bài viết
-                Part filePart = request.getPart("photo");
-                String postURL = getFileName(filePart);
-                if (!postURL.equals("")) {
-                    if (postURL.length() > 50) {
-                        errorURL = "URL's length must be at most 50";
-                        valid = false;
+                                    Hashtag hashtag = hDao.getHashtagByName(hName);
+                                    lstHashtag.add(hashtag);
+                                } else if (hDao.getHashtagByName(hName) == null) {
+                                    //Thêm mới hashtag zo DB
+                                    Hashtag hashtag = new Hashtag(0, hName);
+
+                                    lstHashtag.add(hashtag);
+                                }
+                            }
+                        }
                     }
-                    if (!(postURL.endsWith(".png") || postURL.endsWith(".jpg"))) {
-                        errorURL = "Image must be a PNG or JPG file";
-                        valid = false;
+                    // Xử lý loại đồ vật của bài viết
+                    String itemId = request.getParameter("txtItem");
+                    Item i = null;
+                    if (itemId != null) {
+                        ItemTypeDAO iDao = new ItemTypeDAO();
+                        i = iDao.getItemByID(Integer.parseInt(itemId));
                     }
-                }
 
-                if (valid) {
-                    // Xử lý ảnh để thêm vô DB
-                    String articleURl;
-                    if (postURL.equals("")) {
-                        if (textURL != null && !textURL.equals("")) {
-                            articleURl = textURL;
+                    // Xử lý loại bài viết
+                    String postTypeId = request.getParameter("txtArticleType");
+                    ArticleTypeDAO aTDao = new ArticleTypeDAO();
+                    ArticleType at = aTDao.getArticleTypeByID(Integer.parseInt(postTypeId));
+
+                    //Xử lý ảnh của bài viết
+                    Part filePart = request.getPart("photo");
+                    String postURL = getFileName(filePart);
+                    if (!postURL.equals("")) {
+                        if (postURL.length() > 50) {
+                            errorURL = "URL's length must be at most 50";
+                            valid = false;
+                        }
+                        if (!(postURL.endsWith(".png") || postURL.endsWith(".jpg"))) {
+                            errorURL = "Image must be a PNG or JPG file";
+                            valid = false;
+                        }
+                    }
+
+                    if (valid) {
+                        // Xử lý ảnh để thêm vô DB
+                        String articleURl;
+                        if (postURL.equals("")) {
+                            if (textURL != null && !textURL.equals("")) {
+                                articleURl = textURL;
+                            } else {
+                                articleURl = null;
+                            }
                         } else {
-                            articleURl = null;
+                            uploadFileToBuild(request);
+                            articleURl = uploadFile(request);
                         }
-                    } else {
-                        uploadFileToBuild(request);
-                        articleURl = uploadFile(request);
-                    }
-                    // uploadFileToBuild(request);
-                    Article a = new Article(0, titlePost.trim(), content.trim(), articleURl, LocalDateTime.now().toString(), 1, 0, i, memberLogin, at);
-                    
-                    //Tạo bài viết và tạo lien ket cho hashtag và bài viết
-                    int idPost = aDao.createNewArticle(a);
-                    a.setArticleID(idPost);
-                    if(lstHashtag != null){
-                    ArticleHashtagDAO ahDao = new ArticleHashtagDAO();
-                    for (Hashtag hashtag : lstHashtag) {
-                    if(hDao.getHashtagByName(hashtag.getHashtagName()) == null){
-                      int idHashtag = hDao.addNewHashtag(hashtag); 
-                      hashtag.setHashtagID(idHashtag);
-                    }
-                        
-                    ahDao.addNewArticleHashtag(a, hashtag);
-                    }
-                    // Tạo thông báo cho các member khác
-                    //B1: Lấy ra các memberID có bài viết có type khớp với bài viết này
-                    //B2: đưa zo bảng noti
-                    MemberDAO mdao = new MemberDAO();
-                    // Trường hợp bài viết của member đăng
-                    NotificationDAO ndao = new NotificationDAO();
-                    if(itemId != null && at.getTypeID()==1){
-                    ArrayList<Member> listMembers = mdao.getAllMemberHavePostWithArticleTypeCorresponding(2, itemId, memberLogin.getMemberID());
-                    
-                        for (Member listMember : listMembers) {
-                        String notiContent = memberLogin.getMemberName()+" posted articles related to "+i.getItemName();
-                        ndao.addNewNotifications(new Notification(0, memberLogin, listMember, a, notiContent, LocalDateTime.now().toString() , 1));
-                        }
-                    }else if(itemId != null && at.getTypeID()==2){
-                    ArrayList<Member> listMembers = mdao.getAllMemberHavePostWithArticleTypeCorresponding(1, itemId, memberLogin.getMemberID());
-                    
-                        for (Member memReceive : listMembers) {
-                        String notiContent = memberLogin.getMemberName()+" posted articles related to "+i.getItemName();
-                        ndao.addNewNotifications(new Notification(0, memberLogin, memReceive, a, notiContent, LocalDateTime.now().toString() , 1));
-                        }
-                    }
-                    else{ // Trường hợp bài viết của ADMIN
-                    ArrayList<Member> listMembers = mdao.getAllMembersReceiveNotiFromAdmin();
-                     for (Member listMember : listMembers) {
-                        String notiContent = "The administrator has posted a notice about the system";
-                        ndao.addNewNotifications(new Notification(0, memberLogin, listMember, a, notiContent, LocalDateTime.now().toString() , 1));
-                        }
-                    }
+                        // uploadFileToBuild(request);
+                        Article a = new Article(0, titlePost.trim(), content.trim(), articleURl, LocalDateTime.now().toString(), 1, 0, i, memberLogin, at);
 
-                    }
-                    if (memberLogin.getMemberRole() == 1) {
-                        if(a.getType().getTypeID()==1){
-                            url=SUCCESS_FIND;
+                        //Tạo bài viết và tạo lien ket cho hashtag và bài viết
+                        int idPost = aDao.createNewArticle(a);
+                        a.setArticleID(idPost);
+                        if (lstHashtag != null) {
+                            ArticleHashtagDAO ahDao = new ArticleHashtagDAO();
+                            for (Hashtag hashtag : lstHashtag) {
+                                if (hDao.getHashtagByName(hashtag.getHashtagName()) == null) {
+                                    int idHashtag = hDao.addNewHashtag(hashtag);
+                                    hashtag.setHashtagID(idHashtag);
+                                }
+
+                                ahDao.addNewArticleHashtag(a, hashtag);
+                            }
+                            // Tạo thông báo cho các member khác
+                            //B1: Lấy ra các memberID có bài viết có type khớp với bài viết này
+                            //B2: đưa zo bảng noti
+                            MemberDAO mdao = new MemberDAO();
+                            // Trường hợp bài viết của member đăng
+                            NotificationDAO ndao = new NotificationDAO();
+                            if (itemId != null && at.getTypeID() == 1) {
+                                ArrayList<Member> listMembers = mdao.getAllMemberHavePostWithArticleTypeCorresponding(2, itemId, memberLogin.getMemberID());
+
+                                for (Member listMember : listMembers) {
+                                    String notiContent = memberLogin.getMemberName() + " posted articles related to " + i.getItemName();
+                                    ndao.addNewNotifications(new Notification(0, memberLogin, listMember, a, notiContent, LocalDateTime.now().toString(), 1));
+                                }
+                            } else if (itemId != null && at.getTypeID() == 2) {
+                                ArrayList<Member> listMembers = mdao.getAllMemberHavePostWithArticleTypeCorresponding(1, itemId, memberLogin.getMemberID());
+
+                                for (Member memReceive : listMembers) {
+                                    String notiContent = memberLogin.getMemberName() + " posted articles related to " + i.getItemName();
+                                    ndao.addNewNotifications(new Notification(0, memberLogin, memReceive, a, notiContent, LocalDateTime.now().toString(), 1));
+                                }
+                            } else { // Trường hợp bài viết của ADMIN
+                                ArrayList<Member> listMembers = mdao.getAllMembersReceiveNotiFromAdmin();
+                                for (Member listMember : listMembers) {
+                                    String notiContent = "The administrator has posted a notice about the system";
+                                    ndao.addNewNotifications(new Notification(0, memberLogin, listMember, a, notiContent, LocalDateTime.now().toString(), 1));
+                                }
+                            }
+
                         }
-                        if(a.getType().getTypeID()==2){
-                            url=SUCCESS_RETURN;
+                        if (memberLogin.getMemberRole() == 1) {
+                            if (a.getType().getTypeID() == 1) {
+                                url = SUCCESS_FIND;
+                            }
+                            if (a.getType().getTypeID() == 2) {
+                                url = SUCCESS_RETURN;
+                            }
+                        } else if (memberLogin.getMemberRole() == 0) {
+                            url = ADMIN_PAGE;
                         }
-                    } else if (memberLogin.getMemberRole() == 0) {
-                        url = ADMIN_PAGE;
-                    }
 //                    } else {
 //                        request.setAttribute("errMessage", "Add failed");
 //                    }
-                } else {
-                    url = INVALID;
-                    request.setAttribute("titlePost", titlePost);
-                    request.setAttribute("titleError", titleError);
-                    request.setAttribute("content", content);
-                    request.setAttribute("contentError", contentError);
-                    request.setAttribute("hashtag", hashtagName);
-                    request.setAttribute("hashtagError", hashtagError);
-                    request.setAttribute("errorURL", errorURL);
-                    request.setAttribute("postURL", postURL);
-                    if (itemId != null) {
-                        request.setAttribute("itemId", Integer.parseInt(itemId));
+                    } else {
+                        url = INVALID;
+                        request.setAttribute("titlePost", titlePost);
+                        request.setAttribute("titleError", titleError);
+                        request.setAttribute("content", content);
+                        request.setAttribute("contentError", contentError);
+                        request.setAttribute("hashtag", hashtagName);
+                        request.setAttribute("hashtagError", hashtagError);
+                        request.setAttribute("errorURL", errorURL);
+                        request.setAttribute("postURL", postURL);
+                        if (itemId != null) {
+                            request.setAttribute("itemId", Integer.parseInt(itemId));
+                        }
+                        request.setAttribute("postTypeId", Integer.parseInt(postTypeId));
                     }
-                    request.setAttribute("postTypeId", Integer.parseInt(postTypeId));
+                } else {
+                    request.setAttribute("errormessage", "Your account has been banned!");
+                    request.getRequestDispatcher("paging").forward(request, response);
                 }
-                } else {
-                        request.setAttribute("errormessage", "Your account has been banned!");
-                        request.getRequestDispatcher("paging").forward(request, response);
-                    }
             } else {
                 request.setAttribute("errormessage", "Please login!");
                 request.getRequestDispatcher("paging").forward(request, response);

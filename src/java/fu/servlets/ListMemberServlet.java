@@ -38,13 +38,18 @@ public class ListMemberServlet extends HttpServlet {
             HttpSession session = request.getSession(false);
             if (session == null) {
                 request.setAttribute("errormessage", "Please login!");
-                request.getRequestDispatcher("login.jsp").forward(request, response);
+                request.getRequestDispatcher("paging").forward(request, response);
             }
             if (session.getAttribute("userdata") != null) {
                 Member memberLogin = (Member) session.getAttribute("userdata");
-                MemberDAO mdao = new MemberDAO();
-                List<Member> listMem = mdao.getAllMembersHaveWarningPost();
-                request.setAttribute("listMembers", listMem);
+                if (memberLogin.getStatus() == 1) {
+                    MemberDAO mdao = new MemberDAO();
+                    List<Member> listMem = mdao.getAllMembersHaveWarningPost();
+                    request.setAttribute("listMembers", listMem);
+                } else {
+                    request.setAttribute("errormessage", "Your account has been banned!");
+                    request.getRequestDispatcher("paging").forward(request, response);
+                }
             } else {
                 request.setAttribute("errormessage", "Please login!");
                 request.getRequestDispatcher("login.jsp").forward(request, response);

@@ -38,22 +38,23 @@ public class UpdateFormServlet extends HttpServlet {
             HttpSession session = request.getSession(false);
             if (session == null) {
                 request.setAttribute("errormessage", "Please login!");
-                request.getRequestDispatcher("login.jsp").forward(request, response);
+                request.getRequestDispatcher("paging").forward(request, response);
             } else if (session.getAttribute("userdata") != null) {
                 Member member = (Member) session.getAttribute("userdata");
-                String aId = request.getParameter("aId");
-                ArticleDAO aDao = new ArticleDAO();
-                ItemTypeDAO itDao = new ItemTypeDAO();
-                ArticleTypeDAO atDao = new ArticleTypeDAO();
-                if (aId != null) {
-                    Article a = aDao.find(Integer.parseInt(aId));
-                    List<ArticleType> listAT = atDao.getAllArticleType();
-                    request.setAttribute("ListArticleType", listAT);
+                if (member.getStatus() == 1) {
+                    String aId = request.getParameter("aId");
+                    ArticleDAO aDao = new ArticleDAO();
+                    ItemTypeDAO itDao = new ItemTypeDAO();
+                    ArticleTypeDAO atDao = new ArticleTypeDAO();
+                    if (aId != null) {
+                        Article a = aDao.find(Integer.parseInt(aId));
+                        List<ArticleType> listAT = atDao.getAllArticleType();
+                        request.setAttribute("ListArticleType", listAT);
 
-                    List<Item> listI = itDao.getAllItems();
-                    request.setAttribute("ListItemType", listI);
-                    
-                    HashtagDAO hDao = new HashtagDAO();
+                        List<Item> listI = itDao.getAllItems();
+                        request.setAttribute("ListItemType", listI);
+
+                        HashtagDAO hDao = new HashtagDAO();
 //                    List<Hashtag> listAH = hDao.getAllHashtagByArticleID(aId);
 //                    String hashtagList = "";
 //                    for (Hashtag hashtag : listAH) {
@@ -61,40 +62,44 @@ public class UpdateFormServlet extends HttpServlet {
 //                    }
 //                    request.setAttribute("hashtag", hashtagList);
 
-                    request.setAttribute("isFlag", a.getWarningStatus());
-                    request.setAttribute("titlePost", a.getTitle());
-                    request.setAttribute("content", a.getArticleContent());
-                    request.setAttribute("postURL", a.getImgUrl());
-                    request.setAttribute("aStatus", a.getArticleStatus());
-                    if(a.getItem() != null){
-                    request.setAttribute("itemId", a.getItem().getItemID());
-                    }
-                    request.setAttribute("postTypeId", a.getType().getTypeID());
-                    request.setAttribute("action", "update");
-                    request.setAttribute("idUpdate", aId);
-                    request.getRequestDispatcher("form.jsp").forward(request, response);
+                        request.setAttribute("isFlag", a.getWarningStatus());
+                        request.setAttribute("titlePost", a.getTitle());
+                        request.setAttribute("content", a.getArticleContent());
+                        request.setAttribute("postURL", a.getImgUrl());
+                        request.setAttribute("aStatus", a.getArticleStatus());
+                        if (a.getItem() != null) {
+                            request.setAttribute("itemId", a.getItem().getItemID());
+                        }
+                        request.setAttribute("postTypeId", a.getType().getTypeID());
+                        request.setAttribute("action", "update");
+                        request.setAttribute("idUpdate", aId);
+                        request.getRequestDispatcher("form.jsp").forward(request, response);
 
+                    } else {
+                        List<ArticleType> listAT = atDao.getAllArticleType();
+                        request.setAttribute("ListArticleType", listAT);
+                        List<Item> listI = itDao.getAllItems();
+                        request.setAttribute("ListItemType", listI);
+                        request.setAttribute("titlePost", request.getAttribute("titlePost"));
+                        request.setAttribute("titleError", request.getAttribute("titleError"));
+                        request.setAttribute("contentError", request.getAttribute("contentError"));
+                        request.setAttribute("content", request.getAttribute("content"));
+                        request.setAttribute("hashtag", request.getAttribute("hashtag"));
+                        request.setAttribute("hashtagError", request.getAttribute("hashtagError"));
+                        request.setAttribute("aStatus", request.getAttribute("aStatus"));
+                        request.setAttribute("postURL", request.getAttribute("postURL"));
+                        request.setAttribute("itemId", request.getAttribute("itemId"));
+                        request.setAttribute("postTypeId", request.getAttribute("postTypeId"));
+                        request.setAttribute("action", "update");
+                        request.getRequestDispatcher("form.jsp").forward(request, response);
+                    }
                 } else {
-                    List<ArticleType> listAT = atDao.getAllArticleType();
-                    request.setAttribute("ListArticleType", listAT);
-                    List<Item> listI = itDao.getAllItems();                   
-                    request.setAttribute("ListItemType", listI);                   
-                    request.setAttribute("titlePost", request.getAttribute("titlePost"));
-                    request.setAttribute("titleError", request.getAttribute("titleError"));
-                    request.setAttribute("contentError", request.getAttribute("contentError"));
-                    request.setAttribute("content", request.getAttribute("content"));
-                    request.setAttribute("hashtag", request.getAttribute("hashtag"));
-                    request.setAttribute("hashtagError", request.getAttribute("hashtagError"));
-                    request.setAttribute("aStatus", request.getAttribute("aStatus"));
-                    request.setAttribute("postURL", request.getAttribute("postURL"));
-                    request.setAttribute("itemId", request.getAttribute("itemId"));
-                    request.setAttribute("postTypeId", request.getAttribute("postTypeId"));
-                    request.setAttribute("action", "update");
-                    request.getRequestDispatcher("form.jsp").forward(request, response);
+                    request.setAttribute("errormessage", "Your account has been banned!");
+                    request.getRequestDispatcher("paging").forward(request, response);
                 }
             } else {
                 request.setAttribute("errormessage", "Please login!");
-                request.getRequestDispatcher("login.jsp").forward(request, response);
+                request.getRequestDispatcher("paging").forward(request, response);
                 return;
             }
         } catch (Exception e) {

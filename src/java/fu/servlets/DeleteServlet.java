@@ -40,10 +40,8 @@ public class DeleteServlet extends HttpServlet {
             HttpSession session = request.getSession(false);
             if (session == null) {
                 request.setAttribute("errormessage", "Please login!");
-                request.getRequestDispatcher("login.jsp").forward(request, response);
-            }
-            if (session.getAttribute("userdata") != null) { // check login
-
+                request.getRequestDispatcher("paging").forward(request, response);
+            } else if (session.getAttribute("userdata") != null) { // check login
                 Member member = (Member) session.getAttribute("userdata");
                 if (member.getStatus() == 1) {
                     String aId = request.getParameter("aId");

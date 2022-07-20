@@ -35,37 +35,42 @@ public class CreateCommentServlet extends HttpServlet {
             HttpSession session = request.getSession(false);
             if (session == null) {
                 request.setAttribute("errormessage", "Please login!");
-                request.getRequestDispatcher("login.jsp").forward(request, response);
+                request.getRequestDispatcher("paging").forward(request, response);
             }
             if (session.getAttribute("userdata") != null) { // check login
                 Member member = (Member) session.getAttribute("userdata");
-                String cmtContent = request.getParameter("txtCmt");
-                String memberCmtId = request.getParameter("memberCmt");
-                String aId = request.getParameter("aId");                
-                if(cmtContent.trim().isEmpty() || cmtContent.trim().length()>500 ){
-                request.setAttribute("errorCmt", "Your comment must be from 1 to 500 characters");
-                request.getRequestDispatcher("ViewDetailServlet?aId="+aId).forward(request, response);  
-                return;
-                }else{
-                ArticleDAO aDao = new ArticleDAO();
-                Article art = aDao.find(Integer.parseInt(aId));
-                MemberDAO mdao = new MemberDAO();
-                Member memCmt = mdao.find(memberCmtId);
-                Member memReceive = mdao.find(art.getMember().getMemberID());
-                CommentDAO cdao = new CommentDAO();
-                Comment c = new Comment(0, art, memCmt, cmtContent, LocalDateTime.now().toString(), 1);              
-                cdao.addNewComment(c);
-                if(!memCmt.getMemberID().equals(memReceive.getMemberID())){
-                NotificationDAO ndao = new NotificationDAO();
-                String notiContent = member.getMemberName()+" commented on your post";
-                ndao.addNewNotifications(new Notification(0, memCmt, memReceive, art, notiContent, LocalDateTime.now().toString() , 1));
-                }
-                request.getRequestDispatcher("ViewDetailServlet?aId="+aId).forward(request, response);
-                
+                if (member.getStatus() == 1) {
+                    String cmtContent = request.getParameter("txtCmt");
+                    String memberCmtId = request.getParameter("memberCmt");
+                    String aId = request.getParameter("aId");
+                    if (cmtContent.trim().isEmpty() || cmtContent.trim().length() > 500) {
+                        request.setAttribute("errorCmt", "Your comment must be from 1 to 500 characters");
+                        request.getRequestDispatcher("ViewDetailServlet?aId=" + aId).forward(request, response);
+                        return;
+                    } else {
+                        ArticleDAO aDao = new ArticleDAO();
+                        Article art = aDao.find(Integer.parseInt(aId));
+                        MemberDAO mdao = new MemberDAO();
+                        Member memCmt = mdao.find(memberCmtId);
+                        Member memReceive = mdao.find(art.getMember().getMemberID());
+                        CommentDAO cdao = new CommentDAO();
+                        Comment c = new Comment(0, art, memCmt, cmtContent, LocalDateTime.now().toString(), 1);
+                        cdao.addNewComment(c);
+                        if (!memCmt.getMemberID().equals(memReceive.getMemberID())) {
+                            NotificationDAO ndao = new NotificationDAO();
+                            String notiContent = member.getMemberName() + " commented on your post";
+                            ndao.addNewNotifications(new Notification(0, memCmt, memReceive, art, notiContent, LocalDateTime.now().toString(), 1));
+                        }
+                        request.getRequestDispatcher("ViewDetailServlet?aId=" + aId).forward(request, response);
+
+                    }
+                } else {
+                    request.setAttribute("errormessage", "Your account has been banned!");
+                    request.getRequestDispatcher("paging").forward(request, response);
                 }
             } else {
                 request.setAttribute("errormessage", "Please login!");
-                request.getRequestDispatcher("login.jsp").forward(request, response);
+                request.getRequestDispatcher("paging").forward(request, response);
             }
 
         } catch (Exception e) {

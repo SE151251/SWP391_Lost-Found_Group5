@@ -34,51 +34,49 @@ public class ViewDetailServlet extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {           
-              HttpSession session = request.getSession(false);
-            if (session.getAttribute("userdata") != null) {
-                Member member = (Member) session.getAttribute("userdata");
-                NotificationDAO ndao = new NotificationDAO();
-                if(member.getMemberRole()==1){
-                
-                List<Notification> listNoti = ndao.getAllNotificationsByMember(member.getMemberID());
-                request.setAttribute("listNoti", listNoti);
-                }
-                String aId = request.getParameter("aId");
-                String memRpId = request.getParameter("memReportID");
-                String notiID = request.getParameter("notiID");
-                if(notiID!=null){
-                ndao.changeNotiStatus(Integer.parseInt(notiID));
-                }
-                ArticleDAO aDao = new ArticleDAO();
-                Article a = aDao.find(Integer.parseInt(aId));
-                request.setAttribute("postDetail", a);
-                CommentDAO cdao = new CommentDAO();
-                request.setAttribute("listCmt", cdao.getAllCommentsByArticles(a));
-                HashtagDAO hDao = new HashtagDAO();
-                List<Hashtag> listAH = hDao.getAllHashtagByArticleID(aId);
-                request.setAttribute("listAH", listAH);
-                MemberDAO mdao = new MemberDAO();
-                ReportDAO rdao = new ReportDAO();
-                Report r = rdao.checkReport(aId, member.getMemberID());
-                if(memRpId != null){
-                Report rView = rdao.checkReport(aId, memRpId);
-                request.setAttribute("viewReport", rView);                  
-                }
-                String canConfirm = request.getParameter("canConfirm");
-                if(canConfirm!=null){
-                if(canConfirm.equals("yes")){
-                request.setAttribute("confirmReport", "no"); }
-                }
-                request.setAttribute("checkReport", r);
-                
-                request.getRequestDispatcher("detail.jsp").forward(request, response);
+        try {
+            HttpSession session = request.getSession(false);
+            if (session != null) {
+                if (session.getAttribute("userdata") != null) {
+                    Member member = (Member) session.getAttribute("userdata");
+                    NotificationDAO ndao = new NotificationDAO();
+                    if (member.getMemberRole() == 1) {
 
-//            } else {
-//                request.setAttribute("errormessage", "Please login!");
-//                request.getRequestDispatcher("login.jsp").forward(request, response);
-//            }
-            }else{
+                        List<Notification> listNoti = ndao.getAllNotificationsByMember(member.getMemberID());
+                        request.setAttribute("listNoti", listNoti);
+                    }
+                    String aId = request.getParameter("aId");
+                    String memRpId = request.getParameter("memReportID");
+                    String notiID = request.getParameter("notiID");
+                    if (notiID != null) {
+                        ndao.changeNotiStatus(Integer.parseInt(notiID));
+                    }
+                    ArticleDAO aDao = new ArticleDAO();
+                    Article a = aDao.find(Integer.parseInt(aId));
+                    request.setAttribute("postDetail", a);
+                    CommentDAO cdao = new CommentDAO();
+                    request.setAttribute("listCmt", cdao.getAllCommentsByArticles(a));
+                    HashtagDAO hDao = new HashtagDAO();
+                    List<Hashtag> listAH = hDao.getAllHashtagByArticleID(aId);
+                    request.setAttribute("listAH", listAH);
+                    MemberDAO mdao = new MemberDAO();
+                    ReportDAO rdao = new ReportDAO();
+                    Report r = rdao.checkReport(aId, member.getMemberID());
+                    if (memRpId != null) {
+                        Report rView = rdao.checkReport(aId, memRpId);
+                        request.setAttribute("viewReport", rView);
+                    }
+                    String canConfirm = request.getParameter("canConfirm");
+                    if (canConfirm != null) {
+                        if (canConfirm.equals("yes")) {
+                            request.setAttribute("confirmReport", "no");
+                        }
+                    }
+                    request.setAttribute("checkReport", r);
+
+                    request.getRequestDispatcher("detail.jsp").forward(request, response);
+                }
+            } else {
                 String aId = request.getParameter("aId");
                 ArticleDAO aDao = new ArticleDAO();
                 Article a = aDao.find(Integer.parseInt(aId));

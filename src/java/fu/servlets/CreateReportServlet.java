@@ -13,7 +13,6 @@ import fu.entities.Member;
 import fu.entities.Report;
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.Random;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -34,23 +33,23 @@ public class CreateReportServlet extends HttpServlet {
             HttpSession session = request.getSession(false);
             if (session == null) {
                 request.setAttribute("errormessage", "Please login!");
-                request.getRequestDispatcher("login.jsp").forward(request, response);
-            }else
-            if (session.getAttribute("userdata") != null) { // check login
+                request.getRequestDispatcher("paging").forward(request, response);
+            } else if (session.getAttribute("userdata") != null) { // check login
                 Member member = (Member) session.getAttribute("userdata");
-                String rContent = request.getParameter("txtReport");
-                String memberReportId = request.getParameter("memberReport");
-                String aId = request.getParameter("aId");                
-                if(rContent.trim().isEmpty() || rContent.trim().length()>200 ){
-                request.setAttribute("errorReport", "Your report must be from 1 to 200 characters");
-                request.getRequestDispatcher("ViewDetailServlet?aId="+aId).forward(request, response);  
-                }else{
-                //String newId;
-                ArticleDAO aDao = new ArticleDAO();
-                Article art = aDao.find(Integer.parseInt(aId));
-                MemberDAO mdao = new MemberDAO();
-                Member memR = mdao.find(memberReportId);
-                ReportDAO rdao = new ReportDAO();
+                if (member.getStatus() == 1) {
+                    String rContent = request.getParameter("txtReport");
+                    String memberReportId = request.getParameter("memberReport");
+                    String aId = request.getParameter("aId");
+                    if (rContent.trim().isEmpty() || rContent.trim().length() > 200) {
+                        request.setAttribute("errorReport", "Your report must be from 1 to 200 characters");
+                        request.getRequestDispatcher("ViewDetailServlet?aId=" + aId).forward(request, response);
+                    } else {
+                        //String newId;
+                        ArticleDAO aDao = new ArticleDAO();
+                        Article art = aDao.find(Integer.parseInt(aId));
+                        MemberDAO mdao = new MemberDAO();
+                        Member memR = mdao.find(memberReportId);
+                        ReportDAO rdao = new ReportDAO();
 //                do {
 //                        newId = "";
 //                        Random generator = new Random();
@@ -62,11 +61,16 @@ public class CreateReportServlet extends HttpServlet {
 //                            newId = newId.concat(Integer.toString(a));
 //                        }
 //                    } while (rdao.getReportById(newId) != null);
-                Report r = new Report(0, rContent, LocalDateTime.now().toString(), null, 1, art, member);
-                rdao.addNewReport(r);
-                //aDao.closeArticle(Integer.parseInt(aId));
-                request.getRequestDispatcher("paging").forward(request, response);
+                        Report r = new Report(0, rContent, LocalDateTime.now().toString(), null, 1, art, member);
+                        rdao.addNewReport(r);
+                        //aDao.closeArticle(Integer.parseInt(aId));
+                        request.getRequestDispatcher("paging").forward(request, response);
+                    }
+                } else {
+                    request.setAttribute("errormessage", "Your account has been banned!");
+                    request.getRequestDispatcher("paging").forward(request, response);
                 }
+
             } else {
                 request.setAttribute("errormessage", "Please login!");
                 request.getRequestDispatcher("login.jsp").forward(request, response);

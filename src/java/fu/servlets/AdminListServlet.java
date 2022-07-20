@@ -6,15 +6,9 @@
 package fu.servlets;
 
 import fu.daos.ArticleDAO;
-import fu.daos.ItemTypeDAO;
 import fu.daos.ReportDAO;
-import fu.entities.Article;
-import fu.entities.Item;
 import fu.entities.Member;
-import fu.entities.Report;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -44,8 +38,9 @@ public class AdminListServlet extends HttpServlet {
             HttpSession session = request.getSession(false);
             if (session == null) {
                 request.setAttribute("errormessage", "Please login!");
-                request.getRequestDispatcher("login.jsp").forward(request, response);
-            }else if (session.getAttribute("userdata") != null) {
+                request.getRequestDispatcher("paging").forward(request, response);
+            } else if (session.getAttribute("userdata") != null) {
+
                 //Trang Dashboard:
                 // Thống kê tổng số bài report trong ngày hôm nay
                 // Thống kê tổng số bài LOST trong ngày hôm nay
@@ -53,21 +48,26 @@ public class AdminListServlet extends HttpServlet {
                 // Thống kê tổng số bài LOST trong system
                 // Thống kê tổng số bài FOUND trong system
                 Member memberLogin = (Member) session.getAttribute("userdata");
-                ReportDAO rdao = new ReportDAO();
-                int numberReport = rdao.countAllReports();               
-                request.setAttribute("numberReport", numberReport);
-                ArticleDAO adao = new ArticleDAO();
-                int numberLostToday = adao.countAllPostsToday(1);
-                int numberFoundToday = adao.countAllPostsToday(2);
-                int numberLost = adao.countAllPosts(1);
-                int numberFound = adao.countAllPosts(2);
-                request.setAttribute("numberLostToday", numberLostToday);
-                request.setAttribute("numberFoundToday", numberFoundToday);
-                request.setAttribute("numberLost", numberLost);
-                request.setAttribute("numberFound", numberFound);
+                if (memberLogin.getStatus() == 1) {
+                    ReportDAO rdao = new ReportDAO();
+                    int numberReport = rdao.countAllReports();
+                    request.setAttribute("numberReport", numberReport);
+                    ArticleDAO adao = new ArticleDAO();
+                    int numberLostToday = adao.countAllPostsToday(1);
+                    int numberFoundToday = adao.countAllPostsToday(2);
+                    int numberLost = adao.countAllPosts(1);
+                    int numberFound = adao.countAllPosts(2);
+                    request.setAttribute("numberLostToday", numberLostToday);
+                    request.setAttribute("numberFoundToday", numberFoundToday);
+                    request.setAttribute("numberLost", numberLost);
+                    request.setAttribute("numberFound", numberFound);
+                } else {
+                    request.setAttribute("errormessage", "Your account has been banned!");
+                    request.getRequestDispatcher("paging").forward(request, response);
+                }
             } else {
                 request.setAttribute("errormessage", "Please login!");
-                request.getRequestDispatcher("login.jsp").forward(request, response);
+                request.getRequestDispatcher("paging").forward(request, response);
             }
         } catch (Exception e) {
             e.printStackTrace();

@@ -36,7 +36,8 @@ public class PaginControl extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try {
             HttpSession session = request.getSession(false);
-            if (session.getAttribute("userdata") != null) {
+            if (session != null) {
+                if (session.getAttribute("userdata") != null) {
                 Member memberLogin = (Member) session.getAttribute("userdata");
                 if(memberLogin.getMemberRole()==1){
                 NotificationDAO ndao = new NotificationDAO();
@@ -49,6 +50,7 @@ public class PaginControl extends HttpServlet {
                 request.setAttribute("totalNotiNew", count);
                 request.setAttribute("listNoti", listNoti);
                 }
+            }
             }
                 String index = request.getParameter("index");
                 ArticleDAO dao = new ArticleDAO();

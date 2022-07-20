@@ -29,13 +29,11 @@ public class CreateFormServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            System.out.println("CreateFormServlet");
             HttpSession session = request.getSession(false);
             if (session == null) {
                 request.setAttribute("errormessage", "Please login!");
-                request.getRequestDispatcher("login.jsp").forward(request, response);
-
-                if (session.getAttribute("userdata") != null) {
+                request.getRequestDispatcher("paging").forward(request, response);
+            }else if (session.getAttribute("userdata") != null) {
                     Member member = (Member) session.getAttribute("userdata");
                     if (member.getStatus() == 1) {
                         ArticleTypeDAO atDao = new ArticleTypeDAO();
@@ -71,8 +69,7 @@ public class CreateFormServlet extends HttpServlet {
                     request.setAttribute("errormessage", "Please login!");
                     request.getRequestDispatcher("paging").forward(request, response);
 
-                }
-            }
+                }           
 
         } catch (Exception e) {
             e.printStackTrace();
