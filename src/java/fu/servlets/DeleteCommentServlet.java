@@ -40,19 +40,24 @@ public class DeleteCommentServlet extends HttpServlet {
                 request.getRequestDispatcher("paging").forward(request, response);
             } else if (session.getAttribute("userdata") != null) { // check login              
                 Member member = (Member) session.getAttribute("userdata");
-                if (member.getStatus() == 1) {
-                    String cmtId = request.getParameter("cmtId");
-                    String aId = request.getParameter("aId");
-                    CommentDAO cdao = new CommentDAO();
-                    cdao.deleteComment(Integer.parseInt(cmtId));
-                    request.getRequestDispatcher("ViewDetailServlet?aId=" + aId).forward(request, response);
+                if (member.getMemberRole() == 1) {
+                    if (member.getStatus() == 1) {
+                        String cmtId = request.getParameter("cmtId");
+                        String aId = request.getParameter("aId");
+                        CommentDAO cdao = new CommentDAO();
+                        cdao.deleteComment(Integer.parseInt(cmtId));
+                        request.getRequestDispatcher("ViewDetailServlet?aId=" + aId).forward(request, response);
+                    } else {
+                        request.setAttribute("errormessage", "Your account has been banned!");
+                        request.getRequestDispatcher("paging").forward(request, response);
+                    }
                 } else {
-                    request.setAttribute("errormessage", "Your account has been banned!");
+                    request.setAttribute("errormessage", "Incorrect ROLE! Must be MEMBER");
                     request.getRequestDispatcher("paging").forward(request, response);
                 }
             } else {
                 request.setAttribute("errormessage", "Please login!");
-                request.getRequestDispatcher("login.jsp").forward(request, response);
+                request.getRequestDispatcher("paging").forward(request, response);
             }
 
         } catch (Exception e) {

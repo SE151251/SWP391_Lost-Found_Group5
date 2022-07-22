@@ -54,27 +54,32 @@ public class ViewDetailMemberByAdminServlet extends HttpServlet {
                 // Tổng số bài đã Post
                 // Tổng số report
                 Member memberLogin = (Member) session.getAttribute("userdata");
-                if (memberLogin.getStatus() == 1) {
-                    String memberID = request.getParameter("uId");
-                    MemberDAO mdao = new MemberDAO();
-                    Member member = mdao.find(memberID);
-                    request.setAttribute("MemberInfo", member);
-                    ReportDAO rdao = new ReportDAO();
-                    // Lấy ra các report của member này
-                    List<Report> listReports = rdao.getAllReportsOfAMember(memberID);
-                    request.setAttribute("listReports", listReports);
+                if (memberLogin.getMemberRole() == 0) {
+                    if (memberLogin.getStatus() == 1) {
+                        String memberID = request.getParameter("uId");
+                        MemberDAO mdao = new MemberDAO();
+                        Member member = mdao.find(memberID);
+                        request.setAttribute("MemberInfo", member);
+                        ReportDAO rdao = new ReportDAO();
+                        // Lấy ra các report của member này
+                        List<Report> listReports = rdao.getAllReportsOfAMember(memberID);
+                        request.setAttribute("listReports", listReports);
 
-                    ArticleDAO adao = new ArticleDAO();
-                    int numberPost = adao.countAllPostsOfAMember(memberID);
-                    int numberLost = adao.countAllPostsOfAMemberByType(memberID, 1);
-                    int numberFound = adao.countAllPostsOfAMemberByType(memberID, 2);
-                    List<Article> listPostWarning = adao.getAllPostWarningOfMember(memberID);
-                    request.setAttribute("numberPost", numberPost);
-                    request.setAttribute("numberLost", numberLost);
-                    request.setAttribute("numberFound", numberFound);
-                    request.setAttribute("listPostWarning", listPostWarning);
+                        ArticleDAO adao = new ArticleDAO();
+                        int numberPost = adao.countAllPostsOfAMember(memberID);
+                        int numberLost = adao.countAllPostsOfAMemberByType(memberID, 1);
+                        int numberFound = adao.countAllPostsOfAMemberByType(memberID, 2);
+                        List<Article> listPostWarning = adao.getAllPostWarningOfMember(memberID);
+                        request.setAttribute("numberPost", numberPost);
+                        request.setAttribute("numberLost", numberLost);
+                        request.setAttribute("numberFound", numberFound);
+                        request.setAttribute("listPostWarning", listPostWarning);
+                    } else {
+                        request.setAttribute("errormessage", "Your account has been banned!");
+                        request.getRequestDispatcher("paging").forward(request, response);
+                    }
                 } else {
-                    request.setAttribute("errormessage", "Your account has been banned!");
+                    request.setAttribute("errormessage", "Incorrect Role! Must be ADMIN");
                     request.getRequestDispatcher("paging").forward(request, response);
                 }
             } else {

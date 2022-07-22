@@ -36,6 +36,7 @@ public class CreateReportServlet extends HttpServlet {
                 request.getRequestDispatcher("paging").forward(request, response);
             } else if (session.getAttribute("userdata") != null) { // check login
                 Member member = (Member) session.getAttribute("userdata");
+                if (member.getMemberRole() == 1) {
                 if (member.getStatus() == 1) {
                     String rContent = request.getParameter("txtReport");
                     String memberReportId = request.getParameter("memberReport");
@@ -50,30 +51,22 @@ public class CreateReportServlet extends HttpServlet {
                         MemberDAO mdao = new MemberDAO();
                         Member memR = mdao.find(memberReportId);
                         ReportDAO rdao = new ReportDAO();
-//                do {
-//                        newId = "";
-//                        Random generator = new Random();
-//                        for (int x = 0; x < 10; x++) {
-//                            int a = generator.nextInt() % 10;
-//                            if (a < 0) {
-//                                a = -a;
-//                            }
-//                            newId = newId.concat(Integer.toString(a));
-//                        }
-//                    } while (rdao.getReportById(newId) != null);
                         Report r = new Report(0, rContent, LocalDateTime.now().toString(), null, 1, art, member);
                         rdao.addNewReport(r);
-                        //aDao.closeArticle(Integer.parseInt(aId));
                         request.getRequestDispatcher("paging").forward(request, response);
                     }
                 } else {
                     request.setAttribute("errormessage", "Your account has been banned!");
                     request.getRequestDispatcher("paging").forward(request, response);
                 }
+                } else {
+                    request.setAttribute("errormessage", "Incorrect ROLE! Must be MEMBER");
+                    request.getRequestDispatcher("paging").forward(request, response);
+                }
 
             } else {
                 request.setAttribute("errormessage", "Please login!");
-                request.getRequestDispatcher("login.jsp").forward(request, response);
+                request.getRequestDispatcher("lpaging.jsp").forward(request, response);
             }
 
         } catch (Exception e) {

@@ -42,17 +42,22 @@ public class ListMemberServlet extends HttpServlet {
             }
             if (session.getAttribute("userdata") != null) {
                 Member memberLogin = (Member) session.getAttribute("userdata");
-                if (memberLogin.getStatus() == 1) {
-                    MemberDAO mdao = new MemberDAO();
-                    List<Member> listMem = mdao.getAllMembersHaveWarningPost();
-                    request.setAttribute("listMembers", listMem);
+                if (memberLogin.getMemberRole() == 0) {
+                    if (memberLogin.getStatus() == 1) {
+                        MemberDAO mdao = new MemberDAO();
+                        List<Member> listMem = mdao.getAllMembersHaveWarningPost();
+                        request.setAttribute("listMembers", listMem);
+                    } else {
+                        request.setAttribute("errormessage", "Your account has been banned!");
+                        request.getRequestDispatcher("paging").forward(request, response);
+                    }
                 } else {
-                    request.setAttribute("errormessage", "Your account has been banned!");
+                    request.setAttribute("errormessage", "Incorrect ROLE! Must be ADMIN");
                     request.getRequestDispatcher("paging").forward(request, response);
                 }
             } else {
                 request.setAttribute("errormessage", "Please login!");
-                request.getRequestDispatcher("login.jsp").forward(request, response);
+                request.getRequestDispatcher("paging").forward(request, response);
             }
         } catch (Exception e) {
             e.printStackTrace();

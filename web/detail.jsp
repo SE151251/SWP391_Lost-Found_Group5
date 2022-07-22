@@ -123,9 +123,9 @@
             <div class="circle"></div>
             
             
-            <c:if test="${postDetail.articleStatus eq 1}"> <div class="circle-open"></div>  <span style="margin-left: 25px;"> Đang hoạt động</c:if> </span>
-            <c:if test="${postDetail.articleStatus eq 0}"> <div class="circle-close"></div>  <span style="margin-left: 25px;"> Đã đóng</c:if>  </span>
-           
+            <c:if test="${postDetail.articleStatus eq 1 && userdata.memberID eq postDetail.member.memberID || userdata.memberRole eq 0}"> <div class="circle-open"></div>  <span style="margin-left: 25px;">Active</c:if> </span>
+            <c:if test="${postDetail.articleStatus eq 0 && userdata.memberID eq postDetail.member.memberID || userdata.memberRole eq 0}"> <div class="circle-close"></div>  <span style="margin-left: 25px;">Closed</c:if>  </span>
+             <c:if test="${postDetail.articleStatus eq -1 && userdata.memberRole eq 0}"> <div class="circle-close"></div>  <span style="margin-left: 25px;">Deleted</c:if>  </span>
             <img style="width: 169%" src="images/${postDetail.imgUrl}" alt="">
             </div>
         </div>

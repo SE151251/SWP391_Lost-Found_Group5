@@ -48,21 +48,26 @@ public class AdminListServlet extends HttpServlet {
                 // Thống kê tổng số bài LOST trong system
                 // Thống kê tổng số bài FOUND trong system
                 Member memberLogin = (Member) session.getAttribute("userdata");
-                if (memberLogin.getStatus() == 1) {
-                    ReportDAO rdao = new ReportDAO();
-                    int numberReport = rdao.countAllReports();
-                    request.setAttribute("numberReport", numberReport);
-                    ArticleDAO adao = new ArticleDAO();
-                    int numberLostToday = adao.countAllPostsToday(1);
-                    int numberFoundToday = adao.countAllPostsToday(2);
-                    int numberLost = adao.countAllPosts(1);
-                    int numberFound = adao.countAllPosts(2);
-                    request.setAttribute("numberLostToday", numberLostToday);
-                    request.setAttribute("numberFoundToday", numberFoundToday);
-                    request.setAttribute("numberLost", numberLost);
-                    request.setAttribute("numberFound", numberFound);
+                if (memberLogin.getMemberRole() == 0) {
+                    if (memberLogin.getStatus() == 1) {
+                        ReportDAO rdao = new ReportDAO();
+                        int numberReport = rdao.countAllReports();
+                        request.setAttribute("numberReport", numberReport);
+                        ArticleDAO adao = new ArticleDAO();
+                        int numberLostToday = adao.countAllPostsToday(1);
+                        int numberFoundToday = adao.countAllPostsToday(2);
+                        int numberLost = adao.countAllPosts(1);
+                        int numberFound = adao.countAllPosts(2);
+                        request.setAttribute("numberLostToday", numberLostToday);
+                        request.setAttribute("numberFoundToday", numberFoundToday);
+                        request.setAttribute("numberLost", numberLost);
+                        request.setAttribute("numberFound", numberFound);
+                    } else {
+                        request.setAttribute("errormessage", "Your account has been banned!");
+                        request.getRequestDispatcher("paging").forward(request, response);
+                    }
                 } else {
-                    request.setAttribute("errormessage", "Your account has been banned!");
+                    request.setAttribute("errormessage", "Incorrect Role! Must be ADMIN");
                     request.getRequestDispatcher("paging").forward(request, response);
                 }
             } else {

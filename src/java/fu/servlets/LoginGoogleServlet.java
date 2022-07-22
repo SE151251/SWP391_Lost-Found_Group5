@@ -48,7 +48,7 @@ public class LoginGoogleServlet extends HttpServlet {
                 String accessToken = GoogleUtils.getToken(code);               
                 GooglePojo googlePojo = GoogleUtils.getUserInfo(accessToken);
 
-                Member member = new Member(googlePojo.getId(), googlePojo.getName(), googlePojo.getEmail(), googlePojo.getPicture(), "Your profile here", 1, 1, 0);
+                Member member = new Member(googlePojo.getId(), googlePojo.getName(), googlePojo.getEmail(), googlePojo.getPicture(), "Profile", 1, 1, 0);
                 MemberDAO mdao = new MemberDAO();
                 String[] email = member.getMemberEmail().split("@");
                 //check form mail

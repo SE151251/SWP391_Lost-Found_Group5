@@ -37,7 +37,7 @@ public class CreateCommentServlet extends HttpServlet {
                 request.setAttribute("errormessage", "Please login!");
                 request.getRequestDispatcher("paging").forward(request, response);
             }
-            if (session.getAttribute("userdata") != null) { // check login
+            else if (session.getAttribute("userdata") != null) { // check login
                 Member member = (Member) session.getAttribute("userdata");
                 if (member.getStatus() == 1) {
                     String cmtContent = request.getParameter("txtCmt");
@@ -46,7 +46,6 @@ public class CreateCommentServlet extends HttpServlet {
                     if (cmtContent.trim().isEmpty() || cmtContent.trim().length() > 500) {
                         request.setAttribute("errorCmt", "Your comment must be from 1 to 500 characters");
                         request.getRequestDispatcher("ViewDetailServlet?aId=" + aId).forward(request, response);
-                        return;
                     } else {
                         ArticleDAO aDao = new ArticleDAO();
                         Article art = aDao.find(Integer.parseInt(aId));
