@@ -170,6 +170,7 @@ public class UpdateServlet extends HttpServlet {
                         }
                     } else {
                         url = INVALID;
+                        request.setAttribute("idUpdate", idUpdate);
                         request.setAttribute("titlePost", titlePost);
                         request.setAttribute("titleError", titleError);
                         request.setAttribute("contentError", contentError);
