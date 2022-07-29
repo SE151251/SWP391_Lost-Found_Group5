@@ -31,7 +31,7 @@ public class PersonalServlet extends HttpServlet {
             throws ServletException, IOException {
         try {
             HttpSession session = request.getSession(false);
-            if (session != null) {
+           // if (session != null) {
                 if (session.getAttribute("userdata") != null) {
                     Member memberLogin = (Member) session.getAttribute("userdata");
                     if (memberLogin.getMemberRole() == 1) {
@@ -50,13 +50,13 @@ public class PersonalServlet extends HttpServlet {
                     request.setAttribute("articlesPersonal", listArts);
                     request.setAttribute("memberInfo", memDetail);
                     request.getRequestDispatcher("personal.jsp").forward(request, response);
-                }
+                //}
             } else {
                 //request.setAttribute("errormessage", "Please login!");
                 //request.getRequestDispatcher("login.jsp").forward(request, response);
-                String uId = request.getParameter("uId");
+                String uId = request.getParameter("uId");                   
                 MemberDAO mdao = new MemberDAO();
-                Member memDetail = mdao.find(uId);
+                Member memDetail = mdao.find(uId);                    
                 ArticleDAO adao = new ArticleDAO();
                 List<Article> listArts = adao.getAllArticlesByMemberID(memDetail);
                 request.setAttribute("articlesPersonal", listArts);

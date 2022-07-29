@@ -77,7 +77,14 @@
             <div class="user-profile">                
                 <img src="${postDetail.member.picture}" alt="">
                 <div>
-                    <p><a href="PersonalServlet?uId=${postDetail.member.memberID}">${postDetail.member.memberName}</a>
+                    <p>
+                        <c:if test="${postDetail.member.memberRole eq 1}">
+                            <a href="PersonalServlet?uId=${postDetail.member.memberID}">${postDetail.member.memberName}</a>
+                        </c:if>
+                        <c:if test="${postDetail.member.memberRole eq 0}">
+                            <a href="#">${postDetail.member.memberName}</a>
+                        </c:if>
+                   
             <c:if test="${postDetail.type.typeID eq 1}">
             <span style="padding: 5px 10px 5px 10px" class="badge badge-pill badge-primary">LOST</span>                                                   
             </c:if>
@@ -123,9 +130,9 @@
             <div class="circle"></div>
             
             
-            <c:if test="${postDetail.articleStatus eq 1 && userdata.memberID eq postDetail.member.memberID || userdata.memberRole eq 0}"> <div class="circle-open"></div>  <span style="margin-left: 25px;">Active</c:if> </span>
-            <c:if test="${postDetail.articleStatus eq 0 && userdata.memberID eq postDetail.member.memberID || userdata.memberRole eq 0}"> <div class="circle-close"></div>  <span style="margin-left: 25px;">Closed</c:if>  </span>
-             <c:if test="${postDetail.articleStatus eq -1 && userdata.memberRole eq 0}"> <div class="circle-close"></div>  <span style="margin-left: 25px;">Deleted</c:if>  </span>
+            <c:if test="${postDetail.articleStatus eq 1 && userdata.memberID eq postDetail.member.memberID || userdata.memberRole eq 0 && postDetail.articleStatus eq 1}"> <div class="circle-open"></div>  <span style="margin-left: 25px;">Active </span></c:if>
+            <c:if test="${postDetail.articleStatus eq 0 && userdata.memberID eq postDetail.member.memberID || userdata.memberRole eq 0 && postDetail.articleStatus eq 0}"> <div class="circle-close"></div>  <span style="margin-left: 25px;">Closed  </span></c:if>
+             <c:if test="${postDetail.articleStatus eq -1 && userdata.memberRole eq 0}"> <div class="circle-close"></div>  <span style="margin-left: 25px;">Deleted</span></c:if> 
             <img style="width: 169%" src="images/${postDetail.imgUrl}" alt="">
             </div>
         </div>
@@ -147,7 +154,7 @@
                                 <a href="WarningMemberServlet?adminAction=ban&aId=${postDetail.articleID}">
                                 <img src="images/banned.png" alt="">Banned</a>
                             </div>  --%>                          
-                <c:if test="${postDetail.warningStatus eq 0}">    
+                <c:if test="${postDetail.warningStatus eq 0 && postDetail.articleStatus ne -1}">    
                 <div>
                             <div>
                                 <a href="WarningMemberServlet?adminAction=flag&aId=${postDetail.articleID}">
@@ -155,7 +162,7 @@
                             </div>
                         </div>
                 </c:if>
-                <c:if test="${postDetail.warningStatus eq 1}">       
+                <c:if test="${postDetail.warningStatus eq 1 && postDetail.articleStatus ne -1}">       
                 <div>
                             <div>
                                 <a href="WarningMemberServlet?adminAction=unFlag&aId=${postDetail.articleID}">
@@ -163,6 +170,8 @@
                             </div>
                         </div>
                 </c:if> 
+               
+                <c:if test="${confirmReport ne null}">
                 <c:if test="${confirmReport eq 'no'}"> 
                             <div>
                             <div>
@@ -171,6 +180,8 @@
                             </div>
                             </div>
                 </c:if>
+                </c:if>
+               
             </c:if>
                            
             <c:if test="${userdata.memberID eq postDetail.member.memberID && postDetail.articleStatus ne -1 && userdata.status eq 1}">

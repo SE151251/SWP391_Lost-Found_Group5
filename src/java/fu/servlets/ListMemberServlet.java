@@ -47,6 +47,7 @@ public class ListMemberServlet extends HttpServlet {
                         MemberDAO mdao = new MemberDAO();
                         List<Member> listMem = mdao.getAllMembersHaveWarningPost();
                         request.setAttribute("listMembers", listMem);
+                        request.getRequestDispatcher("listMember.jsp").forward(request, response);
                     } else {
                         request.setAttribute("errormessage", "Your account has been banned!");
                         request.getRequestDispatcher("paging").forward(request, response);
@@ -61,8 +62,6 @@ public class ListMemberServlet extends HttpServlet {
             }
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
-            request.getRequestDispatcher("listMember.jsp").forward(request, response);
         }
     }
 

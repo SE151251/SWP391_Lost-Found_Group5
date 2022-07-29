@@ -32,6 +32,7 @@ public class LogoutServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
          request.getSession().removeAttribute("userdata");
+         request.getSession().invalidate();
         response.sendRedirect("paging");
     }
 

@@ -62,7 +62,7 @@ public class CreateFormServlet extends HttpServlet {
                         request.getRequestDispatcher("form.jsp").forward(request, response);
 
                     } else {
-                        request.setAttribute("errormessage", "Your account has been banned!");
+                        request.setAttribute("errormessage", "Your account has been banned! You cannot use this function!");
                         request.getRequestDispatcher("paging").forward(request, response);
                     }
                 } else {

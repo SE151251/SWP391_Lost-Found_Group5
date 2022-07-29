@@ -29,7 +29,6 @@ public class LoginGoogleServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private static final String INDEX_PAGE = "paging";
     private static final String ADMIN_PAGE = "AdminListServlet";
-    private static final String LOGIN_PAGE = "LoginServlet";
 
     public LoginGoogleServlet() {
         super();
@@ -42,7 +41,7 @@ public class LoginGoogleServlet extends HttpServlet {
             HttpSession session = request.getSession();
             String code = request.getParameter("code");
             if (code == null || code.isEmpty()) {               
-               uri=LOGIN_PAGE;
+               uri=INDEX_PAGE;
                request.setAttribute("errormessage", "Please login!");
             } else {
                 String accessToken = GoogleUtils.getToken(code);               
@@ -62,8 +61,9 @@ public class LoginGoogleServlet extends HttpServlet {
                     } else {
                         member = mdao.find(member.getMemberID());
                         if(member.getStatus()==0){
+                        session.setAttribute("userdata", member);
                         request.setAttribute("errormessage", "Your account has been banned!"); 
-                        uri=LOGIN_PAGE;
+                        uri=INDEX_PAGE;
                         }else if(member.getMemberRole()==1){
                         session.setAttribute("userdata", member);
                         uri=INDEX_PAGE;
@@ -73,13 +73,13 @@ public class LoginGoogleServlet extends HttpServlet {
                         }
                     }
                 }else{  // mail ko đúng form
-                    uri=LOGIN_PAGE;
+                    uri=INDEX_PAGE;
                     request.setAttribute("errormessage", "Your email can not join this web!");
                 }
             }
         } catch (Exception e) {
            System.out.println("error at LoginGoogleServlet");
-           uri=LOGIN_PAGE;
+           uri=INDEX_PAGE;
            request.setAttribute("errormessage", "Something error here. Please login again!");
         } finally {
             request.getRequestDispatcher(uri).forward(request, response);

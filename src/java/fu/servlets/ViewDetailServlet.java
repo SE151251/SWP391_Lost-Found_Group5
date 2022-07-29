@@ -36,12 +36,11 @@ public class ViewDetailServlet extends HttpServlet {
             throws ServletException, IOException {
         try {
             HttpSession session = request.getSession(false);
-            if (session != null) {
+            //if (session != null) {
                 if (session.getAttribute("userdata") != null) {
                     Member member = (Member) session.getAttribute("userdata");
                     NotificationDAO ndao = new NotificationDAO();
                     if (member.getMemberRole() == 1) {
-
                         List<Notification> listNoti = ndao.getAllNotificationsByMember(member.getMemberID());
                         request.setAttribute("listNoti", listNoti);
                     }
@@ -75,7 +74,7 @@ public class ViewDetailServlet extends HttpServlet {
                     request.setAttribute("checkReport", r);
 
                     request.getRequestDispatcher("detail.jsp").forward(request, response);
-                }
+                //}
             } else {
                 String aId = request.getParameter("aId");
                 ArticleDAO aDao = new ArticleDAO();

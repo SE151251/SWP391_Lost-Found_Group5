@@ -43,7 +43,7 @@ public class PaginControl1 extends HttpServlet {
                 List<Notification> listNoti = ndao.getAllNotificationsByMember(memberLogin.getMemberID());
                 request.setAttribute("listNoti", listNoti);
                 }
-                }
+                }  
                 }
                 String index1 = request.getParameter("index1");
                 ArticleDAO dao = new ArticleDAO();

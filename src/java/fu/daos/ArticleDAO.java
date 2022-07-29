@@ -231,7 +231,7 @@ public class ArticleDAO {
             con = DBUtils.makeConnection();
             if (con != null) {
                 String sql = "UPDATE Article "
-                        + "SET ArticleStatus = 0 "
+                        + "SET ArticleStatus = -1 "
                         + "Where ArticleID = ?";
                 stm = con.prepareStatement(sql);
                 stm.setInt(1, aId);

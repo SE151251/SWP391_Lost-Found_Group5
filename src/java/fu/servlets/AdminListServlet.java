@@ -40,7 +40,6 @@ public class AdminListServlet extends HttpServlet {
                 request.setAttribute("errormessage", "Please login!");
                 request.getRequestDispatcher("paging").forward(request, response);
             } else if (session.getAttribute("userdata") != null) {
-
                 //Trang Dashboard:
                 // Thống kê tổng số bài report trong ngày hôm nay
                 // Thống kê tổng số bài LOST trong ngày hôm nay
@@ -62,6 +61,7 @@ public class AdminListServlet extends HttpServlet {
                         request.setAttribute("numberFoundToday", numberFoundToday);
                         request.setAttribute("numberLost", numberLost);
                         request.setAttribute("numberFound", numberFound);
+                        request.getRequestDispatcher("admin.jsp").forward(request, response);
                     } else {
                         request.setAttribute("errormessage", "Your account has been banned!");
                         request.getRequestDispatcher("paging").forward(request, response);
@@ -75,10 +75,10 @@ public class AdminListServlet extends HttpServlet {
                 request.getRequestDispatcher("paging").forward(request, response);
             }
         } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            request.getRequestDispatcher("admin.jsp").forward(request, response);
-        }
+            e.printStackTrace();}
+//        } finally {
+//            request.getRequestDispatcher("admin.jsp").forward(request, response);
+//        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

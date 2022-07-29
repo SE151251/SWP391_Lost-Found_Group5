@@ -84,7 +84,7 @@ public class ViewDetailMemberByAdminServlet extends HttpServlet {
                 }
             } else {
                 request.setAttribute("errormessage", "Please login!");
-                request.getRequestDispatcher("login.jsp").forward(request, response);
+                request.getRequestDispatcher("paging").forward(request, response);
             }
         } catch (Exception e) {
             e.printStackTrace();

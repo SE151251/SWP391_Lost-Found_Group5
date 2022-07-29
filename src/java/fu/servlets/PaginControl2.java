@@ -42,7 +42,7 @@ public class PaginControl2 extends HttpServlet {
                 List<Notification> listNoti = ndao.getAllNotificationsByMember(memberLogin.getMemberID());
                 request.setAttribute("listNoti", listNoti);
                 }
-                }
+                }      
                 }
                 String index2 = request.getParameter("index2");
                 ArticleDAO dao = new ArticleDAO();
@@ -76,10 +76,6 @@ public class PaginControl2 extends HttpServlet {
                     request.setAttribute("listAH", listAH);
                     request.getRequestDispatcher("notification.jsp").forward(request, response);
                 }
-//            } else {
-//                request.setAttribute("errormessage", "Please login!");
-//                request.getRequestDispatcher("login.jsp").forward(request, response);
-//            }
         } catch (Exception e) {
             e.printStackTrace();
         }

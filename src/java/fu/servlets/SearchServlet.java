@@ -42,9 +42,7 @@ public class SearchServlet extends HttpServlet {
             throws ServletException, IOException {
         String uri = LOGIN;
         try {
-
             HttpSession session = request.getSession(false);
-            if (session != null) {
                 if (session.getAttribute("userdata") != null) {
                     Member memberLogin = (Member) session.getAttribute("userdata");
                     String mName = request.getParameter("txtMemberName");
@@ -86,16 +84,14 @@ public class SearchServlet extends HttpServlet {
                                 request.setAttribute("listAH", listAH);
                                 uri = HOME_RETURN;
                             } else if (searchAction.equals("Notice")) {
-
                                 Item i = iDao.getItemByID(Integer.parseInt(itemId));
-                                List<Article> listArtsShare = adao.getAllArticlesNoticeByItemType(i);
-                                request.setAttribute("articlesShare", listArtsShare);
+                                List<Article> listArtsFind = adao.getAllArticlesFindByItemType(i);
+                                request.setAttribute("articlesFind", listArtsFind);
                                 List<Item> listI = iDao.getAllItems();
                                 request.setAttribute("ListItemType", listI);
-
                                 List<ArticleHashTag> listAH = ahDao.getAllArticleHashtag();
                                 request.setAttribute("listAH", listAH);
-                                uri = HOME_NOTICE;
+                                uri = HOME_FIND;
                             }
                         } else if (key != null) {
                             // search theo từ khóa
@@ -174,10 +170,7 @@ public class SearchServlet extends HttpServlet {
                         request.setAttribute("errormessage", "Your account can not use this function!");
                         uri = ADMIN;
                     }
-                }
             } else {
-                //request.setAttribute("errormessage", "Please login!");
-                //request.getRequestDispatcher("login.jsp").forward(request, response);
                 // Xử lý loại đồ cần filter
                 String itemId = request.getParameter("txtItem");
                 String key = request.getParameter("keySearch");
