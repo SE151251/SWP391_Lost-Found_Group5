@@ -1052,7 +1052,7 @@ public class ArticleDAO {
         return lb;
     }
     
-    public int getNumberPage() {
+    public int getNumberPage() throws Exception{
         try {
             con = DBUtils.makeConnection();
             if (con != null) {
@@ -1062,20 +1062,28 @@ public class ArticleDAO {
                 while (rs.next()) {
                     int total = rs.getInt(1);
                     int coutPage = 0;
-                    coutPage = total / 10;
-                    if (total % 10 != 0) {
+                    coutPage = total / 12;
+                    if (total % 12 != 0) {
                         coutPage++;
                     }
                     return coutPage;
                 }
             }
-        } catch (Exception e) {
-
+        }finally{
+        if (rs != null) {
+                rs.close();
+            }
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }    
         }
         return 0;
     }
 
-    public ArrayList<Article> getPaging(int index) {
+    public ArrayList<Article> getPaging(int index) throws Exception {
         ArrayList<Article> lb = new ArrayList<>();
         try {
             con = DBUtils.makeConnection();
@@ -1084,7 +1092,7 @@ public class ArticleDAO {
                         + "Where ArticleTypeID = 1 and ArticleStatus = 1\n"
                         + "order by PostTime DESC \n"
                         + "OFFSET ? ROWS\n"
-                        + "FETCH FIRST 10 ROWS ONLY;";
+                        + "FETCH FIRST 12 ROWS ONLY;";
                 stm = con.prepareStatement(sql);
                 stm.setInt(1, (index - 1) * 10);
                 rs = stm.executeQuery();
@@ -1109,12 +1117,20 @@ public class ArticleDAO {
                     lb.add(art);
                 }
             }
-        } catch (Exception e) {
-
+        } finally{
+        if (rs != null) {
+                rs.close();
+            }
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }    
         }
         return lb;
     }
-    public int getNumberPageReturn() {
+    public int getNumberPageReturn() throws Exception {
         try {
             con = DBUtils.makeConnection();
             if (con != null) {
@@ -1124,20 +1140,28 @@ public class ArticleDAO {
                 while (rs.next()) {
                     int total = rs.getInt(1);
                     int coutPage = 0;
-                    coutPage = total / 10;
-                    if (total % 10 != 0) {
+                    coutPage = total / 12;
+                    if (total % 12 != 0) {
                         coutPage++;
                     }
                     return coutPage;
                 }
             }
-        } catch (Exception e) {
-
+        } finally{
+        if (rs != null) {
+                rs.close();
+            }
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }    
         }
         return 0;
     }
 
-    public ArrayList<Article> getPagingReturn(int index) {
+    public ArrayList<Article> getPagingReturn(int index) throws Exception{
         ArrayList<Article> lb = new ArrayList<>();
         try {
             con = DBUtils.makeConnection();
@@ -1146,7 +1170,7 @@ public class ArticleDAO {
                         + "Where ArticleTypeID = 2  and ArticleStatus = 1\n "
                         + "order by PostTime DESC \n"
                         + "OFFSET ? ROWS\n"
-                        + "FETCH FIRST 10 ROWS ONLY;";
+                        + "FETCH FIRST 12 ROWS ONLY;";
                 stm = con.prepareStatement(sql);
                 stm.setInt(1, (index - 1) * 10);
                 rs = stm.executeQuery();
@@ -1171,12 +1195,20 @@ public class ArticleDAO {
                     lb.add(art);
                 }
             }
-        } catch (Exception e) {
-
+        } finally{
+        if (rs != null) {
+                rs.close();
+            }
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }    
         }
         return lb;
     }
-    public int getNumberPageNotice() {
+    public int getNumberPageNotice() throws Exception{
         try {
             con = DBUtils.makeConnection();
             if (con != null) {
@@ -1186,15 +1218,23 @@ public class ArticleDAO {
                 while (rs.next()) {
                     int total = rs.getInt(1);
                     int coutPage = 0;
-                    coutPage = total / 10;
-                    if (total % 10 != 0) {
+                    coutPage = total / 12;
+                    if (total % 12 != 0) {
                         coutPage++;
                     }
                     return coutPage;
                 }
             }
-        } catch (Exception e) {
-
+        }finally{
+        if (rs != null) {
+                rs.close();
+            }
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }    
         }
         return 0;
     }
@@ -1208,7 +1248,7 @@ public class ArticleDAO {
                         + "Where ArticleTypeID = 3 and ArticleStatus = 1 \n"
                         + "order by PostTime DESC \n"
                         + "OFFSET ? ROWS\n"
-                        + "FETCH FIRST 10 ROWS ONLY;";
+                        + "FETCH FIRST 12 ROWS ONLY;";
                 stm = con.prepareStatement(sql);
                 stm.setInt(1, (index - 1) * 10);
                 rs = stm.executeQuery();

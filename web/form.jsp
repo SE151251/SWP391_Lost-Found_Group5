@@ -1,15 +1,3 @@
-<%-- 
-    Document   : form.jsp
-    Created on : Jun 4, 2022, 9:13:59 PM
-    Author     : LENOVO
---%>
-
-<%-- 
-    Document   : bookform
-    Created on : Mar 1, 2022, 11:21:05 PM
-    Author     : Masterkien
---%>
-
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%-- <!DOCTYPE html>
@@ -104,8 +92,13 @@
         <nav class="navbar navbar-dark navbar-expand-md fixed-top">
 
             <ul style="width: 13%;" class="navbar-nav container ml-5">
+                <c:if test="${userdata.memberRole eq 1}"></c:if>
                 <li class="nav-item active">
-                    <a class="nav-link" href="paging"><i class="fa fa-home mr-1"></i> Home </a>
+                    <a class="nav-link" 
+                       <c:if test="${userdata.memberRole eq 1}">href="paging"</c:if>
+                       <c:if test="${userdata.memberRole eq 0}">href="AdminListServlet"</c:if>
+                    >
+                    <i class="fa fa-home mr-1"></i> Home </a>
                 </li>
             </ul>
 
@@ -154,8 +147,8 @@
                                     <c:if test="${action eq 'update'}">
                                     <h3 style="margin-left: 30%; padding-top: 50px; padding-bottom: 50px " class="mt-4 font-strong">UPDATE POST</h3>
                                     </c:if>
-                                    <form <c:if test="${action eq 'create'}"> enctype='multipart/form-data'</c:if> method="POST">
-                                    <table>
+            <form <c:if test="${action eq 'create'}"> enctype='multipart/form-data'</c:if> method="POST">
+                <table>
                 <tr>
                     
                             <td style="font-size: 20px; padding-bottom: 20px"">Title:</td>
@@ -209,7 +202,14 @@
                 <c:if test="${action eq 'create'}">         
                 <tr>
                     <td style="font-size: 20px">Post image:</td>
-                    <td><input type="file" name="photo"/><font color="red"> ${errorURL} </font></td>               
+                    <td>
+                        <label for="file-upload" class="custom-file-upload">
+                        <i class="fa fa-cloud-upload"></i> Upload Image
+                        </label>
+                        <input id="file-upload" type="file" name="photo" />
+                     <%--   <input type="file" name="photo"/> --%>
+                        <font color="red"> ${errorURL} </font>
+                    </td>               
                 </tr>
                 </c:if>
     <%--            <c:if test="${action eq 'update'}">         

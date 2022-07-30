@@ -203,7 +203,7 @@
                     </div>
                 </div>
             </a>
-            </c:forEach>
+            </c:forEach>           
             <nav aria-label="...">
             <ul class ="pagination pagination-lg mt-3">
                 <c:forEach begin="1" end="${a.numberPage}" var="i">

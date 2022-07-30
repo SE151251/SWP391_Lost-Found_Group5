@@ -34,14 +34,9 @@
 
             </div>
             <ul style="width: 13%;" class="navbar-nav container ml-5">
-                <c:if test="${userdata.memberRole eq 1}">
+                <c:if test="${userdata.memberRole eq 1 || empty userdata}">
                 <li class="nav-item active">
                     <a class="nav-link" href="paging"><i class="fa fa-home mr-1"></i> Home </a>
-                </li>
-                <li class="nav-item">
-
-                    <a class="nav-link" href="#"><span class="fa-solid fa-bookmark"></span>
-                        Saved list</a>
                 </li>
                 </c:if>
                 <c:if test="${userdata.memberRole eq 0}">
@@ -78,7 +73,7 @@
                 <img src="${postDetail.member.picture}" alt="">
                 <div>
                     <p>
-                        <c:if test="${postDetail.member.memberRole eq 1 && userdata.memberRole eq 1}">
+                        <c:if test="${postDetail.member.memberRole eq 1 || userdata.memberRole eq 1 && postDetail.member.memberRole eq 1}">
                             <a href="PersonalServlet?uId=${postDetail.member.memberID}">${postDetail.member.memberName}</a>
                         </c:if>
                         <c:if test="${postDetail.member.memberRole eq 0}">
@@ -199,38 +194,7 @@
                     <p>Bạn đã report bài viết này rồi</p>
                 </div>
             </c:if>
-        <%--    <c:if test="${checkReport eq null && postDetail.member.memberID ne userdata.memberID && userdata.memberID eq 1}">
-            <%-- Tạo report --%>
-         <%--       <div>
-                <form action = "CreateReportServlet">
-                    <textarea cols="36" rows="6" name="txtReport" placeholder="Write your reason here..." maxlength="200" minlength="10"></textarea>
-                     <font color="red"> ${errorReport} </font><br/>
-                    <input type="hidden" name="memberReport" value="${userdata.memberID}"/>
-                    <input type="hidden" name="aId" value="${postDetail.articleID}"/>
-                    <input type="submit" value="Submit"/>
-                </form>
-            </div>
-            </c:if> --%>
-            <%-- Xem report bằng account Admin 
-            <c:if test="${not empty viewReport && userdata.memberID eq 0}">
-                <div>
-                <div class="user-profile">                
-                <img src="${viewReport.member.picture}" alt="">
-                <div>
-                    <p><a href="PersonalServlet?uId=${viewReport.member.memberID}">${viewReport.member.memberName}</a></p>
-                    <small>${viewReport.reportTime}</small>
-                </div>
-                </div>
-                <pre><c:out value="${viewReport.reportContent}"/></pre>
-                <a href="WarningMemberServlet?adminAction=warn&aId=${postDetail.articleID}">Cảnh cáo lần ${postDetail.member.memberCount + 1}</a>
-                <a href="WarningMemberServlet?adminAction=ban&aId=${postDetail.articleID}">Chặn tài khoản này</a>
-                <a href="WarningMemberServlet?adminAction=none&aId=${postDetail.articleID}">Không có vấn đề</a>
-                </div>
-            </c:if>
-            --%>
-            
-            
-
+      
     <div class="test-c " id="test-d">
         <div class="body_comment ">
             
@@ -349,10 +313,7 @@
                         
         </div>
         
-    </div>
-        
-       
-                      
+    </div>                  
         <script src="js/function.js"></script>
 
 </body>
