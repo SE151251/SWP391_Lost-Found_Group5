@@ -75,7 +75,7 @@
             <div class="navbar">
                 <c:if test="${empty userdata}">
                 <a type="button" href="https://accounts.google.com/o/oauth2/auth?scope=email profile&redirect_uri=http://localhost:8080/SWP39_LostAndFound/login-google&response_type=code
-    &client_id=287706363103-nelsjcm2sdr3ruldha94fink89tk87tg.apps.googleusercontent.com&approval_prompt=force" style="color: rgb(18, 190, 212);" class="btn btn-login">Login <i
+    &client_id=287706363103-nelsjcm2sdr3ruldha94fink89tk87tg.apps.googleusercontent.com&approval_prompt=force" style="color: white;" class="btn btn-login">Login <i
                 class="fa-solid fa-right-to-bracket"></i></a>
                 </c:if>
                 <c:if test="${not empty userdata}">

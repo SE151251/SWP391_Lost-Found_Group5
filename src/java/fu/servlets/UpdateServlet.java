@@ -38,7 +38,7 @@ public class UpdateServlet extends HttpServlet {
     private static final String SUCCESS_RETURN = "paging1";
     private static final String ERROR = "error.jsp";
     private static final String INVALID = "UpdateFormServlet";
-    private static final String ADMIN_PAGE = "AdminListServlet";
+    private static final String ADMIN_PAGE = "paging2";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

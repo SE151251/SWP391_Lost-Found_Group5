@@ -50,7 +50,7 @@ public class CreateServlet extends HttpServlet {
 
     private static final String SUCCESS_FIND = "paging";
     private static final String SUCCESS_RETURN = "paging1";
-    private static final String ADMIN_PAGE = "AdminListServlet";
+    private static final String ADMIN_PAGE = "paging2";
     private static final String ERROR = "error.jsp";
     private static final String INVALID = "CreateFormServlet";
     private static final String UPLOAD_DIR = "images";

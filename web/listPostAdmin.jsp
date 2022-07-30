@@ -47,7 +47,7 @@
     <!-- Core CSS -->   
     <link rel="stylesheet" href="./assets/css/demo.css" />   
     <script src="./assets/js/config.js"></script>
-
+    <jsp:useBean id="a" class="fu.daos.ArticleDAO" scope="request"></jsp:useBean>
   </head>
 
   <body>
@@ -163,13 +163,15 @@
               </a>
             </div>
 
-              <!-- /Search -->
-              
-        <form action="SearchServlet">
-            <input type="text" name="txtMemberName" value="" placeholder="Enter member name"/>
-           <input type="hidden" name="searchAction" value="Member"/>
-            <input type="submit" value="Search"/>
-        </form>       
+              <!-- /Search --> 
+              <form class="search col-md-4">
+            <div class="search-field">
+                <input type="text" name="keySearch" class="search-input p-1" placeholder="Input here">
+                <input type="hidden" name="searchAction" value="Notice"/>
+            </div>
+
+            <button formaction="SearchServlet" class="search-button p-1 pl-3 pr-3 ml-2">Search</button>
+        </form>
               <ul class="navbar-nav flex-row align-items-center ms-auto">
                 <!-- Place this tag where you want the button to render. -->
 
@@ -242,85 +244,45 @@
           <!-- Content wrapper -->
           <div class="content-wrapper">
             <!-- Content -->
-         
-            <div class="container-xxl flex-grow-1 container-p-y">
-<!-- Contextual Classes -->
-
-              <div class="card">
-                <h5 class="card-header">List Members</h5>
-                <div class="table-responsive text-nowrap">
-                  <table class="table">
-                    <thead>
-                      <tr>
-                        
-                        <th>Member Name</th>
-                        <th>Member Email</th>
-                        <th>Warning Time</th>
-                        <th>Action</th>
-                        <th>View</th>                                               
-                      </tr>
-                    </thead>
-                    <tbody class="table-border-bottom-0">
-                    <c:if test="${not empty listMembers}">
-                    <c:forEach var="dt" items="${listMembers}">   
-                    <tr class="table-default">
-                        <td>
-                          
-                            <span
-                              data-bs-toggle="tooltip"
-                              data-popup="tooltip-custom"
-                              data-bs-placement="top"
-                              class="avatar avatar-xs pull-up"
-                              title="Christina Parker"
-                            >
-                              <img src="${dt.picture}" alt="Avatar" class="rounded-circle" />
-                            </span><strong>${dt.memberName}</strong>
-                          
-                        </td>
-                        
-                        <td>${dt.memberEmail}</td>
-                        <td>${dt.memberCount}</td>
-                        <td>
-                    <c:if test="${dt.status eq 0}"><a href="WarningMemberServlet?uId=${dt.memberID}&adminAction=unban">UNBAN</a></c:if>
-                    <c:if test="${dt.status eq 1}"><a href="WarningMemberServlet?uId=${dt.memberID}&adminAction=ban">BAN</a> | <a href="WarningMemberServlet?uId=${dt.memberID}&adminAction=warnMember">WARNING</a></c:if>                   
-                    </td>
-                        <td><a href="ViewDetailMemberByAdminServlet?uId=${dt.memberID}">View detail</a></td>
-                      </tr>
-                      </c:forEach>
-                      </c:if>
-                      
-                      <c:if test="${not empty listMembersResult}">
-                    <c:forEach var="dt" items="${listMembersResult}"> 
-                    <tr class="table-default">
-                        <td>
-                          <div class="list-unstyled users-list m-0 d-flex align-items-center">
-                            <p
-                              data-bs-toggle="tooltip"
-                              data-popup="tooltip-custom"
-                              data-bs-placement="top"
-                              class="avatar avatar-xs pull-up"
-                              title="Christina Parker"
-                            >
-                              <img src="${dt.picture}" alt="Avatar" class="rounded-circle" />
+        <c:if test="${not empty userdata && userdata.status eq 1}">
+        <a type="button" href="CreateFormServlet" class="center createPost--btn btn rounded-circle"><i
+                class="fa-solid fa-arrow-up-right-from-square"></i></a>
+        </c:if>
+        <div class="row">
+            <c:forEach var="dt" items="${articlesNotice}" >
+            <a href="ViewDetailServlet?aId=${dt.articleID}" >
+                <div class="pane mb-3">
+                    <div class="card h-100">
+                        <div class="pane-img">
+                            <c:if test="${not empty dt.imgUrl}">
+                        <img class="card-img-top" src="images/${dt.imgUrl}" alt=""> </c:if>
+                        <c:if test="${empty dt.imgUrl}">
+                        <img class="card-img-top" src="images/Logo_LostFound.png" alt=""> </c:if>
+                        </div>
+                        <div class="card-body pane-content">
+                            <h5 class="card-title"><c:out value="${dt.title}"/></h5>
+                            <p class="card-text">Time: <c:out value="${dt.postTime}"/></p>                           
+                            <p class="card-text">
+                    <c:forEach var="lah" items="${listAH}" >
+                        <c:if test="${dt.articleID eq lah.article.articleID}">
+                        <span><a href="SearchServlet?hId=${lah.hashtag.hashtagID}&searchAction=Notice"><c:out value="${lah.hashtag.hashtagName}"/></a></span>
+                        </c:if>    
+                    </c:forEach> 
                             </p>
-                          </div>
-                        </td>
-                        <td><strong>${dt.memberName}</strong></td>
-                        <td>${dt.memberEmail}</td>
-                        <td>${dt.memberCount}</td>
-                        <td>
-                    <c:if test="${dt.status eq 0}"><a href="WarningMemberServlet?uId=${dt.memberID}&adminAction=unban">UNBAN</a></c:if>
-                    <c:if test="${dt.status eq 1}"><a href="WarningMemberServlet?uId=${dt.memberID}&adminAction=ban">BAN</a> | <a href="WarningMemberServlet?uId=${dt.memberID}&adminAction=warnMember">WARNING</a></c:if>                   
-                    </td>
-                        <td><a href="ViewDetailMemberByAdminServlet?uId=${dt.memberID}">View detail</a></td>
-                      </tr>
-                      </c:forEach>
-                      </c:if>
-                    </tbody>
-                  </table>
+
+                        </div>
+                    </div>
                 </div>
-              </div>
-            </div>
+            </a>
+            </c:forEach>
+            <nav aria-label="...">
+            <ul class ="pagination pagination-lg mt-3">
+                <c:forEach begin="1" end="${a.numberPage}" var="i">
+                     <li class="page-item ${indexPage2==i?"active":""}"><a class="page-link" href="paging2?index2=${i}">${i}</a></li>
+                </c:forEach>
+            </ul>
+        </nav>
+        </div>       
             <!-- / Content -->
 
             <!-- Footer -->

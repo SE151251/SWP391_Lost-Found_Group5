@@ -34,6 +34,7 @@ public class PaginControl2 extends HttpServlet {
             throws ServletException, IOException {
         try {
                 HttpSession session = request.getSession(false);
+                String url=null;
                 if (session != null) {
                 if (session.getAttribute("userdata") != null) {
                 Member memberLogin = (Member) session.getAttribute("userdata");
@@ -49,6 +50,9 @@ public class PaginControl2 extends HttpServlet {
                 request.setAttribute("totalNotiNew", count);
                 request.setAttribute("listNoti", listNoti);
                 }
+                 if(memberLogin.getMemberRole()==0){
+                 url = "listPostAdmin.jsp";
+                 }
                 }      
                 }
                 String index2 = request.getParameter("index2");
@@ -68,7 +72,11 @@ public class PaginControl2 extends HttpServlet {
                     
                     List<ArticleHashTag> listAH = ahDao.getAllArticleHashtag();
                     request.setAttribute("listAH", listAH);
-                    request.getRequestDispatcher("notification.jsp").forward(request, response);
+                    if (url != null) {
+                        request.getRequestDispatcher(url).forward(request, response);
+                    } else {
+                        request.getRequestDispatcher("notification.jsp").forward(request, response);
+                    }
                 } else if (index2 != null) {
                     int indexPage = Integer.parseInt(index2);
                    
@@ -81,7 +89,11 @@ public class PaginControl2 extends HttpServlet {
                     
                     List<ArticleHashTag> listAH = ahDao.getAllArticleHashtag();
                     request.setAttribute("listAH", listAH);
-                    request.getRequestDispatcher("notification.jsp").forward(request, response);
+                    if (url != null) {
+                        request.getRequestDispatcher(url).forward(request, response);
+                    } else {
+                        request.getRequestDispatcher("notification.jsp").forward(request, response);
+                    }
                 }
         } catch (Exception e) {
             e.printStackTrace();

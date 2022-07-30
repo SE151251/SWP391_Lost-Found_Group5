@@ -30,7 +30,7 @@ public class ReportDAO {
         try {
             con = DBUtils.makeConnection();
             if (con != null) {
-                String sql = "Select * From Report "                        
+                String sql = "Select * From Report Where ReportStatus = 1 "                        
                         + "Order By ReportTime ASC";
                 stm = con.prepareStatement(sql);               
                 rs = stm.executeQuery();

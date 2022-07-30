@@ -8,7 +8,9 @@ package fu.servlets;
 import fu.daos.ArticleDAO;
 import fu.daos.ReportDAO;
 import fu.entities.Member;
+import fu.entities.Report;
 import java.io.IOException;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -49,7 +51,9 @@ public class AdminListServlet extends HttpServlet {
                 Member memberLogin = (Member) session.getAttribute("userdata");
                 if (memberLogin.getMemberRole() == 0) {
                     if (memberLogin.getStatus() == 1) {
-                        ReportDAO rdao = new ReportDAO();
+                        ReportDAO rdao = new ReportDAO();                       
+                        List<Report> listReports = rdao.getAllReports();
+                        request.setAttribute("listRp", listReports);
                         int numberReport = rdao.countAllReports();
                         request.setAttribute("numberReport", numberReport);
                         ArticleDAO adao = new ArticleDAO();
@@ -60,7 +64,7 @@ public class AdminListServlet extends HttpServlet {
                         request.setAttribute("numberLostToday", numberLostToday);
                         request.setAttribute("numberFoundToday", numberFoundToday);
                         request.setAttribute("numberLost", numberLost);
-                        request.setAttribute("numberFound", numberFound);
+                        request.setAttribute("numberFound", numberFound);                                               
                         request.getRequestDispatcher("admin.jsp").forward(request, response);
                     } else {
                         request.setAttribute("errormessage", "Your account has been banned!");
