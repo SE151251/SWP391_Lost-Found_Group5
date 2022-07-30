@@ -16,7 +16,7 @@
             <meta charset="UTF-8">
             <meta http-equiv="X-UA-Compatible" content="IE=edge">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Document</title>
+            <title>Personal Page</title>
             <!-- Bootstrap CSS -->
             <script src="https://kit.fontawesome.com/f2fda88f12.js" crossorigin="anonymous"></script>
             <link rel="stylesheet" href="css/style.css"/>
@@ -28,115 +28,115 @@
 
 
         </head>
-
         <body>
-
-            <header>
+        <header>
         <nav class="navbar navbar-dark navbar-expand-md fixed-top">
-            <div class="navbar">
 
-                <button class="rounded-circle p-0" type="button" data-toggle="collapse" data-target="#Navbar">
-                            <img class="rounded-circle" src="${userdata.picture}" height="30" width="100%">
-                        </button>
-                        <span class="Nav-username">${userdata.memberName}</span>
-
-
-            </div>
             <ul style="width: 13%;" class="navbar-nav container ml-5">
-                <c:if test="${userdata.memberRole eq 1}">
                 <li class="nav-item active">
                     <a class="nav-link" href="paging"><i class="fa fa-home mr-1"></i> Home </a>
-                </li>
-                <li class="nav-item">
-
-                    <a class="nav-link" href="#"><span class="fa-solid fa-bookmark"></span>
-                        Saved list</a>
-                </li>
+                </li>               
+                <c:if test="${not empty userdata}">
+                <div class="bell-image online"
+                    style="display: inline-block; position: absolute; width: 3%; right: -5px;"
+                    onclick="UserSettingToggle()">
+                    <h3><i class="fa-solid fa-bell text-white bell-counter"></i></h3>
+                    <span class="badge badge-danger badge-counter">${totalNotiNew}</span>
+                </div>
+                <div class="user-settings">
+                    <div class="card-header card-center">
+                        <div class="align-items-center row">
+                            <div class="col">
+                                <h6 class="mb-0">Notification</h6>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="fw-normal fs--1 scrollbar list-group list-group-flush" style="max-height: 19rem;">
+                    </div>
+                <c:forEach var="noti" items="${listNoti}" >
+                    <div class="list-group-item">
+                        <a class="notification" style="text-decoration: none" 
+                        <c:if test="${empty noti.article}">href="paging?notiID=${noti.notiId}"</c:if>
+                        <c:if test="${not empty noti.article}">href="ViewDetailServlet?aId=${noti.article.articleID}&notiID=${noti.notiId}"</c:if>
+                        >
+                            <div class="notification-avatar" style="background-color: white;">
+                                <div class="avatar avatar-2x1 me-3" style="position: relative; padding-right: 5px">
+                                    <img class="rounded-circle" src="${noti.sender.picture}"
+                                        style="width: 55px; height: 55px;">
+                                </div>
+                            </div>
+                            <div class="notification-body" style="background-color: white;">
+                                <p class="mb-1">
+                                    <strong>${noti.sender.memberName}</strong>
+                                    ${noti.content}
+                                </p>
+                                <span class="notification-time">
+                                    <span class="me-2" role="img" aria-label="Emoji"></span>
+                                    ${noti.notiTime}
+                                </span>
+                            </div>
+                        </a>
+                    </div>
+                    </c:forEach>
+                </div>
                 </c:if>
-                <c:if test="${userdata.memberRole eq 0}">
-                <li class="nav-item active">
-                    <a class="nav-link" href="AdminListServlet"><i class="fa fa-home mr-1"></i> Home </a>
-                </li>
-                 </c:if>
             </ul>
 
-
+            <div class="navbar">
+               <c:if test="${empty userdata}">
+                <a type="button" href="https://accounts.google.com/o/oauth2/auth?scope=email profile&redirect_uri=http://localhost:8080/SWP39_LostAndFound/login-google&response_type=code
+    &client_id=287706363103-nelsjcm2sdr3ruldha94fink89tk87tg.apps.googleusercontent.com&approval_prompt=force" style="color: rgb(18, 190, 212);" class="btn btn-login">Login <i
+                class="fa-solid fa-right-to-bracket"></i></a>
+                </c:if>
+                <c:if test="${not empty userdata}">
+                <a class="rounded-circle p-0" type="button" data-toggle="collapse" data-target="#Navbar"> 
+                    <img class="rounded-circle" src="${userdata.picture}" height="30" width="100%">
+                </a>
+                </c:if>
+            </div>
         </nav>
+            <c:if test="${not empty userdata}">
         <div class="collapse navbar-collapse" id="Navbar">
             <ul class="navbar-nav container ml-5">
-                <c:if test="${userdata.memberRole eq 1}">
+                <li>
+                    <span class="Nav-username">${userdata.memberName}</span>
+                </li>
                 <li class="nav-item">
                     <a class="nav-link" href="PersonalServlet?uId=${userdata.memberID}"><span class="fa-solid fa-user"></span> Personal
                         Page</a>
                 </li>
-                </c:if>
                 <li class="nav-item active">
                     <a class="nav-link" href="LogoutServlet"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</a>
                 </li>
             </ul>
         </div>
-
+            </c:if>
     </header>
-            <div class="profile mt-4 ml-4 p-4 ">
-                <div class="profile-img rounded-circle p-0 mt-4"><img src="${memberInfo.picture}" alt=""></div>
-                <span class="profile-username">
-                    ${memberInfo.memberName}
-                    <!-- <button style="" class="btn btn-danger">
-                        Edit profile
-                    </button> -->
-                </span>
+    <div class="profile mt-4 ml-4 p-4 ">
+        <section id="about" class="about">
 
-            </div>
-            <div class="tabs tabs--profile">
-        <div class="tab-item active">
-            Posts
-        </div>
-        <div class="tab-item">
-            About
-        </div>
-        <div class="line"></div>
-    </div>
-    <!-- tab content -->
-    <div class="tab-content tab-content--profile mt-3">
-        <div class="tab-pane tab-pane--profile active">
-            <c:forEach var="dt" items="${articlesPersonal}" >
-                        <div class="pane col-md-2">
-                            <div class="pane-img">
-                                <c:if test="${not empty dt.imgUrl}">
-                                    <img src="images/${dt.imgUrl}" alt=""> </c:if>
-                                <c:if test="${empty dt.imgUrl}">
-                                    <img src="images/Logo_LostFound.png" alt=""> </c:if>
-                                </div>
-                                <div class="pane-content">
-                                    <p style="font-size: 12px">Thời gian: <c:out value="${dt.postTime}"/></p>                 
-                                <p style="font-size: 15px"><c:out value="${dt.title}"/></p>
-                                <a href="SearchServlet?txtItem=${dt.item.itemID}">    <p><span style="padding: 5px 10px 5px 10px" class="badge badge-pill badge-primary"><c:out value="${dt.item.itemName}"/></span></p>   </a>                                 
-                                <a href="ViewDetailServlet?aId=${dt.articleID}">View more >></a>                   
-                                <font-awesome-icon icon="fa-solid fa-phone" />
+            <div class="container" data-aos="fade-up">
+                <div class="row">
 
-                            </div>
+                    <div class="col-lg-5 col-md-6">
+                        <div class="about-img" data-aos="fade-right" data-aos-delay="100">
+                            <img src="${memberInfo.picture}" alt="">
                         </div>
-                    </c:forEach>
-        </div>
-                    <div class="row tab-pane">
-                <div class="pane-content">
-                    <table style="margin-left:40px; margin-top:30px; padding: 10px;">
-                        <tr class="pane-content--info">
-                            <td style="text-align: left; padding-right: 50px ; padding-top: 30px;">User ID:</td>
-                            <td style="text-align: left; padding-top: 30px;">${memberInfo.memberID} </td>
-                        </tr>
-                        <tr class="pane-content--info">
-                            <td style="text-align: left; padding-right: 50px; padding-top: 30px;">User Email: </td>
-                            <td style="text-align: left; padding-top: 30px;">${memberInfo.memberEmail}</td>
-                        </tr>
-                        <tr class="pane-content--info">
-                            <td style="text-align: left; padding-right: 50px; padding-top: 30px;">User Profile: </td>
-                            <td style="text-align: left; padding-top: 30px;">
-                                <c:if test="${userdata.memberID eq memberInfo.memberID}">   
-                                    <form action="ProfileServlet">   
-                                    </c:if>                               
-                                        <textarea <c:if test="${userdata.memberID ne memberInfo.memberID}">readonly</c:if> rows="9" cols="70" name="txtProfile" minlength="20" maxlength="4000">${memberInfo.memberProfile}</textarea>
-                                    <c:if test="${userdata.memberID eq memberInfo.memberID}">
+                    </div>
+
+                    <div class="col-lg-7 col-md-6">
+                        <div class="about-content" data-aos="fade-left" data-aos-delay="100">
+                            <h2>About Me</h2>
+                            <h3>${memberInfo.memberName}</h3>
+                            <h4><span><i class="fa-solid fa-envelope"></i>Email: </span>${memberInfo.memberEmail}</h4>
+                            <c:if test="${userdata.memberID ne memberInfo.memberID}"> 
+                                <h4><i class="fa-solid fa-user"></i> My Profile:</h4>
+                                <pre>${memberInfo.memberProfile}</pre>
+                            </c:if>  
+                            <c:if test="${userdata.memberID eq memberInfo.memberID}">   
+                                <h4><i class="fa-solid fa-user"></i>My Profile:</h4>    
+                                <form action="ProfileServlet">                                                                     
+                                        <textarea rows="9" cols="70" name="txtProfile" minlength="20" maxlength="2000">${memberInfo.memberProfile}</textarea>                          
                                         <input type="hidden" name="uId" value="${memberInfo.memberID}"/>
                                         <br/>    
                                         <font color="red"> ${errorProfile} </font>
@@ -144,14 +144,69 @@
                                         <input type="submit" value="Save"/>
                                     </form>
                                 </c:if>
-                            </td>
-                        </tr>
-
-                    </table>
-
+                        </div>
+                    </div>
                 </div>
-
             </div>
+
+        </section><!-- End About Section -->
+
+    </div>
+    <div class="tabs tabs--profile">
+        <div class="tab-item active">
+            Posts
+        </div>
+        <div class="line"></div>
+    </div>
+    <!-- tab content -->
+    <div class="tab-content tab-content--profile mt-3">
+        <div class="tab-pane tab-pane--profile active">
+            <c:forEach var="dt" items="${articlesPersonal}" >
+         <!--    <div class="pane col-md-3 mb-3">
+                <div class="card h-100">
+                    <div class="pane-img">
+                       <%-- <c:if test="${not empty dt.imgUrl}">
+                                    <img src="images/${dt.imgUrl}" alt=""> </c:if>
+                                <c:if test="${empty dt.imgUrl}">
+                                    <img src="images/Logo_LostFound.png" alt=""> </c:if> --%>
+                    </div>
+                    <div class="card-body pane-content">
+                        <h5 class="card-title">Card title</h5>
+                        <p class="card-text">Product: Nhân phẩmssssssssssssssssssssssssssssssssssssssssssssssS</p>
+                        <p class="card-text">Thể loại: </p>
+                        <p class="card-text">Name: Lê Minh Thiện</p>
+                        <a href="javascript:void(0)" class="btn btn-outline-primary pb-4">Go somewhere</a>
+                    </div>
+                </div>
+            </div> -->
+            <a href="ViewDetailServlet?aId=${dt.articleID}">
+                <div class="pane mb-3">
+                    <div class="card h-100">
+                        <div class="pane-img">
+                            <c:if test="${not empty dt.imgUrl}">
+                        <img class="card-img-top" src="images/${dt.imgUrl}" alt=""> </c:if>
+                        <c:if test="${empty dt.imgUrl}">
+                        <img class="card-img-top" src="images/Logo_LostFound.png" alt=""> </c:if>
+                        </div>
+                        <div class="card-body pane-content">
+                            <h5 class="card-title"><c:out value="${dt.title}"/></h5>
+                            <p class="card-text">Time: <c:out value="${dt.postTime}"/></p>
+                            <a href="SearchServlet?txtItem=${dt.item.itemID}&searchAction=Find">    <p><span style="padding: 5px 10px 5px 10px" class="badge badge-pill badge-primary"><c:out value="${dt.item.itemName}"/></span></p>   </a> 
+                            <p class="card-text">
+                                 <c:forEach var="lah" items="${listAH}" >
+                        <c:if test="${dt.articleID eq lah.article.articleID}">
+                        <span><a href="SearchServlet?hId=${lah.hashtag.hashtagID}&searchAction=Find"><c:out value="${lah.hashtag.hashtagName}"/></a></span>
+                        </c:if>    
+                    </c:forEach> 
+                            </p>
+
+                        </div>
+                    </div>
+                </div>
+            </a>
+          </c:forEach>
+        </div>
+
 
     </div>
     <!-- Footer -->
@@ -277,9 +332,9 @@
     
     <!-- jQuery first, then Popper.js, then Bootstrap JS. -->
     <script src="js/mycode.js"></script>
-    <script src="node_modules/jquery/dist/jquery.slim.min.js"></script>
+   <!-- <script src="node_modules/jquery/dist/jquery.slim.min.js"></script>
     <script src="node_modules/popper.js/dist/umd/popper.min.js"></script>
-    <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script> -->
 </body>
 
 </html>

@@ -40,8 +40,10 @@ public class ProfileServlet extends HttpServlet {
                 request.getRequestDispatcher("paging").forward(request, response);
             } else if (session.getAttribute("userdata") != null) { // check login
                 Member member = (Member) session.getAttribute("userdata");
+                System.out.println(member.getStatus());
                 if (member.getStatus() == 1) {
                     String mProfile = request.getParameter("txtProfile");
+                    System.out.println(mProfile);
                     if (mProfile.trim().isEmpty() || mProfile.trim().length() > 4000 || mProfile.trim().length() < 20) {
                         request.setAttribute("errorProfile", "Your profile must be 20 - 4000 characters");
                         request.getRequestDispatcher("PersonalServlet").forward(request, response);

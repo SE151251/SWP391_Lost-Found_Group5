@@ -10,6 +10,7 @@ const postPanes = $$('.tab-post-pane');
 const tabActive = $('.tab-item.active');
 const tabPostActive = $('.tab-post-item.active');
 
+console.log(tabActive, tabPostActive)
 
 const line = $('.tabs .line');
 
@@ -41,3 +42,8 @@ postTabs.forEach((postTab, index) => {
         postPane.classList.add('active')
     }
 })
+var userSettings = document.querySelector(".user-settings");
+
+function UserSettingToggle(){
+    userSettings.classList.toggle("user-setting-showup-toggle");
+}

@@ -46,7 +46,12 @@ public class PaginControl extends HttpServlet {
                 ndao.changeNotiStatus(Integer.parseInt(notiID));
                 }                
                 List<Notification> listNoti = ndao.getAllNotificationsByMember(memberLogin.getMemberID());
-                int count = listNoti.size();
+                int count = 0;
+                    for (Notification notification : listNoti) {
+                        if(notification.getStatus()==1){
+                            count++;
+                        }
+                    }
                 request.setAttribute("totalNotiNew", count);
                 request.setAttribute("listNoti", listNoti);
                 }
@@ -71,7 +76,6 @@ public class PaginControl extends HttpServlet {
                     request.setAttribute("listAH", listAH);
                                        
                     request.getRequestDispatcher("home.jsp").forward(request, response);
-                    return;
                 } else if (index != null) {
                     int indexPage = Integer.parseInt(index);
 

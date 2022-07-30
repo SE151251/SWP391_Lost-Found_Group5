@@ -57,7 +57,7 @@ public class CreateCommentServlet extends HttpServlet {
                         cdao.addNewComment(c);
                         if (!memCmt.getMemberID().equals(memReceive.getMemberID())) {
                             NotificationDAO ndao = new NotificationDAO();
-                            String notiContent = member.getMemberName() + " commented on your post";
+                            String notiContent = "commented on your post";
                             ndao.addNewNotifications(new Notification(0, memCmt, memReceive, art, notiContent, LocalDateTime.now().toString(), 1));
                         }
                         request.getRequestDispatcher("ViewDetailServlet?aId=" + aId).forward(request, response);

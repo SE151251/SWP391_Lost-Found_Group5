@@ -192,14 +192,14 @@ public class CreateServlet extends HttpServlet {
                                 ArrayList<Member> listMembers = mdao.getAllMemberHavePostWithArticleTypeCorresponding(2, itemId, memberLogin.getMemberID());
 
                                 for (Member listMember : listMembers) {
-                                    String notiContent = memberLogin.getMemberName() + " posted articles related to " + i.getItemName();
+                                    String notiContent = "posted articles related to " + i.getItemName();
                                     ndao.addNewNotifications(new Notification(0, memberLogin, listMember, a, notiContent, LocalDateTime.now().toString(), 1));
                                 }
                             } else if (itemId != null && at.getTypeID() == 2) {
                                 ArrayList<Member> listMembers = mdao.getAllMemberHavePostWithArticleTypeCorresponding(1, itemId, memberLogin.getMemberID());
 
                                 for (Member memReceive : listMembers) {
-                                    String notiContent = memberLogin.getMemberName() + " posted articles related to " + i.getItemName();
+                                    String notiContent = "posted articles related to " + i.getItemName();
                                     ndao.addNewNotifications(new Notification(0, memberLogin, memReceive, a, notiContent, LocalDateTime.now().toString(), 1));
                                 }
                             } else { // Trường hợp bài viết của ADMIN
