@@ -595,11 +595,11 @@ input[type="file"] {
   cursor: pointer;
   color:  #2F80ED;
 }
-.modal-post--input{
+/*.modal-post--input{
   width: 80%;
   margin-left: 50%;
   transform: translateX(-50%);
-}
+}*/
 .pagination{     
     justify-content: flex-end;
 }

@@ -78,7 +78,7 @@
                 <img src="${postDetail.member.picture}" alt="">
                 <div>
                     <p>
-                        <c:if test="${postDetail.member.memberRole eq 1}">
+                        <c:if test="${postDetail.member.memberRole eq 1 && userdata.memberRole eq 1}">
                             <a href="PersonalServlet?uId=${postDetail.member.memberID}">${postDetail.member.memberName}</a>
                         </c:if>
                         <c:if test="${postDetail.member.memberRole eq 0}">

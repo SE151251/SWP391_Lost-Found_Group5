@@ -32,11 +32,11 @@
         <header>
         <nav class="navbar navbar-dark navbar-expand-md fixed-top">
 
-            <ul style="width: 13%;" class="navbar-nav container ml-5">
+            <ul style="width: 13%;" class="navbar-nav container ml-5">              
                 <li class="nav-item active">
                     <a class="nav-link" href="paging"><i class="fa fa-home mr-1"></i> Home </a>
                 </li>               
-                <c:if test="${not empty userdata}">
+                <c:if test="${not empty userdata && userdata.memberRole eq 1}">
                 <div class="bell-image online"
                     style="display: inline-block; position: absolute; width: 3%; right: -5px;"
                     onclick="UserSettingToggle()">

@@ -84,8 +84,8 @@ public class CreateServlet extends HttpServlet {
                     }
                     // Xử lý nội dung bài viết 
                     String content = request.getParameter("txtContent");
-                    if (content.trim().isEmpty() || content.trim().length() < 20 || content.trim().length() > 4000) {
-                        contentError = "Content must be at least 20 and at most 4000 characters!";
+                    if (content.trim().isEmpty() || content.trim().length() < 10 || content.trim().length() > 2000) {
+                        contentError = "Content must be at least 10 and at most 2000 characters!";
                         valid = false;
                     }
                     //Xử lý hashtag

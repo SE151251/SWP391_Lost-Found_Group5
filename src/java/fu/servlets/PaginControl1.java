@@ -41,6 +41,13 @@ public class PaginControl1 extends HttpServlet {
                 if(memberLogin.getMemberRole()==1){
                 NotificationDAO ndao = new NotificationDAO();
                 List<Notification> listNoti = ndao.getAllNotificationsByMember(memberLogin.getMemberID());
+                 int count = 0;
+                    for (Notification notification : listNoti) {
+                        if(notification.getStatus()==1){
+                            count++;
+                        }
+                    }
+                request.setAttribute("totalNotiNew", count);
                 request.setAttribute("listNoti", listNoti);
                 }
                 }  

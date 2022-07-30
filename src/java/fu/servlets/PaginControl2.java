@@ -40,6 +40,13 @@ public class PaginControl2 extends HttpServlet {
                 if(memberLogin.getMemberRole()==1){
                 NotificationDAO ndao = new NotificationDAO();
                 List<Notification> listNoti = ndao.getAllNotificationsByMember(memberLogin.getMemberID());
+                 int count = 0;
+                    for (Notification notification : listNoti) {
+                        if(notification.getStatus()==1){
+                            count++;
+                        }
+                    }
+                request.setAttribute("totalNotiNew", count);
                 request.setAttribute("listNoti", listNoti);
                 }
                 }      
@@ -53,7 +60,7 @@ public class PaginControl2 extends HttpServlet {
                     int indexPage = Integer.parseInt(index2);
                     
                     ArrayList<Article> list = dao.getPagingNotice(indexPage);
-                    request.setAttribute("articlesShare", list);
+                    request.setAttribute("articlesNotice", list);
                     request.setAttribute("indexPage2", indexPage);
                     
                     List<Item> listI = itDao.getAllItems();
@@ -66,7 +73,7 @@ public class PaginControl2 extends HttpServlet {
                     int indexPage = Integer.parseInt(index2);
                    
                     ArrayList<Article> list = dao.getPagingNotice(indexPage);
-                    request.setAttribute("articlesShare", list);
+                    request.setAttribute("articlesNotice", list);
                     request.setAttribute("indexPage2", indexPage);
                     
                     List<Item> listI = itDao.getAllItems();

@@ -100,51 +100,44 @@
 </head>
 
 <body>
-    <header>
+        <header>
         <nav class="navbar navbar-dark navbar-expand-md fixed-top">
-            <div class="navbar">
 
-                <button class="rounded-circle p-0" type="button" data-toggle="collapse" data-target="#Navbar">
-                            <img class="rounded-circle" src="${userdata.picture}" height="30" width="100%">
-                        </button>
-                        <span class="Nav-username">${userdata.memberName}</span>
-
-
-            </div>
             <ul style="width: 13%;" class="navbar-nav container ml-5">
-                <c:if test="${userdata.memberRole eq 1}">
                 <li class="nav-item active">
-                    <a class="nav-link" href="ListPostServlet"><i class="fa fa-home mr-1"></i> Home </a>
+                    <a class="nav-link" href="paging"><i class="fa fa-home mr-1"></i> Home </a>
                 </li>
-                <li class="nav-item">
-
-                    <a class="nav-link" href="#"><span class="fa-solid fa-bookmark"></span>
-                        Saved list</a>
-                </li>
-                </c:if>
-                <c:if test="${userdata.memberRole eq 0}">
-                <li class="nav-item active">
-                    <a class="nav-link" href="AdminListServlet"><i class="fa fa-home mr-1"></i> Home </a>
-                </li>
-                 </c:if>
             </ul>
 
-
+            <div class="navbar">
+                <c:if test="${empty userdata}">
+                <a type="button" href="https://accounts.google.com/o/oauth2/auth?scope=email profile&redirect_uri=http://localhost:8080/SWP39_LostAndFound/login-google&response_type=code
+    &client_id=287706363103-nelsjcm2sdr3ruldha94fink89tk87tg.apps.googleusercontent.com&approval_prompt=force" style="color: rgb(18, 190, 212);" class="btn btn-login">Login <i
+                class="fa-solid fa-right-to-bracket"></i></a>
+                </c:if>
+                <c:if test="${not empty userdata}">
+                <a class="rounded-circle p-0" type="button" data-toggle="collapse" data-target="#Navbar"> 
+                    <img class="rounded-circle" src="${userdata.picture}" height="30" width="100%">
+                </a>
+                </c:if>
+            </div>
         </nav>
-       <div class="collapse navbar-collapse" id="Navbar">
+            <c:if test="${not empty userdata}">
+        <div class="collapse navbar-collapse" id="Navbar">
             <ul class="navbar-nav container ml-5">
-                <c:if test="${userdata.memberRole eq 1}">
+                <li>
+                    <span class="Nav-username">${userdata.memberName}</span>
+                </li>
                 <li class="nav-item">
                     <a class="nav-link" href="PersonalServlet?uId=${userdata.memberID}"><span class="fa-solid fa-user"></span> Personal
                         Page</a>
                 </li>
-                </c:if>
                 <li class="nav-item active">
                     <a class="nav-link" href="LogoutServlet"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</a>
                 </li>
             </ul>
         </div>
-
+            </c:if>
     </header>
             <div style="margin-left: 20%" id="" class="" role="dialog">
         <div class="m" role="content">
@@ -161,7 +154,7 @@
                                     <c:if test="${action eq 'update'}">
                                     <h3 style="margin-left: 30%; padding-top: 50px; padding-bottom: 50px " class="mt-4 font-strong">UPDATE POST</h3>
                                     </c:if>
-                                    <form <c:if test="${action eq 'create'}"> enctype='multipart/form-data'</c:if> method="POST" class="modal-post--input">
+                                    <form <c:if test="${action eq 'create'}"> enctype='multipart/form-data'</c:if> method="POST">
                                     <table>
                 <tr>
                     
