@@ -189,7 +189,7 @@ background: linear-gradient(to right, #2F80ED, #56CCF2); /* W3C, IE 10+/ Edge, F
 }
 #Navbar{
   position: fixed;
-  margin-left: 83.85%;
+  margin-left: 84.85%;
   z-index: 5;
   margin-top: 12px;
   background: #56CCF2;  /* fallback for old browsers */

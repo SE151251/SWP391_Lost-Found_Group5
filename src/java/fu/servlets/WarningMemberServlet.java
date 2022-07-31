@@ -92,7 +92,7 @@ public class WarningMemberServlet extends HttpServlet {
                             // Tạo thông báo
                             String notiContent = "Your account has been WARNED by ADMIN";
                             ndao.addNewNotifications(new Notification(0, member, memberWarn, null, notiContent, LocalDateTime.now().toString(), 1));
-                            //JavaMailUtil.sendMail(memberWarn.getMemberEmail(), "Your account has been WARNED by ADMIN");
+                            JavaMailUtil.sendMail(memberWarn.getMemberEmail(), "Your account has been WARNED by ADMIN");
                             url = LIST_MEMBERS_PAGE;
 
                             // Trường hợp member bị ban
@@ -114,7 +114,7 @@ public class WarningMemberServlet extends HttpServlet {
                             // Tạo thông báo khi bị Ban
                             String notiContent = "Your account has been BANNED by ADMIN";
                             ndao.addNewNotifications(new Notification(0, member, memberBan, null, notiContent, LocalDateTime.now().toString(), 1));
-                            //JavaMailUtil.sendMail(memberBan.getMemberEmail(), "Your account has been BANNED by ADMIN");
+                            JavaMailUtil.sendMail(memberBan.getMemberEmail(), "Your account has been BANNED by ADMIN");
                             url = LIST_MEMBERS_PAGE;
 
                             // Trường hợp member bị tố cáo không có vấn đề gì
@@ -130,7 +130,7 @@ public class WarningMemberServlet extends HttpServlet {
                             // Tạo thông báo
                             String notiContent = "Your account has been UNLOCKED by ADMIN";
                             ndao.addNewNotifications(new Notification(0, member, memberBan, null, notiContent, LocalDateTime.now().toString(), 1));
-                            //JavaMailUtil.sendMail(memberBan.getMemberEmail(), "Your account has been UNLOCKED by ADMIN");
+                            JavaMailUtil.sendMail(memberBan.getMemberEmail(), "Your account has been UNLOCKED by ADMIN");
                             url = LIST_MEMBERS_PAGE;
                         }
                     } else {

@@ -268,9 +268,9 @@
                                                         <p>Total post type FOUND: ${numberFound}</p>
                                                     </div>
                                                     <div>
-                                                        <h3>Ban/Warn</h3>
-                                                        <c:if test="${MemberInfo.status eq 1}"><a href="WarningMemberServlet?uId=${MemberInfo.memberID}&adminAction=ban">BAN</a> | <a href="WarningMemberServlet?uId=${MemberInfo.memberID}&adminAction=warnMember">WARNING</a></c:if>
-                                                        <c:if test="${MemberInfo.status eq 0}"><a href="WarningMemberServlet?uId=${MemberInfo.memberID}&adminAction=unban">UNBAN</a></c:if>
+                                                        
+                                                        <c:if test="${MemberInfo.status eq 1}"><a class="btn btn-danger" href="WarningMemberServlet?uId=${MemberInfo.memberID}&adminAction=ban">BAN</a> | <a class="btn btn-warning" href="WarningMemberServlet?uId=${MemberInfo.memberID}&adminAction=warnMember">WARNING</a></c:if>
+                                                        <c:if test="${MemberInfo.status eq 0}"><a class="btn btn-success" href="WarningMemberServlet?uId=${MemberInfo.memberID}&adminAction=unban">UNBAN</a></c:if>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -318,7 +318,7 @@
                                                                                         <td>Deleted</td>
                                                                                     </c:if>                                      
                                                                                     <td>${dt.type.typeName}</td>
-                                                                                    <td><a href="ViewDetailServlet?aId=${dt.articleID}">View</a></td></tr>
+                                                                                    <td><a class="badge bg-label-primary me-1" href="ViewDetailServlet?aId=${dt.articleID}">View</a></td></tr>
                                                                             </c:forEach>
                                                                         </tbody>
                                                                     </table>
@@ -328,6 +328,7 @@
                                                                 </div>
                                                             </div>
                                                         </c:if>
+                                 <hr class="my-5" />
                                                         <c:if test="${not empty listReports}">
                                                             <div class="card">
 
@@ -349,9 +350,9 @@
                                                                         <tbody class="table-border-bottom-0">
                                                                             <c:forEach var="dt" items="${listReports}">   
                                                                                 <tr class="table-default">
-                                                                                    <td>
+                                                                                    <td class="d-flex">
                                                                                         
-                                                                                            <span
+                                                                                            <p
                                                                                                 data-bs-toggle="tooltip"
                                                                                                 data-popup="tooltip-custom"
                                                                                                 data-bs-placement="top"
@@ -359,7 +360,7 @@
                                                                                                 title="Christina Parker"
                                                                                                 >
                                                                                                 <img src="${dt.member.picture}" alt="Avatar" class="rounded-circle" />
-                                                                                            </span><strong>${dt.member.memberName}</strong>
+                                                                                            </p><strong class="ml-1">${dt.member.memberName}</strong>
                                                                                         
                                                                                     </td>
 
@@ -373,7 +374,7 @@
                                                                                     <c:if test="${dt.status eq 1}">
                                                                                         <td>Not yet</td>                        
                                                                                     </c:if>
-                                                                                    <td><a href="ViewDetailServlet?memReportID=${dt.member.memberID}&aId=${dt.article.articleID}<c:if test="${dt.status eq 1}">&canConfirm=yes</c:if>">View</a></td>
+                                                                                    <td><a class="badge bg-label-primary me-1" href="ViewDetailServlet?memReportID=${dt.member.memberID}&aId=${dt.article.articleID}<c:if test="${dt.status eq 1}">&canConfirm=yes</c:if>">View</a></td>
                                                                                     </tr>
                                                                             </c:forEach>
                                                                         </tbody>
@@ -388,36 +389,7 @@
                         <!-- / Content -->
 
                         <!-- Footer -->
-                        <footer class="content-footer footer bg-footer-theme">
-                            <div class="container-xxl d-flex flex-wrap justify-content-between py-2 flex-md-row flex-column">
-                                <div class="mb-2 mb-md-0">
-                                    ©
-                                    <script>
-                                        document.write(new Date().getFullYear());
-                                    </script>
-                                    , made with by
-                                    <a href="https://themeselection.com" target="_blank" class="footer-link fw-bolder">ThemeSelection</a>
-                                </div>
-                                <div>
-                                    <a href="https://themeselection.com/license/" class="footer-link me-4" target="_blank">License</a>
-                                    <a href="https://themeselection.com/" target="_blank" class="footer-link me-4">More Themes</a>
-
-                                    <a
-                                        href="https://themeselection.com/demo/sneat-bootstrap-html-admin-template/documentation/"
-                                        target="_blank"
-                                        class="footer-link me-4"
-                                        >Documentation</a
-                                    >
-
-                                    <a
-                                        href="https://github.com/themeselection/sneat-html-admin-template-free/issues"
-                                        target="_blank"
-                                        class="footer-link me-4"
-                                        >Support</a
-                                    >
-                                </div>
-                            </div>
-                        </footer>
+                       
                         <!-- / Footer -->
 
                         <div class="content-backdrop fade"></div>
@@ -432,7 +404,12 @@
 
 
         <!-- Core JS -->
+        <script src="./assets/vendor/libs/jquery/jquery.js"></script>
+    <script src="./assets/vendor/libs/popper/popper.js"></script>
+    <script src="./assets/vendor/js/bootstrap.js"></script>
+    <script src="./assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
 
+    <script src="./assets/vendor/js/menu.js"></script>
         <!-- Main JS -->
         <script src="./assets/js/main.js"></script>
 
