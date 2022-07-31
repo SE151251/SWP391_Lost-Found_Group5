@@ -174,12 +174,17 @@
               <div class="navbar-nav align-items-center">
                 <div class="nav-item d-flex align-items-center">
                   <i class="bx bx-search fs-4 lh-0"></i>
-                  <input
+                  <%--<input
                     type="text"
                     class="form-control border-0 shadow-none"
                     placeholder="Search..."
                     aria-label="Search..."
-                  />
+                  /> --%>
+                  <form action="SearchServlet">
+            <input type="text" name="txtMemberName" value="" placeholder="Enter member name"/>
+           <input type="hidden" name="searchAction" value="Member"/>
+            <input type="submit" value="Search"/>
+        </form> 
                 </div>
               </div>
               <ul class="navbar-nav flex-row align-items-center ms-auto">
@@ -255,8 +260,8 @@
                     <c:if test="${not empty listMembers}">
                     <c:forEach var="dt" items="${listMembers}">   
                     <tr class="table-default">
-                        <td>
-                          
+                        <td> 
+                            <div class="list-unstyled users-list m-0 d-flex align-items-center">
                             <span
                               data-bs-toggle="tooltip"
                               data-popup="tooltip-custom"
@@ -266,7 +271,7 @@
                             >
                               <img src="${dt.picture}" alt="Avatar" class="rounded-circle" />
                             </span><strong>${dt.memberName}</strong>
-                          
+                            </div>
                         </td>
                         
                         <td>${dt.memberEmail}</td>
@@ -285,7 +290,7 @@
                     <tr class="table-default">
                         <td>
                           <div class="list-unstyled users-list m-0 d-flex align-items-center">
-                            <p
+                            <span
                               data-bs-toggle="tooltip"
                               data-popup="tooltip-custom"
                               data-bs-placement="top"
@@ -293,10 +298,11 @@
                               title="Christina Parker"
                             >
                               <img src="${dt.picture}" alt="Avatar" class="rounded-circle" />
-                            </p>
+                              <strong>${dt.memberName}</strong>
+                            </span>
                           </div>
                         </td>
-                        <td><strong>${dt.memberName}</strong></td>
+                        
                         <td>${dt.memberEmail}</td>
                         <td>${dt.memberCount}</td>
                         <td>

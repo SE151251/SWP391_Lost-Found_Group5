@@ -32,6 +32,7 @@ public class WarningMemberServlet extends HttpServlet {
 
     private static final String ADMIN = "AdminListServlet";
     private static final String LIST_MEMBERS_PAGE = "ListMemberServlet";
+    private static final String HOME = "paging";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -133,17 +134,20 @@ public class WarningMemberServlet extends HttpServlet {
                             url = LIST_MEMBERS_PAGE;
                         }
                     } else {
-                        request.setAttribute("errormessage", "Your account has been banned!");
-                        request.getRequestDispatcher("paging").forward(request, response);
+                        request.setAttribute("errormessage", "Your account has been banned! Cannot use this function");
+                        //request.getRequestDispatcher("AdminListServlet").forward(request, response);
+                        url=ADMIN;
                     }
                 } else {
                     request.setAttribute("errormessage", "Incorrect Role! Must be ADMIN");
-                    request.getRequestDispatcher("paging").forward(request, response);
+                    //request.getRequestDispatcher("paging").forward(request, response);
+                    url=HOME;
                 }
 
             } else {
                 request.setAttribute("errormessage", "Please login!");
-                request.getRequestDispatcher("paging").forward(request, response);
+                //request.getRequestDispatcher("paging").forward(request, response);
+                url=HOME;
             }
         } catch (Exception e) {
             e.printStackTrace();

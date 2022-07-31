@@ -240,8 +240,14 @@ public class CreateServlet extends HttpServlet {
                         request.setAttribute("postTypeId", Integer.parseInt(postTypeId));
                     }
                 } else {
-                    request.setAttribute("errormessage", "Your account has been banned!");
-                    request.getRequestDispatcher("paging").forward(request, response);
+                    request.setAttribute("errormessage", "Your account has been banned! Cannot use this function!");
+                    if(memberLogin.getMemberRole()==0){
+                    request.getRequestDispatcher("AdminListServlet").forward(request, response);
+                    }else if(memberLogin.getMemberRole()==1){
+                    request.getRequestDispatcher("paging").forward(request, response);   
+                    }else{
+                    request.getRequestDispatcher("paging").forward(request, response);       
+                    }
                 }
             } else {
                 request.setAttribute("errormessage", "Please login!");

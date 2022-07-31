@@ -107,8 +107,9 @@
         </div>
             </c:if>
     </header>
-
+    
     <div class="search-form">
+        <h3 style="color: red; font-weight: bold; text-align: center">${errormessage}</h3>
         <i class="fa-solid fa-magnifying-glass search-icon"></i>
         <form class="search col-md-4">
             <div class="search-field">
@@ -122,15 +123,20 @@
     <div id="header-carousel" class="carousel slide mt-3" data-ride="carousel">
         <div class="carousel-inner">
             <div class="carousel-item active" style="height: 410px;">
-                <img class="img-fluid" src="images/Logo_LostFound.png" alt="Image">
-                
+                <img class="img-fluid" src="images/fptHcm.png" alt="Image">
+                <div class="carousel-caption d-flex flex-column align-items-center justify-content-end">
+                    <div class="p-3" style="max-width: 700px;">
+                        <h2 class="text-uppercase font-weight-medium mb-3">FPTU Lost & Found</h2>
+                        <h4 class="display-4 text-white font-weight-semi-bold mb-4">The easy way to find your lost items</h4>
+                    </div>
+                </div>
             </div>
             <div class="carousel-item " style="height: 410px;">
                 <img class="img-fluid" src="images/fptHcm.png" alt="Image">
                 <div class="carousel-caption d-flex flex-column align-items-center justify-content-end">
                     <div class="p-3" style="max-width: 700px;">
-                        <h4 class="text-uppercase font-weight-medium mb-3">FPTU Lost&Found</h4>
-                        <h3 class="display-4 text-white font-weight-semi-bold mb-4">The easy way to find your items</h3>
+                        <h2 class="text-uppercase font-weight-medium mb-3">FPTU Lost & Found</h2>
+                        <h4 class="display-4 text-white font-weight-semi-bold mb-4">A place where you help those who have lost their belongings</h4>
                     </div>
                 </div>
             </div>
@@ -338,9 +344,6 @@
 
     <!-- jQuery first, then Popper.js, then Bootstrap JS. -->
     <script src="js/mycode.js"></script>
-   <!-- <script src="node_modules/jquery/dist/jquery.slim.min.js"></script>
-    <script src="node_modules/popper.js/dist/umd/popper.min.js"></script>
-    <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script> -->
 </body>
 
 </html>

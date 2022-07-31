@@ -76,7 +76,7 @@ public class ViewDetailMemberByAdminServlet extends HttpServlet {
                         request.setAttribute("listPostWarning", listPostWarning);
                     } else {
                         request.setAttribute("errormessage", "Your account has been banned!");
-                        request.getRequestDispatcher("paging").forward(request, response);
+                        request.getRequestDispatcher("AdminListServlet").forward(request, response);
                     }
                 } else {
                     request.setAttribute("errormessage", "Incorrect Role! Must be ADMIN");

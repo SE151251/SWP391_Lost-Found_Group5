@@ -17,7 +17,7 @@
     />
 
     <title>Dashboard</title>
-
+    
     <meta name="description" content="" />
 
     <!-- Favicon -->
@@ -72,9 +72,9 @@
         ]);
 		//Create option for chart
         var options = {
-          title: 'Lost And Found',
-          'width': 800,
-          'height': 600
+          title: 'The pie chart shows the total number of active Lost and Found articles on the system',
+          'width': 1000,
+          'height': 800
         };
 
         // Instantiate and draw our chart, passing in some options.
@@ -189,7 +189,7 @@
         <!-- Layout container -->
         <div class="layout-page">
           <!-- Navbar -->
-
+          <h3 style="color: red; font-weight: bold; text-align: center">${errormessage}</h3>
           <nav
             class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme"
             id="layout-navbar"
@@ -262,7 +262,7 @@
                       <div class="d-flex justify-content-between flex-sm-row flex-column gap-3">
                         <div class="d-flex flex-sm-column flex-row align-items-start justify-content-between">
                           <div class="card-title">
-                            <h5 class="text-nowrap mb-2">Total Report Today</h5>
+                            <h5 class="text-nowrap mb-2">Total Report Not Confirm</h5>
                           
                           </div>
                           <div class="mt-sm-auto">
@@ -347,7 +347,7 @@
               <!-- Contextual Classes -->
 
               <div class="card">
-                <h5 class="card-header">Reports</h5>
+                <h5 class="card-header">List Reports Not Confirm</h5>
                 <div class="table-responsive text-nowrap">
                   <table class="table">
                     <thead>
@@ -364,7 +364,7 @@
                     <c:forEach var="dt" items="${listRp}" >  
                     <tr class="table-default">
                         <td>
-                          
+                            <div class="list-unstyled users-list m-0 d-flex align-items-center">
                             <span
                               data-bs-toggle="tooltip"
                               data-popup="tooltip-custom"
@@ -374,9 +374,8 @@
                             >
                               <img src="${dt.member.picture}" alt="Avatar" class="rounded-circle" />
                             </span><strong>${dt.member.memberName}</strong>
-                          
-                        </td>
-                        <td><strong>${dt.member.memberName}</strong></td>
+                          </div>
+                        </td>                      
                         <td>${dt.article.title}</td>
                         <td>${dt.reportContent}</td>
                         <td>${dt.reportTime}</td>

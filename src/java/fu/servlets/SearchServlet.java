@@ -34,6 +34,7 @@ public class SearchServlet extends HttpServlet {
     private static final String HOME_FIND = "home.jsp";
     private static final String HOME_RETURN = "homeReturn.jsp";
     private static final String HOME_NOTICE = "notification.jsp";
+     private static final String ADMIN_NOTICE = "listPostAdmin.jsp";
     private static final String ADMIN = "AdminListServlet";
     private static final String MEMBER_LIST = "listMember.jsp";
     private static final String LOGIN = "login.jsp";
@@ -117,14 +118,19 @@ public class SearchServlet extends HttpServlet {
                                 uri = HOME_RETURN;
                             } else if (searchAction.equals("Notice")) {
                                 List<Article> listArtsShare = adao.searchAllArticlesNoticeByName(key);
-                                request.setAttribute("articlesShare", listArtsShare);
+                                request.setAttribute("articlesNotice", listArtsShare);
 
                                 List<Item> listI = iDao.getAllItems();
                                 request.setAttribute("ListItemType", listI);
 
                                 List<ArticleHashTag> listAH = ahDao.getAllArticleHashtag();
                                 request.setAttribute("listAH", listAH);
+                                if(memberLogin.getMemberRole() == 1){
                                 uri = HOME_NOTICE;
+                                }
+                                else if(memberLogin.getMemberRole()==0){
+                                uri=ADMIN_NOTICE;
+                                }
                             }
                         } //search theo hashtag
                         else if (hId != null) {
@@ -150,7 +156,7 @@ public class SearchServlet extends HttpServlet {
                                 uri = HOME_RETURN;
                             } else if (searchAction.equals("Notice")) {
                                 List<Article> listArtsShare = adao.searchAllArticlesNoticeByHashtag(hId);
-                                request.setAttribute("articlesShare", listArtsShare);
+                                request.setAttribute("articlesNotice", listArtsShare);
 
                                 List<Item> listI = iDao.getAllItems();
                                 request.setAttribute("ListItemType", listI);
@@ -170,7 +176,7 @@ public class SearchServlet extends HttpServlet {
                         request.setAttribute("errormessage", "Your account can not use this function!");
                         uri = ADMIN;
                     }
-            } else {
+            } else { // Với trường hợp ko login
                 // Xử lý loại đồ cần filter
                 String itemId = request.getParameter("txtItem");
                 String key = request.getParameter("keySearch");
@@ -236,7 +242,7 @@ public class SearchServlet extends HttpServlet {
                         uri = HOME_RETURN;
                     } else if (searchAction.equals("Notice")) {
                         List<Article> listArtsShare = adao.searchAllArticlesNoticeByName(key);
-                        request.setAttribute("articlesShare", listArtsShare);
+                        request.setAttribute("articlesNotice", listArtsShare);
 
                         List<Item> listI = iDao.getAllItems();
                         request.setAttribute("ListItemType", listI);
@@ -269,7 +275,7 @@ public class SearchServlet extends HttpServlet {
                         uri = HOME_RETURN;
                     } else if (searchAction.equals("Notice")) {
                         List<Article> listArtsShare = adao.searchAllArticlesNoticeByHashtag(hId);
-                        request.setAttribute("articlesShare", listArtsShare);
+                        request.setAttribute("articlesNotice", listArtsShare);
 
                         List<Item> listI = iDao.getAllItems();
                         request.setAttribute("ListItemType", listI);

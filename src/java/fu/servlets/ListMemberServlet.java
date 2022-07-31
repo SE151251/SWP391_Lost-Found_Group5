@@ -50,7 +50,7 @@ public class ListMemberServlet extends HttpServlet {
                         request.getRequestDispatcher("listMember.jsp").forward(request, response);
                     } else {
                         request.setAttribute("errormessage", "Your account has been banned!");
-                        request.getRequestDispatcher("paging").forward(request, response);
+                        request.getRequestDispatcher("AdminListServlet").forward(request, response);
                     }
                 } else {
                     request.setAttribute("errormessage", "Incorrect ROLE! Must be ADMIN");

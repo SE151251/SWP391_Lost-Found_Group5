@@ -92,8 +92,14 @@ public class UpdateFormServlet extends HttpServlet {
                         request.getRequestDispatcher("form.jsp").forward(request, response);
                     }
                 } else {
-                    request.setAttribute("errormessage", "Your account has been banned!");
-                    request.getRequestDispatcher("paging").forward(request, response);
+                    request.setAttribute("errormessage", "Your account has been banned! Cannot use this function!");
+                    if(member.getMemberRole()==0){
+                    request.getRequestDispatcher("AdminListServlet").forward(request, response);
+                    }else if(member.getMemberRole()==1){
+                    request.getRequestDispatcher("paging").forward(request, response);   
+                    }else{
+                    request.getRequestDispatcher("paging").forward(request, response);       
+                    }
                 }
             } else {
                 request.setAttribute("errormessage", "Please login!");

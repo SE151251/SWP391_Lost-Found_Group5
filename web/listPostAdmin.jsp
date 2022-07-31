@@ -182,12 +182,20 @@
               <div class="navbar-nav align-items-center">
                 <div class="nav-item d-flex align-items-center">
                   <i class="bx bx-search fs-4 lh-0"></i>
-                  <input
+                <%--  <input
                     type="text"
                     class="form-control border-0 shadow-none"
                     placeholder="Search..."
                     aria-label="Search..."
-                  />
+                  /> --%>
+                  <form class="search col-md-4">
+            <div class="search-field">
+                <input type="text" name="keySearch" class="search-input p-1" placeholder="Input here">
+                <input type="hidden" name="searchAction" value="Notice"/>
+            </div>
+
+            <button formaction="SearchServlet" class="search-button p-1 pl-3 pr-3 ml-2">Search</button>
+        </form>
                 </div>
               </div>
               <ul class="navbar-nav flex-row align-items-center ms-auto">
