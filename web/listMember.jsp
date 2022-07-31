@@ -45,6 +45,8 @@
     
 
     <!-- Core CSS -->   
+    <link rel="stylesheet" href="./assets/vendor/css/core.css" />   
+    <link rel="stylesheet" href="./assets/vendor/css/theme-default.css" />   
     <link rel="stylesheet" href="./assets/css/demo.css" />   
     <script src="./assets/js/config.js"></script>
 
@@ -56,7 +58,7 @@
       <div class="layout-container">
         <!-- Menu -->
 
-        <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
+       <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
           <div class="app-brand demo">
             <a href="index.html" class="app-brand-link">
               <span class="app-brand-logo demo">
@@ -116,25 +118,28 @@
               </span>
               <span class="demo menu-text fw-bolder ms-2">FPTU Lost&Found</span>
             </a>
+              <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
+              <i class="bx bx-chevron-left bx-sm align-middle"></i>
+            </a>
           </div>
 
           <div class="menu-inner-shadow"></div>
 
             <ul class="menu-inner py-1">
             <!-- Dashboard -->
-            <li class="menu-item active">
+            <li class="menu-item ">
               <a href="AdminListServlet" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-home-circle"></i>
                 <div data-i18n="Analytics">Dashboard</div>
               </a>
             </li>
-            <li class="menu-item">
-              <a href="#" class="menu-link ">
+            <li class="menu-item ">
+              <a href="paging2" class="menu-link ">
                 <i class="menu-icon tf-icons bx bx-dock-top"></i>
                 <div data-i18n="Tables">List Posts</div>
               </a>
             </li>
-            <li class="menu-item">
+            <li class="menu-item active">
               <a href="ListMemberServlet" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-lock-open-alt"></i>
                 <div data-i18n="Authentications">List Members</div>
@@ -152,7 +157,7 @@
         <!-- Layout container -->
         <div class="layout-page">
           <!-- Navbar -->
-
+          
           <nav
             class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme"
             id="layout-navbar"
@@ -163,13 +168,20 @@
               </a>
             </div>
 
-              <!-- /Search -->
               
-        <form action="SearchServlet">
-            <input type="text" name="txtMemberName" value="" placeholder="Enter member name"/>
-           <input type="hidden" name="searchAction" value="Member"/>
-            <input type="submit" value="Search"/>
-        </form>       
+               <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
+              <!-- Search -->
+              <div class="navbar-nav align-items-center">
+                <div class="nav-item d-flex align-items-center">
+                  <i class="bx bx-search fs-4 lh-0"></i>
+                  <input
+                    type="text"
+                    class="form-control border-0 shadow-none"
+                    placeholder="Search..."
+                    aria-label="Search..."
+                  />
+                </div>
+              </div>
               <ul class="navbar-nav flex-row align-items-center ms-auto">
                 <!-- Place this tag where you want the button to render. -->
 
@@ -178,7 +190,7 @@
                 <li class="nav-item navbar-dropdown dropdown-user dropdown">
                   <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
                     <div class="avatar avatar-online">
-                      <img src="../assets/img/avatars/1.png" alt class="w-px-40 h-auto rounded-circle" />
+                      <img src="${userdata.picture}" alt class="w-px-40 h-auto rounded-circle" />
                     </div>
                   </a>
                   <ul class="dropdown-menu dropdown-menu-end">
@@ -187,11 +199,11 @@
                         <div class="d-flex">
                           <div class="flex-shrink-0 me-3">
                             <div class="avatar avatar-online">
-                              <img src="../assets/img/avatars/1.png" alt class="w-px-40 h-auto rounded-circle" />
+                              <img src="${userdata.picture}" alt class="w-px-40 h-auto rounded-circle" />
                             </div>
                           </div>
                           <div class="flex-grow-1">
-                            <span class="fw-semibold d-block">John Doe</span>
+                            <span class="fw-semibold d-block">${userdata.memberName}</span>
                             <small class="text-muted">Admin</small>
                           </div>
                         </div>
@@ -201,31 +213,10 @@
                       <div class="dropdown-divider"></div>
                     </li>
                     <li>
-                      <a class="dropdown-item" href="#">
-                        <i class="bx bx-user me-2"></i>
-                        <span class="align-middle">My Profile</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a class="dropdown-item" href="#">
-                        <i class="bx bx-cog me-2"></i>
-                        <span class="align-middle">Settings</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a class="dropdown-item" href="#">
-                        <span class="d-flex align-items-center align-middle">
-                          <i class="flex-shrink-0 bx bx-credit-card me-2"></i>
-                          <span class="flex-grow-1 align-middle">Billing</span>
-                          <span class="flex-shrink-0 badge badge-center rounded-pill bg-danger w-px-20 h-px-20">4</span>
-                        </span>
-                      </a>
-                    </li>
-                    <li>
                       <div class="dropdown-divider"></div>
                     </li>
                     <li>
-                      <a class="dropdown-item" href="auth-login-basic.html">
+                      <a class="dropdown-item" href="LogoutServlet">
                         <i class="bx bx-power-off me-2"></i>
                         <span class="align-middle">Log Out</span>
                       </a>
@@ -234,7 +225,7 @@
                 </li>
                 <!--/ User -->
               </ul>
-            </>
+            <div/>
           </nav>
 
           <!-- / Navbar -->

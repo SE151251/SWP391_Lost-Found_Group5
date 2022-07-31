@@ -136,4 +136,30 @@ public class NotificationDAO {
         }
         return false;
     }
+    public boolean removeNotification(int aId)
+            throws Exception, SQLException {
+        Connection con = null;
+        PreparedStatement stm = null;
+        try {
+            con = DBUtils.makeConnection();
+            if (con != null) {
+                String sql = "Delete From Notification "
+                        + "Where ArticleID = ?";
+                stm = con.prepareStatement(sql);
+                stm.setInt(1, aId);
+                int row = stm.executeUpdate();
+                if (row > 0) {
+                    return true;
+                }
+            }
+        } finally {
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return false;
+    }
 }

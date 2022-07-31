@@ -143,12 +143,12 @@ public class CreateServlet extends HttpServlet {
                     Part filePart = request.getPart("photo");
                     String postURL = getFileName(filePart);
                     if (!postURL.equals("")) {
-                        if (postURL.length() > 50) {
-                            errorURL = "URL's length must be at most 50";
+                    if (postURL.length() > 50) {
+                            errorURL = "Image name must be at most 50";
                             valid = false;
                         }
-                        if (!(postURL.endsWith(".png") || postURL.endsWith(".jpg"))) {
-                            errorURL = "Image must be a PNG or JPG file";
+                    if (!(postURL.endsWith(".png") || postURL.endsWith(".jpg"))) {
+                            errorURL = "Image type must be a PNG or JPG file";
                             valid = false;
                         }
                     }

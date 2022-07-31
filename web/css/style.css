@@ -35,7 +35,7 @@ h6 {
   overflow-wrap: break-word;
 }
 a{
-  color: black;
+  color: black ;
 }
 body{
 
@@ -225,17 +225,18 @@ background: linear-gradient(to right, #2F80ED, #56CCF2); /* W3C, IE 10+/ Edge, F
 }
 .tabs{
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   margin-top: 20px;
 }
 .nav-link{
   color: white;
 }
 .tab-item{
-  
-  font-weight: 500;
+  font-size: 24px;
+  font-weight: 700;
   padding: 19px 40px 10px 40px;
   text-align: center;
+  margin-right: 10.5%;
 }
 .tab-item:hover{
   opacity: 0.8;
@@ -253,6 +254,10 @@ background: linear-gradient(to right, #2F80ED, #56CCF2); /* W3C, IE 10+/ Edge, F
   font-weight: 500;
   padding: 19px 40px 10px 40px;
   text-align: center;
+  
+}
+.tab-item a{
+    color: black ;
 }
 .tab-items:hover{
   opacity: 0.8;
@@ -285,11 +290,11 @@ background: linear-gradient(to right, #2F80ED, #56CCF2); /* W3C, IE 10+/ Edge, F
   background-size: 500% 500%;
   animation: gradient 5s ease alternate infinite;
 }
-/* .tab-item:active .line{
+ 
+ .tab-item:not(:disabled):not(.disabled).active > a{
+  color:white;
   
-  height: 4px;
-  
-} */
+} 
 @keyframes gradient {
   0% {
     background-position: 0% 50%;
@@ -331,7 +336,7 @@ display: none;
   word-wrap: normal;
   overflow: hidden;
   text-overflow: ellipsis;
-
+  min-height: 250px;
 }
 .pane:hover .pane-content{
   background-color: #0f0f0f1c;
@@ -342,10 +347,11 @@ display: none;
   opacity: 0.7;
 }
 .pane-img img{  
+    height: 370px;
+    width: 370px;
   transition: .5s;
   display: inline-block;
   position: relative;
-  left: 20%;
   object-fit: contain;
 }
 .pane-img{
@@ -421,7 +427,7 @@ background: linear-gradient(to right, #2F80ED, #56CCF2); /* W3C, IE 10+/ Edge, F
 .filter-btn{
   background: white;
   color: blue; 
-  width: 80px;
+  width: 90px;
   height: 36px;
   border: solid 1px rgb(0, 183, 255);
 }
@@ -581,9 +587,9 @@ background: linear-gradient(to right, #2F80ED, #56CCF2); /* W3C, IE 10+/ Edge, F
   background: linear-gradient(to right, #2F80ED, #56CCF2); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 .btn-login{
-  background: white;
+  background: white !important;
   font-weight: 700;
-  font-size: 15px;
+  color: #56CCF2;
 }
 input[type="file"] {
   display: none;
@@ -602,4 +608,25 @@ input[type="file"] {
 }*/
 .pagination{     
     justify-content: flex-end;
+}
+.img-fluid{
+    transform: translateX(21.5%);
+    width:70% !important ; 
+    height: 95% !important;
+        object-fit: cover;
+}
+.about-img img{
+    height: 380px;
+    width: 380px;
+    border: 3px solid #56CCF2;
+}
+.circle-online{
+    background: #2a1fcb;
+    border: 0.1875em solid #2a1fcb;
+    border-radius: 50%;
+    box-shadow: 0.375em 0.375em 0 0 rgb(224 235 224 / 13%);
+    height: 1em;
+    width: 1em;
+    margin-bottom: -19px;
+    transform: translate(217px, -21px);
 }

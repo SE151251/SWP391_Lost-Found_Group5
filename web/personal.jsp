@@ -41,7 +41,9 @@
                     style="display: inline-block; position: absolute; width: 3%; right: -5px;"
                     onclick="UserSettingToggle()">
                     <h3><i class="fa-solid fa-bell text-white bell-counter"></i></h3>
+                   <c:if test="${totalNotiNew ne 0}">
                     <span class="badge badge-danger badge-counter">${totalNotiNew}</span>
+                    </c:if>
                 </div>
                 <div class="user-settings">
                     <div class="card-header card-center">
@@ -62,7 +64,7 @@
                             <div class="notification-avatar" style="background-color: white;">
                                 <div class="avatar avatar-2x1 me-3" style="position: relative; padding-right: 5px">
                                     <img class="rounded-circle" src="${noti.sender.picture}"
-                                        style="width: 55px; height: 55px;">
+                                        style="width: 117px; height: 55px;">
                                 </div>
                             </div>
                             <div class="notification-body" style="background-color: white;">
@@ -74,6 +76,9 @@
                                     <span class="me-2" role="img" aria-label="Emoji"></span>
                                     ${noti.notiTime}
                                 </span>
+                                <c:if test="${noti.status eq 1}">
+                                <div class="circle-online"></div>
+                                </c:if>
                             </div>
                         </a>
                     </div>
@@ -126,7 +131,7 @@
 
                     <div class="col-lg-7 col-md-6">
                         <div class="about-content" data-aos="fade-left" data-aos-delay="100">
-                            <h2>About Me</h2>
+                            <h2 class="text-primary">About Me</h2>
                             <h3>${memberInfo.memberName}</h3>
                             <h4><span><i class="fa-solid fa-envelope"></i>Email: </span>${memberInfo.memberEmail}</h4>
                             <c:if test="${userdata.memberID ne memberInfo.memberID}"> 
@@ -141,7 +146,7 @@
                                         <br/>    
                                         <font color="red"> ${errorProfile} </font>
                                         <br/>
-                                        <input type="submit" value="Save"/>
+                                        <input class="btn btn-primary" type="submit" value="Save"/>
                                     </form>
                                 </c:if>
                         </div>

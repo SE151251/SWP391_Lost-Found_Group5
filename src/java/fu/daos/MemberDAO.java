@@ -6,7 +6,6 @@
 package fu.daos;
 
 import fu.dbhelper.DBUtils;
-import fu.entities.Campus;
 import fu.entities.Member;
 import java.sql.Connection;
 import java.sql.PreparedStatement;

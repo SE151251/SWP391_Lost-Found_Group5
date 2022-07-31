@@ -31,7 +31,9 @@
                     style="display: inline-block; position: absolute; width: 3%; right: -5px;"
                     onclick="UserSettingToggle()">
                     <h3><i class="fa-solid fa-bell text-white bell-counter"></i></h3>
+                   <c:if test="${totalNotiNew ne 0}">
                     <span class="badge badge-danger badge-counter">${totalNotiNew}</span>
+                    </c:if>
                 </div>
                 <div class="user-settings">
                     <div class="card-header card-center">
@@ -46,13 +48,13 @@
                 <c:forEach var="noti" items="${listNoti}" >
                     <div class="list-group-item">
                         <a class="notification" style="text-decoration: none" 
-                        <c:if test="${empty noti.article}">href="paging1?notiID=${noti.notiId}"</c:if>
+                        <c:if test="${empty noti.article}">href="paging?notiID=${noti.notiId}"</c:if>
                         <c:if test="${not empty noti.article}">href="ViewDetailServlet?aId=${noti.article.articleID}&notiID=${noti.notiId}"</c:if>
                         >
                             <div class="notification-avatar" style="background-color: white;">
                                 <div class="avatar avatar-2x1 me-3" style="position: relative; padding-right: 5px">
                                     <img class="rounded-circle" src="${noti.sender.picture}"
-                                        style="width: 55px; height: 55px;">
+                                        style="width: 117px; height: 55px;">
                                 </div>
                             </div>
                             <div class="notification-body" style="background-color: white;">
@@ -64,6 +66,9 @@
                                     <span class="me-2" role="img" aria-label="Emoji"></span>
                                     ${noti.notiTime}
                                 </span>
+                                <c:if test="${noti.status eq 1}">
+                                <div class="circle-online"></div>
+                                </c:if>
                             </div>
                         </a>
                     </div>
@@ -75,7 +80,7 @@
             <div class="navbar">
                 <c:if test="${empty userdata}">
                 <a type="button" href="https://accounts.google.com/o/oauth2/auth?scope=email profile&redirect_uri=http://localhost:8080/SWP39_LostAndFound/login-google&response_type=code
-    &client_id=287706363103-nelsjcm2sdr3ruldha94fink89tk87tg.apps.googleusercontent.com&approval_prompt=force" style="color: rgb(18, 190, 212);" class="btn btn-login">Login <i
+    &client_id=287706363103-nelsjcm2sdr3ruldha94fink89tk87tg.apps.googleusercontent.com&approval_prompt=force" class="btn text-primary btn-login">Login <i
                 class="fa-solid fa-right-to-bracket"></i></a>
                 </c:if>
                 <c:if test="${not empty userdata}">
@@ -108,7 +113,7 @@
         <form class="search col-md-4">
             <div class="search-field">
                 <input type="text" name="keySearch" class="search-input p-1" placeholder="Input here">
-                <input type="hidden" name="searchAction" value="Return"/>
+                <input type="hidden" name="searchAction" value="Find"/>
             </div>
 
             <button formaction="SearchServlet" class="search-button p-1 pl-3 pr-3 ml-2">Search</button>
@@ -118,16 +123,10 @@
         <div class="carousel-inner">
             <div class="carousel-item active" style="height: 410px;">
                 <img class="img-fluid" src="images/Logo_LostFound.png" alt="Image">
-                <div class="carousel-caption d-flex flex-column align-items-center justify-content-end">
-                    <div class="p-3" style="max-width: 700px;">
-                        <h4 class="text-uppercase font-weight-medium mb-3">FPTU Lost&Found</h4>
-                        <h3 class="display-4 text-white font-weight-semi-bold mb-4">The easy way to find your items</h3>
-                        <!-- <a href="" class="btn btn-light py-2 px-3"></a> -->
-                    </div>
-                </div>
+                
             </div>
             <div class="carousel-item " style="height: 410px;">
-                <img class="img-fluid" src="images/Logo_LostFound.png" alt="Image">
+                <img class="img-fluid" src="images/fptHcm.png" alt="Image">
                 <div class="carousel-caption d-flex flex-column align-items-center justify-content-end">
                     <div class="p-3" style="max-width: 700px;">
                         <h4 class="text-uppercase font-weight-medium mb-3">FPTU Lost&Found</h4>
@@ -149,12 +148,12 @@
     </div>
     <div class="tabs">
         <div style="width: 45px;" class="dropdown filter">
-            <div style="width: 80px; padding: 0;" class="dropdown-select">
-                <span class="dropdown-value filter-btn btn"><i class=" fa-solid fa-filter"></i> Filter</span>
+            <div style="width: 90px; padding: 0;" class="dropdown-select">
+                <span class="dropdown-value text-white filter-btn btn"><i class=" fa-solid fa-filter"></i> Filter</span>
             </div>
-            <div style=" min-width: 170px; max-width: 200px;" class="dropdown-list filter-list mt-3">
+            <div style=" min-width: 180px; max-width: 200px;" class="dropdown-list filter-list mt-3">
                 <c:forEach var="dt" items="${ListItemType}" > 
-                <a href="SearchServlet?txtItem=${dt.itemID}&searchAction=Return" class="dropdown-item filter-item text-white"><c:out value="${dt.itemName}"/></a>
+                <a href="SearchServlet?txtItem=${dt.itemID}&searchAction=Find" class="dropdown-item filter-item text-white"><c:out value="${dt.itemName}"/></a>
                 </c:forEach>               
             </div>
         </div>

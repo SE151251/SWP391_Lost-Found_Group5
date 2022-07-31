@@ -11,7 +11,7 @@
   class="light-style layout-menu-fixed"
   dir="ltr"
   data-theme="theme-default"
-  data-assets-path="../assets/"
+  data-assets-path="./assets/"
   data-template="vertical-menu-template-free"
 >
   <head>
@@ -21,17 +21,12 @@
       content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
     />
 
-    <title>Members Management</title>
+    <title>List Post</title>
 
     <meta name="description" content="" />
-<script src="https://kit.fontawesome.com/f2fda88f12.js" crossorigin="anonymous"></script>
-    
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
-  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.slim.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
+
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="./assets/img/favicon/favicon.ico" />
+    <link rel="icon" type="image/x-icon" href="../assets/img/favicon/favicon.ico" />
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -42,11 +37,26 @@
     />
 
     <!-- Icons. Uncomment required icon fonts -->
-    
+    <link rel="stylesheet" href="./assets/vendor/fonts/boxicons.css" />
 
-    <!-- Core CSS -->   
-    <link rel="stylesheet" href="./assets/css/demo.css" />   
-    <script src="./assets/js/config.js"></script>
+    <!-- Core CSS -->
+    <link rel="stylesheet" href="./assets/vendor/css/core.css" class="template-customizer-core-css" />
+    <link rel="stylesheet" href="./assets/vendor/css/theme-default.css" class="template-customizer-theme-css" />
+    <link rel="stylesheet" href="./assets/css/demo.css" />
+    <link rel="stylesheet" href=./css/style.css" />
+    <!-- Vendors CSS -->
+    <link rel="stylesheet" href="./assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
+
+    <link rel="stylesheet" href="./assets/vendor/libs/apex-charts/apex-charts.css" />
+
+    <!-- Page CSS -->
+
+    <!-- Helpers -->
+    <script src="../assets/vendor/js/helpers.js"></script>
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
+    <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
+    <script src="../assets/js/config.js"></script>
     <jsp:useBean id="a" class="fu.daos.ArticleDAO" scope="request"></jsp:useBean>
   </head>
 
@@ -116,20 +126,23 @@
               </span>
               <span class="demo menu-text fw-bolder ms-2">FPTU Lost&Found</span>
             </a>
+              <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
+              <i class="bx bx-chevron-left bx-sm align-middle"></i>
+            </a>
           </div>
 
           <div class="menu-inner-shadow"></div>
 
             <ul class="menu-inner py-1">
             <!-- Dashboard -->
-            <li class="menu-item active">
+            <li class="menu-item ">
               <a href="AdminListServlet" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-home-circle"></i>
                 <div data-i18n="Analytics">Dashboard</div>
               </a>
             </li>
-            <li class="menu-item">
-              <a href="#" class="menu-link ">
+            <li class="menu-item active">
+              <a href="paging2" class="menu-link ">
                 <i class="menu-icon tf-icons bx bx-dock-top"></i>
                 <div data-i18n="Tables">List Posts</div>
               </a>
@@ -152,7 +165,7 @@
         <!-- Layout container -->
         <div class="layout-page">
           <!-- Navbar -->
-
+          
           <nav
             class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme"
             id="layout-navbar"
@@ -163,15 +176,20 @@
               </a>
             </div>
 
-              <!-- /Search --> 
-              <form class="search col-md-4">
-            <div class="search-field">
-                <input type="text" name="keySearch" class="search-input p-1" placeholder="Input here">
-                <input type="hidden" name="searchAction" value="Notice"/>
-            </div>
-
-            <button formaction="SearchServlet" class="search-button p-1 pl-3 pr-3 ml-2">Search</button>
-        </form>
+              
+               <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
+              <!-- Search -->
+              <div class="navbar-nav align-items-center">
+                <div class="nav-item d-flex align-items-center">
+                  <i class="bx bx-search fs-4 lh-0"></i>
+                  <input
+                    type="text"
+                    class="form-control border-0 shadow-none"
+                    placeholder="Search..."
+                    aria-label="Search..."
+                  />
+                </div>
+              </div>
               <ul class="navbar-nav flex-row align-items-center ms-auto">
                 <!-- Place this tag where you want the button to render. -->
 
@@ -180,7 +198,7 @@
                 <li class="nav-item navbar-dropdown dropdown-user dropdown">
                   <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
                     <div class="avatar avatar-online">
-                      <img src="../assets/img/avatars/1.png" alt class="w-px-40 h-auto rounded-circle" />
+                      <img src="${userdata.picture}" alt class="w-px-40 h-auto rounded-circle" />
                     </div>
                   </a>
                   <ul class="dropdown-menu dropdown-menu-end">
@@ -189,11 +207,11 @@
                         <div class="d-flex">
                           <div class="flex-shrink-0 me-3">
                             <div class="avatar avatar-online">
-                              <img src="../assets/img/avatars/1.png" alt class="w-px-40 h-auto rounded-circle" />
+                              <img src="${userdata.picture}" alt class="w-px-40 h-auto rounded-circle" />
                             </div>
                           </div>
                           <div class="flex-grow-1">
-                            <span class="fw-semibold d-block">John Doe</span>
+                            <span class="fw-semibold d-block">${userdata.memberName}</span>
                             <small class="text-muted">Admin</small>
                           </div>
                         </div>
@@ -203,31 +221,10 @@
                       <div class="dropdown-divider"></div>
                     </li>
                     <li>
-                      <a class="dropdown-item" href="#">
-                        <i class="bx bx-user me-2"></i>
-                        <span class="align-middle">My Profile</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a class="dropdown-item" href="#">
-                        <i class="bx bx-cog me-2"></i>
-                        <span class="align-middle">Settings</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a class="dropdown-item" href="#">
-                        <span class="d-flex align-items-center align-middle">
-                          <i class="flex-shrink-0 bx bx-credit-card me-2"></i>
-                          <span class="flex-grow-1 align-middle">Billing</span>
-                          <span class="flex-shrink-0 badge badge-center rounded-pill bg-danger w-px-20 h-px-20">4</span>
-                        </span>
-                      </a>
-                    </li>
-                    <li>
                       <div class="dropdown-divider"></div>
                     </li>
                     <li>
-                      <a class="dropdown-item" href="auth-login-basic.html">
+                      <a class="dropdown-item" href="LogoutServlet">
                         <i class="bx bx-power-off me-2"></i>
                         <span class="align-middle">Log Out</span>
                       </a>
@@ -236,13 +233,16 @@
                 </li>
                 <!--/ User -->
               </ul>
-            </>
+            <div/>
           </nav>
 
           <!-- / Navbar -->
 
           <!-- Content wrapper -->
           <div class="content-wrapper">
+              <div class="container-xxl flex-grow-1 container-p-y">
+              <h4 class="fw-bold py-3 mb-4">List Post</h4>
+              <hr class="my-5" />
             <!-- Content -->
         <c:if test="${not empty userdata && userdata.status eq 1}">
         <a type="button" href="CreateFormServlet" class="center createPost--btn btn rounded-circle"><i
@@ -250,7 +250,7 @@
         </c:if>
         <div class="row">
             <c:forEach var="dt" items="${articlesNotice}" >
-            <a href="ViewDetailServlet?aId=${dt.articleID}" >
+            <a class="pane col-md-4 mb-3" href="ViewDetailServlet?aId=${dt.articleID}" >
                 <div class="pane mb-3">
                     <div class="card h-100">
                         <div class="pane-img">

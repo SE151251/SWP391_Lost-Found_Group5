@@ -6,6 +6,7 @@
 package fu.servlets;
 
 import fu.daos.ArticleDAO;
+import fu.daos.NotificationDAO;
 import fu.entities.Member;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -47,6 +48,8 @@ public class DeleteServlet extends HttpServlet {
                     String aId = request.getParameter("aId");
                     ArticleDAO aDao = new ArticleDAO();
                     aDao.deleteArticle(Integer.parseInt(aId));
+                    NotificationDAO ndao = new NotificationDAO();
+                    ndao.removeNotification(Integer.parseInt(aId));
                     request.getRequestDispatcher("paging").forward(request, response);
                 } else {
                     request.setAttribute("errormessage", "Your account has been banned!");

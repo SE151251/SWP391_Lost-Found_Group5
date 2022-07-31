@@ -19,3 +19,8 @@ function report_dl(){
         report_hidden.style.display="none";
     }
 }
+var userSettings = document.querySelector(".user-settings");
+
+function UserSettingToggle(){
+    userSettings.classList.toggle("user-setting-showup-toggle");
+}
